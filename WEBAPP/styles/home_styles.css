@@ -1,6 +1,6 @@
 .hero-section {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                url('/api/placeholder/1920/1080') center/cover;
+                url('/img/bg/index/hero_image.png') center/cover;
     height: 100vh;
     color: white;
 }
