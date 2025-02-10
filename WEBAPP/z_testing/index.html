@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetAlert2 Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>SweetAlert2 Demo</h2>
+    
+    <button onclick="showAlert()">Show Alert</button>
+    <button onclick="showConfirm()">Show Confirmation</button>
+    <button onclick="showToast()">Show Toast</button>
+
+    <script>
+        function showAlert() {
+            Swal.fire('Hello, this is a SweetAlert2 pop-up!');
+        }
+
+        function showConfirm() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, proceed!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Confirmed!', 'You chose to proceed.', 'success');
+                }
+            });
+        }
+
+        function showToast() {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Operation successful',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    </script>
+</body>
+</html>
