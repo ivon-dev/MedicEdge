@@ -6,6 +6,11 @@ $password = "";
 $dbname = "medicedge_db";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 // Handle form submissions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
@@ -82,17 +87,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $created_at
             );
             
+            // Execute the statement and handle the result
             if ($stmt->execute()) {
                 header("Location: /pages/auth/login.php?message=Registration successful! Please login.&status=success");
+
+                // Debug statement
+                error_log("Debug - User Type: " . $user_type);
+                error_log("Debug - Parameters: " . print_r([$user_id, $firstname, $middlename, $lastname, $username, $email, $contact_num, $password_hash, $user_type, $created_at], true));
+
+                exit();
             } else {
                 header("Location: /pages/auth/register.php?message=Error during registration. Please try again.&status=danger");
+                exit();
             }
 
-            $stmt->close();
-            $conn->close();
-            exit();
-            break;
-        // Add other cases here (login, etc.)
         default:
             header("Location: /pages/auth/login.php?message=Invalid action&status=danger");
             exit();

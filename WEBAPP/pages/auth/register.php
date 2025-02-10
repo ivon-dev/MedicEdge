@@ -8,6 +8,8 @@
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
+    <link href="/styles/global-styles/footer_globalstyles.css" rel="stylesheet">
+    <link href="/styles/pages-styles/login-register_styles.css" rel="stylesheet">
 
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
@@ -20,6 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/login.php">Login</a></li>
@@ -28,13 +31,13 @@
         </div>
     </nav>
 
-    <div class="container mt-5 pt-5">
+    <div class="container mt-5 pt-5 login-register-form-wrapper">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-6 login-register-form">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <img src="/img/login-register/banner.png" alt="Registration Banner" width="300" height="100" class="img-fluid">
+                            <img src="/img/login-register/banner.png" alt="Registration Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
                         <h2 class="text-center mb-4"><b>Registration</b></h2>
                         
@@ -93,10 +96,9 @@
                                 <label for="user_type" class="form-label">User Type*</label>
                                 <select class="form-select" id="user_type" name="user_type" required>
                                     <option value="">Select user type</option>
-                                    <option value="Patient">Patient</option>
-                                    <option value="Healthcare Provider">Healthcare Provider</option>
-                                    <option value="Receptionist">Receptionist</option>
-                                    <option value="Administrator">Administrator</option>
+                                    <option value="patient">Patient</option>
+                                    <option value="healthcare_provider">Healthcare Provider</option>
+                                    <option value="receptionist">Receptionist</option>
                                 </select>
                                 <div class="invalid-feedback">Please select a user type.</div>
                             </div>
