@@ -27,6 +27,12 @@
             <a href="#" data-section="availability"><i class="fas fa-clock me-2"></i> Availability</a>
             <a href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
+
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="/img/dashboard/banner.png" alt="MedicEdge Logo">
+            <p>MedicEdge</p>
+        </div>
     </nav>
 
     <main class="content">

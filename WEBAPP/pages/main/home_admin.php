@@ -7,7 +7,7 @@
     <title>Admin Dashboard - MedicEdge</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" >
     <link href="/styles/pages-styles/dashboard_styles.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
@@ -31,6 +31,12 @@
             <a href="#" data-section="system_settings"><i class="fas fa-cogs me-2"></i> System Settings</a>
             <a href="#" data-section="reports"><i class="fas fa-chart-bar me-2"></i> Reports & Analytics</a>
             <a href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="/img/dashboard/banner.png" alt="MedicEdge Logo">
+            <p>MedicEdge</p>
         </div>
     </nav>
 
