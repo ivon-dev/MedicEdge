@@ -7,7 +7,7 @@
     <title>Admin Dashboard - MedicEdge</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/styles/pages-styles/dashboard_styles.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
