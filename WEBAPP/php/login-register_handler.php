@@ -1,10 +1,5 @@
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "medicedge_db";
-$conn = new mysqli($servername, $username, $password, $dbname);
+include('connection.php');
 
 // Check connection
 if ($conn->connect_error) {
@@ -89,12 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Execute the statement and handle the result
             if ($stmt->execute()) {
-                header("Location: /pages/auth/login.php?message=Registration successful! Please login.&status=success");
-
-                // Debug statement
-                error_log("Debug - User Type: " . $user_type);
-                error_log("Debug - Parameters: " . print_r([$user_id, $firstname, $middlename, $lastname, $username, $email, $contact_num, $password_hash, $user_type, $created_at], true));
-
+                Echo '<script>window.location.assign("/pages/auth/login.php");</script>';
                 exit();
             } else {
                 header("Location: /pages/auth/register.php?message=Error during registration. Please try again.&status=danger");
