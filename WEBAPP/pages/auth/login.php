@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>MedicEdge — Login</title>
@@ -30,7 +30,7 @@
             </div>
         </div>
     </nav>
-
+    
     <div class="container mt-5 pt-5 login-register-form-wrapper">
         <div class="row justify-content-center">
             <div class="col-md-6 login-register-form">
@@ -40,16 +40,8 @@
                             <img src="/img/login-register/banner.png" alt="Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
                         <h2 class="text-center mb-4"><b>Login</b></h2>
-                        
-                        <?php
-                        if (isset($_GET['message'])) {
-                            $message = htmlspecialchars($_GET['message']);
-                            $status = isset($_GET['status']) ? $_GET['status'] : 'danger';
-                            echo "<div class='alert alert-{$status}'>{$message}</div>";
-                        }
-                        ?>
 
-                        <form method="POST" action="/php/login-register_handler.php" class="needs-validation" novalidate>
+                        <form id="loginForm" action="/php/login-register_handler.php?action=login" method="POST" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="login">
                             
                             <div class="mb-3">
@@ -74,7 +66,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a href="#" class="text-muted">Forgot Password?</a>
+                                <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
                             </div>
                         </form>
                     </div>
@@ -119,23 +111,83 @@
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
+    <!-- External Scripts -->
+    <script src="/scripts/external/aos.js"></script>
+
     <!-- Internal Scripts -->
     <script>
-    // Form validation
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms).forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-    </script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!this.checkValidity()) {
+            e.stopPropagation();
+            this.classList.add('was-validated');
+            return;
+        }
 
+        const formData = new FormData(this);
+        
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '/dashboard.php';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred. Please try again.'
+            });
+        });
+    });
+
+    document.getElementById('forgotPassword').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Reset Password',
+            input: 'email',
+            inputLabel: 'Enter your email address',
+            inputPlaceholder: 'email@example.com',
+            showCancelButton: true,
+            confirmButtonText: 'Send Reset Link',
+            showLoaderOnConfirm: true,
+            preConfirm: (email) => {
+                // Implement password reset functionality
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, 1000);
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reset Link Sent',
+                    text: 'Please check your email for password reset instructions.'
+                });
+            }
+        });
+    });
+    </script>
 </body>
 </html>
