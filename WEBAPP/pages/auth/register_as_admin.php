@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MedicEdge — Register</title>
+    <title>MedicEdge — Administrator Registration</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
@@ -14,7 +14,7 @@
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <img src="/img/navbar/logo.png" alt="MedicEdge Logo" class="img-fluid" draggable="false">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -39,7 +39,7 @@
                         <div class="text-center mb-4">
                             <img src="/img/login-register/banner.png" alt="Registration Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
-                        <h2 class="text-center mb-4"><b>Registration</b></h2>
+                        <h2 class="text-center mb-4"><b>Administrator Registration</b></h2>
                         
                         <?php
                         if (isset($_GET['message'])) {
@@ -76,8 +76,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email">
+                                <label for="email" class="form-label">Email*</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
 
                             <div class="mb-3">
@@ -93,24 +93,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="user_type" class="form-label">User Type*</label>
-                                <select class="form-select" id="user_type" name="user_type" required>
-                                    <option value="">Select user type</option>
-                                    <option value="patient">Patient</option>
-                                    <option value="healthcare_provider">Healthcare Provider</option>
-                                    <option value="receptionist">Receptionist</option>
-                                </select>
-                                <div class="invalid-feedback">Please select a user type.</div>
-                            </div>
-
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
-                                <label class="form-check-label" for="terms">
-                                    I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
-                                </label>
-                                <div class="invalid-feedback">
-                                    You must agree to the Terms of Service and Privacy Policy to continue.
-                                </div>
+                                <label for="confirm_password" class="form-label">Retype Password*</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <div class="invalid-feedback">Please retype your password.</div>
                             </div>
 
                             <div class="d-grid">
@@ -159,6 +144,9 @@
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Internal Scripts -->
     <script>
     // Form validation
@@ -171,10 +159,40 @@
                     event.preventDefault()
                     event.stopPropagation()
                 }
+                
+                // Password Match Validation
+                const password = form.querySelector('#password')
+                const confirmPassword = form.querySelector('#confirm_password')
+                if (password.value !== confirmPassword.value) {
+                    event.preventDefault()
+                    confirmPassword.setCustomValidity('Passwords do not match')
+                } else {
+                    confirmPassword.setCustomValidity('')
+                }
+                
                 form.classList.add('was-validated')
             }, false)
         })
     })()
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/php/login-register_handler.php?action=check_admin')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.adminExists) {
+                        Swal.fire({
+                            title: 'Administrator already exists',
+                            html: `Your organization already has an administrator. Please contact your administrator via email to create an administrator account for you.<br><br>
+                                <a href="mailto:${data.adminEmails}?subject=Request for Administrator Access&body=Dear Admin,%0D%0A%0D%0AI would like to request administrator access. Please let me know the steps to create an account.%0D%0A%0D%0AThank you." class="btn btn-primary" onclick="window.open(this.href, '_blank'); return false;">Email Admin</a>`,
+                            icon: 'info',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            window.location.href = 'login.php';
+                        });
+                    }
+              });
+        });
     </script>
 
 </body>
