@@ -13,6 +13,68 @@ class AuthUtils {
     public static function generateSessionToken() {
         return bin2hex(random_bytes(32));
     }
+
+    public static function validateEmail($email) {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public static function generateUserId($prefix, $conn) {
+        do {
+            // Get current date and time in the desired format
+            // Format: user_DDMMYYYY_HHMMSS
+            $userId = sprintf(
+                "%s_%s_%s",
+                $prefix,
+                date('mdY'),
+                date('His')
+            );
+            
+            // Check if this ID already exists in the database
+            $stmt = $conn->prepare("SELECT user_id FROM users_table WHERE user_id = ?");
+            $stmt->bind_param("s", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // If ID doesn't exist, return it
+            if ($result->num_rows === 0) {
+                return $userId;
+            }
+            
+            // If ID exists, wait for a millisecond to get a different timestamp
+            usleep(1000);
+        } while (true);
+    }
+
+    public static function checkRateLimit($ip) {
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = [];
+        }
+
+        if (!isset($_SESSION['login_attempts'][$ip])) {
+            $_SESSION['login_attempts'][$ip] = [
+                'attempts' => 0,
+                'last_attempt' => time()
+            ];
+        }
+
+        $attempts = &$_SESSION['login_attempts'][$ip];
+        
+        // Reset attempts if more than 15 minutes have passed
+        if (time() - $attempts['last_attempt'] > 900) {
+            $attempts['attempts'] = 0;
+        }
+
+        // Check if locked
+        if ($attempts['attempts'] >= 5) {
+            $remaining = ceil((900 - (time() - $attempts['last_attempt'])) / 60);
+            return ['locked' => true, 'remaining' => $remaining];
+        }
+
+        $attempts['attempts']++;
+        $attempts['last_attempt'] = time();
+
+        return ['locked' => false, 'remaining' => 0];
+    }
 }
 
 // Check database connection
@@ -49,13 +111,6 @@ switch ($action) {
     case 'register':
         if ($_SERVER["REQUEST_METHOD"] !== "POST") break;
         
-        // Rate limit check
-        $rateLimitCheck = AuthUtils::checkRateLimit($_SERVER['REMOTE_ADDR']);
-        if ($rateLimitCheck['locked']) {
-            header("Location: /pages/auth/register_as_admin.php?message=Too many attempts. Please try again in {$rateLimitCheck['remaining']} minutes.&status=danger");
-            exit();
-        }
-        
         // Validate required fields
         $required_fields = ['username', 'firstname', 'lastname', 'email', 'password', 'confirm_password', 'contact_num'];
         $input_data = array_map([AuthUtils::class, 'sanitizeInput'], array_intersect_key($_POST, array_flip($required_fields)));
@@ -68,6 +123,7 @@ switch ($action) {
         // Extract and validate data
         extract($input_data);
         $middlename = AuthUtils::sanitizeInput($_POST['middlename'] ?? '');
+        $picture = "DATA/user-data/generic_user.png"; // Default picture path
         
         if (!AuthUtils::validateEmail($email)) {
             header("Location: /pages/auth/register_as_admin.php?message=Invalid email format&status=danger");
@@ -87,10 +143,10 @@ switch ($action) {
             $password_hash = password_hash($password, PASSWORD_ARGON2ID);
             $created_at = gmdate('Y-m-d H:i:s');
             
-            $stmt = $conn->prepare("INSERT INTO users_table (user_id, username, firstname, middlename, lastname, email, contact_num, password_hash, user_type, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'administrator', ?)");
-            $stmt->bind_param("sssssssss", 
+            $stmt = $conn->prepare("INSERT INTO users_table (user_id, username, firstname, middlename, lastname, email, contact_num, password_hash, user_type, picture, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'administrator', ?, ?)");
+            $stmt->bind_param("ssssssssss", 
                 $user_id, $username, $firstname, $middlename, $lastname, 
-                $email, $contact_num, $password_hash, $created_at
+                $email, $contact_num, $password_hash, $picture, $created_at
             );
             $stmt->execute();
             
@@ -143,7 +199,6 @@ switch ($action) {
             $session_id = $base_id;
             $counter = 2;
     
-            // Check for duplicate ID and append _2, _3, etc.
             while (true) {
                 $check_stmt = $conn->prepare("SELECT id FROM users_sessionlists WHERE id = ?");
                 $check_stmt->bind_param("s", $session_id);
@@ -151,7 +206,7 @@ switch ($action) {
                 $check_result = $check_stmt->get_result();
     
                 if ($check_result->num_rows === 0) {
-                    break; // ID is unique
+                    break;
                 }
     
                 $session_id = $base_id . "_" . $counter;
