@@ -1,4 +1,4 @@
-<?php include('../../php/dashboard_onload_check.php'); ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard_onload_check.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,6 +129,9 @@
     
     <!-- Major Scripts -->
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
+
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Internal Scripts -->
     <script>
