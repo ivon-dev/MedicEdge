@@ -63,6 +63,8 @@
                             </div>
                             <div class="text-center">
                                 <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
+                                <br>
+                                <a href="/" class="text-muted">Back to Home</a>
                             </div>
                         </form>
                     </div>

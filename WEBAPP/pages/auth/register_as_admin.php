@@ -101,6 +101,10 @@
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Register</button>
                             </div>
+                            <div class="text-center">
+                                <br>
+                                <a href="/" class="text-muted">Back to Home</a>
+                            </div>
                         </form>
                     </div>
                 </div>
