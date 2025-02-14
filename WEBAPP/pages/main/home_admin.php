@@ -1,3 +1,5 @@
+<?php include('../../php/dashboard_onload_check.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +32,7 @@
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
             <a href="#" data-section="system_settings"><i class="fas fa-cogs me-2"></i> System Settings</a>
             <a href="#" data-section="reports"><i class="fas fa-chart-bar me-2"></i> Reports & Analytics</a>
-            <a href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            <a href="/php/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
         <!-- Logo Section -->

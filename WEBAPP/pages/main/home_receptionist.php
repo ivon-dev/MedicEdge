@@ -1,3 +1,5 @@
+<?php include('../../php/dashboard_onload_check.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +27,7 @@
             <a href="#" data-section="checkin"><i class="fas fa-clipboard-check me-2"></i> Patient Check-In</a>
             <a href="#" data-section="records"><i class="fas fa-folder-open me-2"></i> Patient Records</a>
             <a href="#" data-section="messaging"><i class="fas fa-envelope me-2"></i> Messaging</a>
-            <a href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            <a href="/php/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
         <!-- Logo Section -->
