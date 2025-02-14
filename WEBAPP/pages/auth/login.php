@@ -14,9 +14,11 @@
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
-            <img src="/img/navbar/logo.png" alt="MedicEdge Logo" class="img-fluid" draggable="false">
+            <a href="/">
+                <img src="/img/navbar/logo.png" alt="MedicEdge Logo" class="img-fluid" draggable="false">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -40,31 +42,25 @@
                             <img src="/img/login-register/banner.png" alt="Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
                         <h2 class="text-center mb-4"><b>Login</b></h2>
-
-                        <form id="loginForm" action="/php/login-register_handler.php?action=login" method="POST" class="needs-validation" novalidate>
+                        <form id="loginForm" action="/php/login-register_handler.php" method="POST" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="login">
-                            
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username*</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
                                 <div class="invalid-feedback">Please enter your username.</div>
                             </div>
-
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password*</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <div class="invalid-feedback">Please enter your password.</div>
                             </div>
-
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
                                 <label class="form-check-label" for="remember_me">Remember me</label>
                             </div>
-
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </div>
-
                             <div class="text-center">
                                 <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
                             </div>
@@ -92,9 +88,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Contact</h5>
-                    <p>Email: contact@medicedge.com<br>
-                    Phone: (555) 123-4567<br>
-                    Address: 123 Health Street</p>
+                    <p>Email: contact@medicedge.com<br>Phone: (555) 123-4567<br>Address: 123 Health Street</p>
                 </div>
             </div>
             <hr class="mt-4 mb-4 border-light">
@@ -112,82 +106,62 @@
     <script src="/scripts/external/aos.js"></script>
 
     <!-- External Scripts -->
-    <script src="/scripts/external/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Internal Scripts -->
     <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        if (!this.checkValidity()) {
-            e.stopPropagation();
-            this.classList.add('was-validated');
-            return;
-        }
-
-        const formData = new FormData(this);
-        
-        fetch(window.location.href, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    window.location.href = '/dashboard.php';
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message
-                });
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!this.checkValidity()) {
+                this.classList.add('was-validated');
+                return;
             }
-        })
-        .catch(error => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'An unexpected error occurred. Please try again.'
+            const formData = new FormData(this);
+            fetch('/php/login-register_handler.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = data.redirect;
+                    });
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: data.message });
+                }
+            })
+            .catch(() => {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'An unexpected error occurred. Please try again.' });
             });
         });
-    });
 
-    document.getElementById('forgotPassword').addEventListener('click', function(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Reset Password',
-            input: 'email',
-            inputLabel: 'Enter your email address',
-            inputPlaceholder: 'email@example.com',
-            showCancelButton: true,
-            confirmButtonText: 'Send Reset Link',
-            showLoaderOnConfirm: true,
-            preConfirm: (email) => {
-                // Implement password reset functionality
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve();
-                    }, 1000);
-                });
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Reset Link Sent',
-                    text: 'Please check your email for password reset instructions.'
-                });
-            }
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Reset Password',
+                input: 'email',
+                inputLabel: 'Enter your email address',
+                inputPlaceholder: 'email@example.com',
+                showCancelButton: true,
+                confirmButtonText: 'Send Reset Link',
+                showLoaderOnConfirm: true,
+                preConfirm: (email) => {
+                    return new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }).then(result => {
+                if (result.isConfirmed) {
+                    Swal.fire({ icon: 'success', title: 'Reset Link Sent', text: 'Please check your email for password reset instructions.' });
+                }
+            });
         });
-    });
     </script>
 </body>
 </html>
