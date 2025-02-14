@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 <?php 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard_onload_check.php';
 ?>
+=======
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard_onload_check.php'; ?>
+>>>>>>> 7f3ad1f0d77519d9d9f94e7fc7272fde3f14bb13
 
 <!DOCTYPE html>
 <html lang="en">
@@ -904,6 +908,10 @@
             </div>
     </main>
     
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Internal Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.sidebar a[data-section]').forEach(link => {

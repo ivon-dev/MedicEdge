@@ -1,6 +1,4 @@
-<?php 
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard_onload_check.php';
-?>
+<?php include('../../php/dashboard_onload_check.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -361,6 +359,10 @@
         </section>
     </main>
 
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Internal Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
