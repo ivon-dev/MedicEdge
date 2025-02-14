@@ -110,6 +110,7 @@
 
     <!-- Internal Scripts -->
     <script>
+        // Main Login Script
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             if (!this.checkValidity()) {
@@ -143,6 +144,46 @@
             });
         });
 
+        // Already Logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/php/login_onload_check.php', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.loggedIn) {
+                    Swal.fire({
+                        title: 'You are already logged in',
+                        text: 'Redirecting to your dashboard...',
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = data.redirect;
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Login check error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred while checking login status. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+
+        // Forget Password
         document.getElementById('forgotPassword').addEventListener('click', function(e) {
             e.preventDefault();
             Swal.fire({
