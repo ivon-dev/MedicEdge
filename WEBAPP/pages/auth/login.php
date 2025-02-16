@@ -133,7 +133,7 @@
                         title: 'Success!',
                         text: data.message,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1850
                     }).then(() => {
                         window.location.href = data.redirect;
                     });
@@ -161,10 +161,11 @@
             .then(data => {
                 if (data.loggedIn) {
                     Swal.fire({
+                        icon: 'info',
                         title: 'You are already logged in',
                         text: 'Redirecting to your dashboard...',
-                        icon: 'info',
-                        confirmButtonText: 'OK',
+                        showConfirmButton: false,
+                        timer: 1850
                         allowOutsideClick: false,
                         allowEscapeKey: false
                     }).then((result) => {

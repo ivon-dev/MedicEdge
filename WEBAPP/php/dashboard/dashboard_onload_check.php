@@ -19,8 +19,12 @@ function showAlertAndRedirect($message, $redirectUrl) {
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Redirect</title>
+        <title>Error</title>
         <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <link href='/styles/external/bootstrap.min.css' rel='stylesheet'>
+        <link href='/styles/external/aos.css' rel='stylesheet'>
+
+        <link rel='icon' type='image/x-icon' href='/img/favicon.ico'>
     </head>
     <body>
         <script>

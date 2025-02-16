@@ -165,6 +165,7 @@ switch ($action) {
 
     case 'login':
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+            header('Content-Type: application/json');
             exit(json_encode(['success' => false, 'message' => 'Invalid request method']));
         }
     
@@ -173,6 +174,7 @@ switch ($action) {
         $remember_me = isset($_POST['remember_me']);
     
         if (empty($username) || empty($password)) {
+            header('Content-Type: application/json');
             exit(json_encode(['success' => false, 'message' => 'Please enter both username and password']));
         }
     
@@ -232,7 +234,7 @@ switch ($action) {
             ]);
     
             $conn->commit();
-    
+            
             $redirect_url = match($user['user_type']) {
                 'administrator' => '/pages/main/home_admin.php',
                 'receptionist' => '/pages/main/home_receptionist.php',
@@ -240,13 +242,15 @@ switch ($action) {
                 default => '/pages/auth/login.php'
             };
     
-            exit(json_encode(['success' => true, 'message' => 'Login successful', 'redirect' => $redirect_url]));
+            exit(json_encode(['success' => true, 'message' => 'Login successful', 'redirect' => '$redirect' => $redirect_url]));
     
+
         } catch (Exception $e) {
             $conn->rollback();
+            header('Content-Type: application/json');
             exit(json_encode(['success' => false, 'message' => $e->getMessage()]));
         }
-    break;    
+    break;
     
     default:
         header("Location: /pages/auth/login.php?message=Invalid action&status=danger");
