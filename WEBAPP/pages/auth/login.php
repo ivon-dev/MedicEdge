@@ -42,7 +42,7 @@
                             <img src="/img/login-register/banner.png" alt="Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
                         <h2 class="text-center mb-4"><b>Login</b></h2>
-                        <form id="loginForm" action="/php/login-register_handler.php" method="POST" class="needs-validation" novalidate>
+                        <form id="loginForm" method="POST" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="login">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username*</label>
@@ -64,7 +64,7 @@
                             <div class="text-center">
                                 <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
                                 <br>
-                                <a href="/" class="text-muted">Back to Home</a>
+                                <a href="/" class="text-muted">Back to Homepage</a>
                             </div>
                         </form>
                     </div>
@@ -115,17 +115,30 @@
         // Main Login Script
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             if (!this.checkValidity()) {
+                e.stopPropagation();
                 this.classList.add('was-validated');
                 return;
             }
+            
             const formData = new FormData(this);
+            
+            // Disable form while submitting
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            
             fetch('/php/login-register_handler.php', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({
@@ -133,20 +146,35 @@
                         title: 'Success!',
                         text: data.message,
                         showConfirmButton: false,
-                        timer: 1850
+                        timer: 1850,
+                        allowOutsideClick: false
                     }).then(() => {
-                        window.location.href = data.redirect;
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
                     });
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Error', text: data.message });
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message || 'An unexpected error occurred'
+                    });
                 }
             })
-            .catch(() => {
-                Swal.fire({ icon: 'error', title: 'Error', text: 'An unexpected error occurred. Please try again.' });
+            .catch(error => {
+                console.error('Login error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.'
+                });
+            })
+            .finally(() => {
+                submitButton.disabled = false;
             });
         });
 
-        // Already Logged in
+        // Already Logged in Check
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/php/login_onload_check.php', {
                 method: 'GET',
@@ -165,11 +193,11 @@
                         title: 'You are already logged in',
                         text: 'Redirecting to your dashboard...',
                         showConfirmButton: false,
-                        timer: 1850
+                        timer: 1850,
                         allowOutsideClick: false,
                         allowEscapeKey: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
+                    }).then(() => {
+                        if (data.redirect) {
                             window.location.href = data.redirect;
                         }
                     });
@@ -177,12 +205,6 @@
             })
             .catch(error => {
                 console.error('Login check error:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: 'An error occurred while checking login status. Please try again.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
             });
         });
 

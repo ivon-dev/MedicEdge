@@ -103,7 +103,7 @@
                             </div>
                             <div class="text-center">
                                 <br>
-                                <a href="/" class="text-muted">Back to Home</a>
+                                <a href="/" class="text-muted">Back to Homepage</a>
                             </div>
                         </form>
                     </div>

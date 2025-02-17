@@ -164,67 +164,92 @@ switch ($action) {
     break;
 
     case 'login':
+        // Set JSON response header
+        header('Content-Type: application/json');
+        
+        // Verify request method
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header('Content-Type: application/json');
-            exit(json_encode(['success' => false, 'message' => 'Invalid request method']));
+            exit(json_encode([
+                'success' => false, 
+                'message' => 'Invalid request method'
+            ]));
         }
-    
+        
+        // Get and sanitize inputs
         $username = AuthUtils::sanitizeInput($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
         $remember_me = isset($_POST['remember_me']);
-    
-        if (empty($username) || empty($password)) {
-            header('Content-Type: application/json');
-            exit(json_encode(['success' => false, 'message' => 'Please enter both username and password']));
-        }
-    
+        
+        // Start transaction
         $conn->begin_transaction();
-    
+        
         try {
+            // Query user data
             $stmt = $conn->prepare("SELECT user_id, password_hash, user_type FROM users_table WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
-    
+            
+            // Check if user exists
             if ($result->num_rows === 0) {
                 throw new Exception('Invalid username or password');
             }
-    
+            
             $user = $result->fetch_assoc();
             
+            // Verify password
             if (!password_verify($password, $user['password_hash'])) {
                 throw new Exception('Invalid username or password');
             }
-    
-            // Generate session ID
-            $base_id = "session_" . date("mdY_His");
-            $session_id = $base_id;
-            $counter = 2;
-    
-            while (true) {
+            
+            // Generate unique session ID
+            $session_id = '';
+            $max_attempts = 5;
+            $attempt = 0;
+            
+            do {
+                $base_id = "session_" . date("mdY_His");
+                $session_id = $attempt === 0 ? $base_id : $base_id . "_" . $attempt;
+                
                 $check_stmt = $conn->prepare("SELECT id FROM users_sessionlists WHERE id = ?");
                 $check_stmt->bind_param("s", $session_id);
                 $check_stmt->execute();
                 $check_result = $check_stmt->get_result();
-    
+                
                 if ($check_result->num_rows === 0) {
                     break;
                 }
-    
-                $session_id = $base_id . "_" . $counter;
-                $counter++;
-            }
-    
+                
+                $attempt++;
+                if ($attempt >= $max_attempts) {
+                    throw new Exception('Failed to generate unique session ID');
+                }
+                
+                usleep(100000); // Wait 0.1 seconds before next attempt
+                
+            } while (true);
+            
+            // Generate session data
             $session_token = AuthUtils::generateSessionToken();
             $login_time = gmdate('Y-m-d H:i:s');
             $expire_time = gmdate('Y-m-d H:i:s', time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
-    
+            
+            // Insert session record
             $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssss", $session_id, $user['user_id'], $session_token, $login_time, $expire_time, $ip_address, $user_agent);
+            $stmt->bind_param("sssssss", 
+                $session_id, 
+                $user['user_id'], 
+                $session_token, 
+                $login_time, 
+                $expire_time, 
+                $ip_address, 
+                $user_agent
+            );
             $stmt->execute();
-    
+            
+            // Set session cookie
             setcookie('session_token', $session_token, [
                 'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
                 'path' => '/',
@@ -232,23 +257,37 @@ switch ($action) {
                 'httponly' => true,
                 'samesite' => 'Strict'
             ]);
-    
+            
+            // Commit transaction
             $conn->commit();
             
+            // Determine redirect URL based on user type
             $redirect_url = match($user['user_type']) {
                 'administrator' => '/pages/main/home_admin.php',
                 'receptionist' => '/pages/main/home_receptionist.php',
                 'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
                 default => '/pages/auth/login.php'
             };
-    
-            exit(json_encode(['success' => true, 'message' => 'Login successful', 'redirect' => '$redirect' => $redirect_url]));
-    
-
+            
+            // Send success response
+            exit(json_encode([
+                'success' => true,
+                'message' => 'Login successful',
+                'redirect' => $redirect_url
+            ]));
+            
         } catch (Exception $e) {
+            // Rollback transaction on error
             $conn->rollback();
-            header('Content-Type: application/json');
-            exit(json_encode(['success' => false, 'message' => $e->getMessage()]));
+            
+            // Log error (you should implement proper error logging)
+            error_log("Login error: " . $e->getMessage());
+            
+            // Send error response
+            exit(json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]));
         }
     break;
     
