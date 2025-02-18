@@ -126,9 +126,11 @@
             
             // Disable form while submitting
             const submitButton = this.querySelector('button[type="submit"]');
+            const inputs = this.querySelectorAll('input');
             submitButton.disabled = true;
+            inputs.forEach(input => input.disabled = true);
             
-            fetch('/php/login-register_handler.php', {
+            fetch('/php/credentials/login-register_handler.php', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include'
@@ -154,6 +156,20 @@
                         }
                     });
                 } else {
+                    // Show error with timer if rate limited
+                    if (data.message && data.message.includes('Too many failed attempts')) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Account Locked',
+                            text: data.message,
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            timer: null
+                        });
+                        // Keep form disabled during lockout
+                        return;
+                    }
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -170,13 +186,17 @@
                 });
             })
             .finally(() => {
-                submitButton.disabled = false;
+                // Only re-enable form if not rate limited
+                if (!document.querySelector('.swal2-container')?.textContent?.includes('Too many failed attempts')) {
+                    submitButton.disabled = false;
+                    inputs.forEach(input => input.disabled = false);
+                }
             });
         });
 
         // Already Logged in Check
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/php/login_onload_check.php', {
+            fetch('/php/credentials/login_onload_check.php', {
                 method: 'GET',
                 credentials: 'include'
             })

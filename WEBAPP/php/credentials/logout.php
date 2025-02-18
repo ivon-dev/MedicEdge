@@ -1,5 +1,5 @@
 <?php
-include('connection.php');
+include('../connection.php');
 
 // Initialize session if not already started
 if (session_status() === PHP_SESSION_NONE) {

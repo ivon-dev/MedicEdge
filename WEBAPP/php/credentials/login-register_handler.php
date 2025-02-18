@@ -1,8 +1,10 @@
 <?php
-include('connection.php');
+include('../connection.php');
 
 // Constants
 define('SESSION_LIFETIME', 86400); // 24 hours
+define('MAX_LOGIN_ATTEMPTS', 5);
+define('COOLDOWN_PERIOD', 900); // 15 minutes in seconds
 
 // Utility Functions
 class AuthUtils {
@@ -45,7 +47,23 @@ class AuthUtils {
         } while (true);
     }
 
-    public static function checkRateLimit($ip) {
+    public static function checkRateLimit($ip, $conn) {
+        // First, clean up expired blocks
+        $stmt = $conn->prepare("DELETE FROM users_session_blocklist WHERE block_end <= NOW()");
+        $stmt->execute();
+        
+        // Check if IP is currently blocked
+        $stmt = $conn->prepare("SELECT block_end FROM users_session_blocklist WHERE ip_address = ? AND block_end > NOW()");
+        $stmt->bind_param("s", $ip);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $remaining = ceil((strtotime($row['block_end']) - time()) / 60);
+            return ['locked' => true, 'remaining' => $remaining];
+        }
+        
         if (!isset($_SESSION['login_attempts'])) {
             $_SESSION['login_attempts'] = [];
         }
@@ -59,21 +77,37 @@ class AuthUtils {
 
         $attempts = &$_SESSION['login_attempts'][$ip];
         
-        // Reset attempts if more than 15 minutes have passed
-        if (time() - $attempts['last_attempt'] > 900) {
+        // Reset attempts if cooldown period has passed
+        if (time() - $attempts['last_attempt'] > COOLDOWN_PERIOD) {
             $attempts['attempts'] = 0;
         }
 
-        // Check if locked
-        if ($attempts['attempts'] >= 5) {
-            $remaining = ceil((900 - (time() - $attempts['last_attempt'])) / 60);
-            return ['locked' => true, 'remaining' => $remaining];
+        // Check if max attempts reached
+        if ($attempts['attempts'] >= MAX_LOGIN_ATTEMPTS) {
+            // Add to blocklist
+            $block_id = 'block_' . date('mdY_His');
+            $block_end = date('Y-m-d H:i:s', time() + COOLDOWN_PERIOD);
+            
+            $stmt = $conn->prepare("INSERT INTO users_session_blocklist (id, ip_address, block_end) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $block_id, $ip, $block_end);
+            $stmt->execute();
+            
+            // Clear session attempts
+            unset($_SESSION['login_attempts'][$ip]);
+            
+            return ['locked' => true, 'remaining' => COOLDOWN_PERIOD / 60];
         }
 
         $attempts['attempts']++;
         $attempts['last_attempt'] = time();
 
         return ['locked' => false, 'remaining' => 0];
+    }
+
+    public static function clearLoginAttempts($ip) {
+        if (isset($_SESSION['login_attempts'][$ip])) {
+            unset($_SESSION['login_attempts'][$ip]);
+        }
     }
 }
 
@@ -152,7 +186,7 @@ switch ($action) {
             
             $conn->commit();
             
-            unset($_SESSION['login_attempts'][$_SERVER['REMOTE_ADDR']]);
+            AuthUtils::clearLoginAttempts($_SERVER['REMOTE_ADDR']);
             header("Location: /pages/auth/login.php?message=Registration successful&status=success");
             exit();
             
@@ -161,81 +195,84 @@ switch ($action) {
             header("Location: /pages/auth/register_as_admin.php?message=" . urlencode($e->getMessage()) . "&status=danger");
             exit();
         }
-    break;
+        break;
 
     case 'login':
-        // Set JSON response header
         header('Content-Type: application/json');
-        
-        // Verify request method
+            
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             exit(json_encode([
                 'success' => false, 
                 'message' => 'Invalid request method'
             ]));
         }
-        
+            
+        // Check rate limit first
+        $rateLimitCheck = AuthUtils::checkRateLimit($_SERVER['REMOTE_ADDR'], $conn);
+        if ($rateLimitCheck['locked']) {
+            exit(json_encode([
+                'success' => false,
+                'message' => "Too many failed attempts. Please try again in {$rateLimitCheck['remaining']} minutes."
+            ]));
+        }
+            
         // Get and sanitize inputs
         $username = AuthUtils::sanitizeInput($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
         $remember_me = isset($_POST['remember_me']);
-        
+            
         // Start transaction
         $conn->begin_transaction();
-        
+            
         try {
             // Query user data
-            $stmt = $conn->prepare("SELECT user_id, password_hash, user_type FROM users_table WHERE username = ?");
+            $stmt = $conn->prepare("SELECT * FROM users_table WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
-            
-            // Check if user exists
-            if ($result->num_rows === 0) {
-                throw new Exception('Invalid username or password');
-            }
-            
+                
+            // Get user data once and store it
             $user = $result->fetch_assoc();
-            
-            // Verify password
-            if (!password_verify($password, $user['password_hash'])) {
+                
+            // Check if user exists and verify password
+            if (!$user || !password_verify($password, $user['password_hash'])) {
                 throw new Exception('Invalid username or password');
             }
-            
+                
             // Generate unique session ID
             $session_id = '';
             $max_attempts = 5;
             $attempt = 0;
-            
+                
             do {
                 $base_id = "session_" . date("mdY_His");
                 $session_id = $attempt === 0 ? $base_id : $base_id . "_" . $attempt;
-                
+                    
                 $check_stmt = $conn->prepare("SELECT id FROM users_sessionlists WHERE id = ?");
                 $check_stmt->bind_param("s", $session_id);
                 $check_stmt->execute();
                 $check_result = $check_stmt->get_result();
-                
+                    
                 if ($check_result->num_rows === 0) {
                     break;
                 }
-                
+                    
                 $attempt++;
                 if ($attempt >= $max_attempts) {
                     throw new Exception('Failed to generate unique session ID');
                 }
-                
+                    
                 usleep(100000); // Wait 0.1 seconds before next attempt
-                
+                    
             } while (true);
-            
+                
             // Generate session data
             $session_token = AuthUtils::generateSessionToken();
             $login_time = gmdate('Y-m-d H:i:s');
             $expire_time = gmdate('Y-m-d H:i:s', time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
-            
+                
             // Insert session record
             $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("sssssss", 
@@ -248,7 +285,7 @@ switch ($action) {
                 $user_agent
             );
             $stmt->execute();
-            
+                
             // Set session cookie
             setcookie('session_token', $session_token, [
                 'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
@@ -257,32 +294,26 @@ switch ($action) {
                 'httponly' => true,
                 'samesite' => 'Strict'
             ]);
-            
+                
+            // Clear login attempts on successful login
+            AuthUtils::clearLoginAttempts($ip_address);
+                
             // Commit transaction
             $conn->commit();
-            
-            // Determine redirect URL based on user type
-            $redirect_url = match($user['user_type']) {
-                'administrator' => '/pages/main/home_admin.php',
-                'receptionist' => '/pages/main/home_receptionist.php',
-                'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
-                default => '/pages/auth/login.php'
-            };
-            
-            // Send success response
+                
             exit(json_encode([
                 'success' => true,
                 'message' => 'Login successful',
-                'redirect' => $redirect_url
+                'redirect' => '/pages/main/redirect.php',
             ]));
-            
+                
         } catch (Exception $e) {
             // Rollback transaction on error
             $conn->rollback();
-            
-            // Log error (you should implement proper error logging)
+                
+            // Log error
             error_log("Login error: " . $e->getMessage());
-            
+                
             // Send error response
             exit(json_encode([
                 'success' => false,

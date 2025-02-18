@@ -1,5 +1,5 @@
 <?php
-include('connection.php');
+include('../connection.php');
 
 // Check if session token exists
 if (!isset($_COOKIE['session_token'])) {
@@ -41,7 +41,7 @@ try {
         'administrator' => '/pages/main/home_admin.php',
         'receptionist' => '/pages/main/home_receptionist.php',
         'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
-        default => '/pages/auth/login.php'
+        default => '/pages/main/redirect.php'
     };
 
     exit(json_encode([

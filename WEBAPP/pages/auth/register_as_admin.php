@@ -49,7 +49,7 @@
                         }
                         ?>
 
-                        <form method="POST" action="/php/login-register_handler.php" class="needs-validation" novalidate>
+                        <form method="POST" action="/php/credentials/login-register_handler.php" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="register">
                             
                             <div class="mb-3">
@@ -181,7 +181,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/php/login-register_handler.php?action=check_admin')
+            fetch('/php/credentials/login-register_handler.php?action=check_admin')
                 .then(response => response.json())
                 .then(data => {
                     if (data.adminExists) {

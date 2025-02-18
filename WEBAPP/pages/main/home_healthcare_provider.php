@@ -29,7 +29,7 @@
             <a href="#" data-section="patients"><i class="fas fa-notes-medical me-2"></i> Patient Records</a>
             <a href="#" data-section="messaging"><i class="fas fa-envelope me-2"></i> Messaging</a>
             <a href="#" data-section="availability"><i class="fas fa-clock me-2"></i> Availability</a>
-            <a href="/php/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
         <!-- Logo Section -->

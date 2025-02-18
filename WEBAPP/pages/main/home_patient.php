@@ -31,7 +31,7 @@
             <a href="#" data-section="records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
             <a href="#" data-section="prescriptions"><i class="fas fa-pills me-2"></i> Prescriptions</a>
             <a href="#" data-section="profile"><i class="fas fa-user me-2"></i> Profile</a>
-            <a href="/php/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
         <!-- Logo Section -->
