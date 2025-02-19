@@ -1,5 +1,6 @@
-<?php 
+<?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/fetch-update_userinfo.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
 <body>
     <nav class="sidebar">
         <div class="profile-section">
-            <img src="admin_profile.jpg" draggable="false">
+            <img id="current-profile-picture" draggable="false">
             <h5 class="mt-2">Admin Name</h5>
         </div>
 
@@ -53,29 +54,32 @@
                     <label class="form-label">Profile Picture</label>
                     <input type="file" class="form-control">
                 </div>
+                <button type="button" class="btn btn-primary mt-0 mb-3">
+                    Select Profile Picture
+                </button>
                 <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="firstname" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="middlename" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="lastname" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control">
+                    <input type="email" name="email" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control">
+                    <input type="tel" name="contact_num" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="address" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
@@ -906,6 +910,7 @@
     
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->
     <script>

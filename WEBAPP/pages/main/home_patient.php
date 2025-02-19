@@ -1,5 +1,6 @@
 <?php 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/fetch-update_userinfo.php';
 ?>
 
 <!DOCTYPE html>

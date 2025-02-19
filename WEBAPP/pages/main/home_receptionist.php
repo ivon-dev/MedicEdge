@@ -1,5 +1,6 @@
 <?php 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/fetch-update_userinfo.php';
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +49,9 @@
                     <label class="form-label">Profile Picture</label>
                     <input type="file" class="form-control">
                 </div>
+                <button type="button" class="btn btn-primary mt-0 mb-3">
+                    Select Profile Picture
+                </button>
                 <div class="mb-3">
                     <label class="form-label">First Name</label>
                     <input type="text" class="form-control">
