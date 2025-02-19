@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '../connection.php';
+require_once ('connection.php');
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Get input data (assumes form submission via POST)
 $action = $_POST['action'] ?? '';
@@ -10,6 +14,7 @@ function getUserFromSession($sessionToken) {
     global $conn;
 
     if (empty($sessionToken) || !$conn) {
+        error_log("getUserFromSession: Empty session token or database connection.");
         return null;
     }
 
@@ -19,7 +24,7 @@ function getUserFromSession($sessionToken) {
             FROM users_table ut
             JOIN users_sessionlists us ON ut.user_id = us.user_id
             WHERE us.session_token = ?
-            AND us.expiry_date > NOW()
+            AND us.expire_time > NOW()
         ");
         
         if (!$stmt) {
@@ -42,13 +47,17 @@ function getUserFromSession($sessionToken) {
 
 // Verify session exists
 if (!isset($_COOKIE['session_token'])) {
+    error_log("No session token found in cookie.");
     echo json_encode(['status' => 'error', 'message' => 'No session token found']);
     exit;
 }
 
 // Get user data
-$user = getUserFromSession($_COOKIE['session_token']);
+$sessionToken = $_COOKIE['session_token'];
+$user = getUserFromSession($sessionToken);
+
 if (!$user && $action !== 'login') {
+    error_log("Invalid or expired session for token: " . $sessionToken);
     echo json_encode(['status' => 'error', 'message' => 'Invalid or expired session']);
     exit;
 }
@@ -160,7 +169,7 @@ switch ($action) {
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Update failed']);
+            echo json_encode(['status' => 'error', 'message' => 'Update failed: ' . $stmt->error]);
         }
         
         $stmt->close();

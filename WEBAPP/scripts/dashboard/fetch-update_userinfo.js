@@ -37,9 +37,17 @@ function fetchProfileData() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        return response.text(); // Get raw response text first
+    })
+    .then(text => {
+        console.log('Raw Response:', text); // Debugging step
+        try {
+            return JSON.parse(text);
+        } catch (error) {
+            throw new Error('Invalid JSON: ' + error.message);
+        }
     })
     .then(data => {
         if (data.status === 'success') {
