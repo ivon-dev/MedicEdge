@@ -18,7 +18,7 @@
 <body>
     <nav class="sidebar">
         <div class="profile-section">
-            <img src="provider_profile.jpg" draggable="false">
+            <img id="current-profile-picture" draggable="false">
             <h5 class="mt-2">Healthcare Provider</h5>
         </div>
 
@@ -46,7 +46,7 @@
             <form>
                 <div class="mb-3">
                     <label class="form-label">Profile Picture</label>
-                    <input type="file" class="form-control">
+                    <input type="file" class="form-control" accept="image/jpeg, image/png, image/jpg">
                 </div>
                 <button type="button" class="btn btn-primary mt-0 mb-3" onclick="showProfilePictureGallery()">
                     Select Profile Picture
@@ -77,10 +77,10 @@
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
-            <div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-50 d-none items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg max-w-3xl w-full mx-4">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold">Profile Picture Gallery</h2>
+                        <h4 class="text-xl font-bold">Select a Picture</h4>
                         <button onclick="closeGallery()" class="text-gray-600 hover:text-gray-800">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="18" y1="6" x2="6" y2="18"></line>
