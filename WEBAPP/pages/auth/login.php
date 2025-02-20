@@ -1,23 +1,38 @@
+<?php
+    $webapp_config_file = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/medicedge_webapp_config.json';
+    if (file_exists($webapp_config_file)) {
+        $config_data = json_decode(file_get_contents($webapp_config_file), true);
+    } else {
+        $config_data = [];
+    }
+
+    $orgName = $config_data['org-name'] ?? 'MedicEdge';
+    $favicon = $config_data['favicon'] ?? 'CONFIG/branding/default/favicon.ico';
+    $navbarLogo = $config_data['navbar-logo'] ?? 'CONFIG/branding/default/navbar_logo.png';
+
+    $loginRegisterBanner = $config_data['login-register-banner'] ?? 'CONFIG/branding/default/login_register_banner.png';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MedicEdge — Login</title>
+    <title><?php echo htmlspecialchars($orgName); ?> — Login</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
     <link href="/styles/global-styles/footer_globalstyles.css" rel="stylesheet">
     <link href="/styles/pages-styles/login-register_styles.css" rel="stylesheet">
 
-    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/<?php echo htmlspecialchars($favicon); ?>">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a href="/">
-                <img src="/img/navbar/logo.png" alt="MedicEdge Logo" class="img-fluid" draggable="false">
+                <img src="/<?php echo htmlspecialchars($navbarLogo); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Logo" class="img-fluid" draggable="false">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -39,7 +54,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <img src="/img/login-register/banner.png" alt="Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
+                            <img src="/<?php echo htmlspecialchars($loginRegisterBanner); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
                         </div>
                         <h2 class="text-center mb-4"><b>Login</b></h2>
                         <form id="loginForm" method="POST" class="needs-validation" novalidate>
