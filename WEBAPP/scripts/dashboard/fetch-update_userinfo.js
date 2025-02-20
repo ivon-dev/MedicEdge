@@ -33,16 +33,16 @@ function fetchProfileData() {
         headers: {
             'Content-Type': 'application/json'
         },
-        credentials: 'include' // Important: Include cookies in the request
+        credentials: 'include'
     })
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.text(); // Get raw response text first
+        return response.text();
     })
     .then(text => {
-        console.log('Raw Response:', text); // Debugging step
+        console.log('Raw Response:', text);
         try {
             return JSON.parse(text);
         } catch (error) {
@@ -54,12 +54,22 @@ function fetchProfileData() {
             populateProfileForm(data.data);
         } else {
             console.error('Error:', data.message);
-            alert('Failed to load profile data: ' + data.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load profile data: ' + data.message,
+                confirmButtonColor: '#3085d6'
+            });
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Failed to load profile data. Please try again.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load profile data. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
     });
 }
 
@@ -95,82 +105,24 @@ function uploadProfilePicture(file) {
     .then(data => {
         if (data.status === 'success') {
             document.querySelector('.profile-section img').src = '/' + data.filepath;
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Profile picture updated successfully',
+                timer: 1500,
+                showConfirmButton: false
+            });
         }
     })
-    .catch(error => console.error('Error:', error));
-}
-
-function showProfilePictureGallery() {
-    fetch('/php/dashboard/fetch-update_userinfo.php', {
-        method: 'POST',
-        body: JSON.stringify({ action: 'get_profile_pictures' }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            createGalleryModal(data.pictures);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function createGalleryModal(pictures) {
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Select Profile Picture</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        ${pictures.map(pic => `
-                            <div class="col-md-4 mb-3">
-                                <img src="/${pic}" class="img-fluid cursor-pointer" 
-                                     onclick="selectProfilePicture('${pic}')">
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(modal);
-    new bootstrap.Modal(modal).show();
-
-    modal.addEventListener('hidden.bs.modal', function() {
-        modal.remove();
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to upload profile picture. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
     });
-}
-
-function selectProfilePicture(picturePath) {
-    const conn = getDBConnection();
-    const stmt = conn.prepare("UPDATE users_table SET picture = ? WHERE user_id = ?");
-    
-    fetch('/php/dashboard/fetch-update_userinfo.php', {
-        method: 'POST',
-        body: JSON.stringify({
-            action: 'update_profile',
-            picture: picturePath
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            document.querySelector('.profile-section img').src = '/' + picturePath;
-            bootstrap.Modal.getInstance(document.querySelector('.modal')).hide();
-        }
-    })
-    .catch(error => console.error('Error:', error));
 }
 
 function updateProfile() {
@@ -184,9 +136,30 @@ function updateProfile() {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            alert('Profile updated successfully');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Profile updated successfully',
+                timer: 1500,
+                showConfirmButton: false
+            });
             fetchProfileData(); // Refresh the display
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to update profile: ' + data.message,
+                confirmButtonColor: '#3085d6'
+            });
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update profile. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
 }
