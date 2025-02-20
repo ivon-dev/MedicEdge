@@ -124,72 +124,21 @@ switch ($action) {
         }
         
         // Generate unique filename
-        $timestamp = time();
-        $filename = "profile_picture_{$timestamp}.jpg";
+        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $baseFilename = "profile_picture";
+        $filename = $baseFilename . "." . $fileExtension;
         $filepath = $userDir . "/" . $filename;
+
+        // Check if the file already exists and rename if necessary
+        $i = 1;
+        while (file_exists($filepath)) {
+            $filename = $baseFilename . "_" . $i . "." . $fileExtension;
+            $filepath = $userDir . "/" . $filename;
+            $i++;
+        }
             
-        // Process and save image
-        try {
-            // Create image from uploaded file
-            $sourceImage = null;
-            switch($file['type']) {
-                case 'image/jpeg':
-                case 'image/jpg':
-                    $sourceImage = imagecreatefromjpeg($file['tmp_name']);
-                    break;
-                case 'image/png':
-                    $sourceImage = imagecreatefrompng($file['tmp_name']);
-                    break;
-            }
-        
-            if (!$sourceImage) {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to process image']);
-                exit;
-            }
-        
-            // Get original dimensions
-            $origWidth = imagesx($sourceImage);
-            $origHeight = imagesy($sourceImage);
-        
-            // Set max dimensions
-            $maxWidth = 800;
-            $maxHeight = 800;
-        
-            // Calculate new dimensions
-            if ($origWidth > $maxWidth || $origHeight > $maxHeight) {
-                if ($origWidth > $origHeight) {
-                    $newWidth = $maxWidth;
-                    $newHeight = floor($origHeight * ($maxWidth / $origWidth));
-                } else {
-                    $newHeight = $maxHeight;
-                    $newWidth = floor($origWidth * ($maxHeight / $origHeight));
-                }
-            } else {
-                $newWidth = $origWidth;
-                $newHeight = $origHeight;
-            }
-        
-            // Create new image with calculated dimensions
-            $newImage = imagecreatetruecolor($newWidth, $newHeight);
-                
-            // Preserve transparency for PNG
-            if ($file['type'] === 'image/png') {
-                imagealphablending($newImage, false);
-                imagesavealpha($newImage, true);
-                $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
-                imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
-            }
-        
-            // Resize image
-            imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-        
-            // Save image
-            imagejpeg($newImage, $filepath, 90);
-        
-            // Clean up
-            imagedestroy($sourceImage);
-            imagedestroy($newImage);
-        
+        // Move uploaded file
+        if (move_uploaded_file($file['tmp_name'], $filepath)) {
             // Update database with new picture path
             $newPicturePath = "DATA/user-data/" . $user['user_id'] . "/" . $filename;
             $stmt = $conn->prepare("UPDATE users_table SET picture = ? WHERE user_id = ?");
@@ -207,10 +156,8 @@ switch ($action) {
                 'status' => 'success',
                 'filepath' => $newPicturePath
             ]);
-        
-        } catch (Exception $e) {
-            error_log("Profile picture upload error: " . $e->getMessage());
-            echo json_encode(['status' => 'error', 'message' => 'Failed to process and save image']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file']);
             exit;
         }
     break;
@@ -222,7 +169,11 @@ switch ($action) {
         }
 
         $userDir = $_SERVER['DOCUMENT_ROOT'] . "/DATA/user-data/" . $user['user_id'];
-        $pictures = glob($userDir . "/profile_picture*.jpg");
+        $pictures = array_merge(
+            glob($userDir . "/profile_picture*.jpg"),
+            glob($userDir . "/profile_picture*.jpeg"),
+            glob($userDir . "/profile_picture*.png")
+        );
         $pictures = array_map(function ($path) use ($user) {
             return "DATA/user-data/" . $user['user_id'] . "/" . basename($path);
         }, $pictures);
@@ -263,6 +214,46 @@ switch ($action) {
         }
         
         $stmt->close();
+        break;
+
+    case 'update_profile_picture':
+        if (!$user) {
+            echo json_encode(['status' => 'error', 'message' => 'User not found']);
+            exit;
+        }
+
+        $picturePath = $_POST['picture'];
+
+        $stmt = $conn->prepare("UPDATE users_table SET picture = ? WHERE user_id = ?");
+        $stmt->bind_param("ss", $picturePath, $user['user_id']);
+
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Update failed: ' . $stmt->error]);
+        }
+
+        $stmt->close();
+        break;
+
+    case 'delete_profile_picture':
+        if (!$user) {
+            echo json_encode(['status' => 'error', 'message' => 'User not found']);
+            exit;
+        }
+
+        $picturePath = $_POST['picture'];
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $picturePath;
+
+        if (file_exists($fullPath)) {
+            if (unlink($fullPath)) {
+                echo json_encode(['status' => 'success', 'message' => 'Picture deleted successfully']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to delete picture']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Picture not found']);
+        }
         break;
 }
 ?>

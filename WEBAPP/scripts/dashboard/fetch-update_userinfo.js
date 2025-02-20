@@ -91,18 +91,37 @@ function uploadProfilePicture(file) {
 
     fetch('/php/dashboard/fetch-update_userinfo.php', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            document.querySelector('.profile-section img').src = '/' + data.filepath;
+    .then(response => response.text()) // Get raw response as text first
+    .then(text => {
+        console.log("Raw response:", text); // Log raw response
+
+        try {
+            let data = JSON.parse(text); // Attempt to parse JSON
+            console.log("Parsed JSON:", data); // Log parsed JSON
+
+            if (data.status === 'success') {
+                document.querySelector('.profile-section img').src = '/' + data.filepath;
+                document.getElementById('current-profile-picture').src = '/' + data.filepath; // Update the second profile picture
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Profile picture updated successfully',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                throw new Error(data.message || 'Failed to upload profile picture');
+            }
+        } catch (error) {
+            console.error("JSON parsing error:", error);
             Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Profile picture updated successfully',
-                timer: 1500,
-                showConfirmButton: false
+                icon: 'error',
+                title: 'Error',
+                text: 'Invalid server response. Please try again.',
+                confirmButtonColor: '#3085d6'
             });
         }
     })
@@ -123,7 +142,7 @@ function showProfilePictureGallery() {
     
     // Show loading
     grid.innerHTML = '<div class="col-span-3 text-center py-8">Loading...</div>';
-    modal.classList.remove('hidden');
+    modal.classList.remove('d-none');
     modal.classList.add('flex');
 
     // Fetch gallery pictures
@@ -143,12 +162,16 @@ function showProfilePictureGallery() {
                     <img 
                         src="/${picPath}" 
                         alt="Profile picture" 
-                        class="w-full h-full object-cover rounded-lg transition-all duration-200 hover:opacity-75"
+                        width="100px" 
+                        height="100px" 
+                        draggable="false" 
+                        class="w-full h-full border border-2 border-dark object-cover rounded-lg transition-all duration-200 hover:opacity-75"
                         onclick="selectProfilePicture('${picPath}')"
                     >
                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <div class="bg-black bg-opacity-50 text-white px-3 py-1 rounded">Select</div>
                     </div>
+                    <button class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded" onclick="deleteProfilePicture('${picPath}')">Delete</button>
                 </div>
             `).join('');
         } else {
@@ -163,7 +186,7 @@ function showProfilePictureGallery() {
 
 function closeGallery() {
     const modal = document.getElementById('gallery-modal');
-    modal.classList.add('hidden');
+    modal.classList.add('d-none');
     modal.classList.remove('flex');
 }
 
@@ -183,6 +206,7 @@ function selectProfilePicture(picturePath) {
             // Update both profile pictures on the page
             const profilePics = document.querySelectorAll('.profile-section img');
             profilePics.forEach(pic => pic.src = '/' + picturePath);
+            document.getElementById('current-profile-picture').src = '/' + picturePath;
             
             // Close gallery
             closeGallery();
@@ -205,6 +229,47 @@ function selectProfilePicture(picturePath) {
             icon: 'error',
             title: 'Error',
             text: 'Failed to update profile picture. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+}
+
+function deleteProfilePicture(picturePath) {
+    const formData = new FormData();
+    formData.append('action', 'delete_profile_picture');
+    formData.append('picture', picturePath);
+
+    fetch('/php/dashboard/fetch-update_userinfo.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            showProfilePictureGallery(); // Refresh the gallery
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Picture deleted successfully',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete picture: ' + data.message,
+                confirmButtonColor: '#3085d6'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to delete picture. Please try again.',
             confirmButtonColor: '#3085d6'
         });
     });
