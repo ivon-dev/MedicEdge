@@ -99,7 +99,6 @@
     align-items: center;
     justify-content: center;
     z-index: 3;
-    display: none; /* Initially hidden */
 }
 
 .bg-white {
