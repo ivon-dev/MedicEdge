@@ -1,3 +1,7 @@
+<?php
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +48,7 @@
                     <label class="form-label">Profile Picture</label>
                     <input type="file" class="form-control">
                 </div>
-                <button type="button" class="btn btn-primary mt-0 mb-3">
+                <button type="button" class="btn btn-primary mt-0 mb-3" onclick="showProfilePictureGallery()">
                     Select Profile Picture
                 </button>
                 <div class="mb-3">
@@ -73,6 +77,22 @@
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
+            <div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg max-w-3xl w-full mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Profile Picture Gallery</h2>
+                        <button onclick="closeGallery()" class="text-gray-600 hover:text-gray-800">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="gallery-grid" class="grid grid-cols-3 gap-4">
+                        <!-- Images will be loaded here -->
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Account Section -->
