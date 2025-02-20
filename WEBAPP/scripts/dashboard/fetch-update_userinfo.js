@@ -117,6 +117,99 @@ function uploadProfilePicture(file) {
     });
 }
 
+function showProfilePictureGallery() {
+    const modal = document.getElementById('gallery-modal');
+    const grid = document.getElementById('gallery-grid');
+    
+    // Show loading
+    grid.innerHTML = '<div class="col-span-3 text-center py-8">Loading...</div>';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // Fetch gallery pictures
+    const formData = new FormData();
+    formData.append('action', 'get_profile_pictures');
+
+    fetch('/php/dashboard/fetch-update_userinfo.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            grid.innerHTML = data.pictures.map(picPath => `
+                <div class="relative group cursor-pointer aspect-square">
+                    <img 
+                        src="/${picPath}" 
+                        alt="Profile picture" 
+                        class="w-full h-full object-cover rounded-lg transition-all duration-200 hover:opacity-75"
+                        onclick="selectProfilePicture('${picPath}')"
+                    >
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="bg-black bg-opacity-50 text-white px-3 py-1 rounded">Select</div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            grid.innerHTML = '<div class="col-span-3 text-center py-8 text-red-500">Failed to load images</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        grid.innerHTML = '<div class="col-span-3 text-center py-8 text-red-500">Failed to load images</div>';
+    });
+}
+
+function closeGallery() {
+    const modal = document.getElementById('gallery-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function selectProfilePicture(picturePath) {
+    const formData = new FormData();
+    formData.append('action', 'update_profile_picture');
+    formData.append('picture', picturePath);
+
+    fetch('/php/dashboard/fetch-update_userinfo.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Update both profile pictures on the page
+            const profilePics = document.querySelectorAll('.profile-section img');
+            profilePics.forEach(pic => pic.src = '/' + picturePath);
+            
+            // Close gallery
+            closeGallery();
+            
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Profile picture updated successfully',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } else {
+            throw new Error(data.message || 'Failed to update profile picture');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update profile picture. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+}
+
 function updateProfile() {
     const formData = new FormData(document.querySelector('form'));
     formData.append('action', 'update_profile');
