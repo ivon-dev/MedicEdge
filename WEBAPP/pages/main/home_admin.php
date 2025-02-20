@@ -40,7 +40,7 @@
         <div class="mt-4 nav-links">
             <a href="#" data-section="profile" class="active"><i class="fas fa-user me-2"></i> Your Profile</a>
             <a href="#" data-section="account"><i class="fas fa-key me-2"></i> Your Account</a>
-            <a href="#" data-section="personalization"><i class="fas fa-paint-brush me-2"></i> Personalization</a>
+            <a href="#" data-section="customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
             <a href="#" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
@@ -122,56 +122,94 @@
             <button class="btn btn-secondary">View Session History</button>
         </section>
 
-        <!-- Personalization Section -->
-        <section id="personalization" class="content-section">
-            <h3 class="mb-4">Personalization</h3>
+        <!-- Webapp Customization Section -->
+        <section id="customization" class="content-section">
+            <h3 class="mb-4">Webapp Customization</h3>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">Brand Settings</h5>
-                            <form>
+                            <h5 class="card-title">Website Settings</h5>
+                            <form id="website-settings-form">
                                 <div class="mb-3">
-                                    <label class="form-label">Upload Logo</label>
-                                    <input type="file" class="form-control">
-                                    <img src="current_logo.png" class="mt-2" style="height: 50px;">
+                                    <label class="form-label">Organization Name</label>
+                                    <input type="text" class="form-control" id="org-name" name="org-name">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Hero Text</label>
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <label class="form-label">Organization Logo</label>
+                                    <input type="file" class="form-control" id="org-logo" name="org-logo" accept="image/*">
+                                    <img id="org-logo-preview" src="" alt="Organization Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Banner Picture</label>
-                                    <input type="file" class="form-control">
-                                    <img src="current_banner.jpg" class="mt-2 img-fluid">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Theme Customization</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Primary Color</label>
-                                    <input type="color" class="form-control form-control-color" value="#0d6efd">
+                                    <label class="form-label">Homepage Title</label>
+                                    <input type="text" class="form-control" id="homepage-title" name="homepage-title">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Secondary Color</label>
-                                    <input type="color" class="form-control form-control-color" value="#6c757d">
+                                    <label class="form-label">Hero Text Title</label>
+                                    <input type="text" class="form-control" id="hero-text-title" name="hero-text-title">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Font Family</label>
-                                    <select class="form-select">
-                                        <option>Arial</option>
-                                        <option>Roboto</option>
-                                        <option>Open Sans</option>
-                                    </select>
+                                    <label class="form-label">Hero Text Subtitle</label>
+                                    <input type="text" class="form-control" id="hero-text-subtitle" name="hero-text-subtitle">
                                 </div>
-                                <button type="submit" class="btn btn-success">Apply Theme</button>
-                                <button type="button" class="btn btn-secondary">Reset to Default</button>
+                                <div class="mb-3">
+                                    <label class="form-label">Active Users Count</label>
+                                    <input type="text" class="form-control" id="ad-active-users" name="ad-active-users">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Healthcare Partners Count</label>
+                                    <input type="text" class="form-control" id="ad-healthcare-partners" name="ad-healthcare-partners">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Uptime Percentage</label>
+                                    <input type="text" class="form-control" id="ad-uptime" name="ad-uptime">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Support Availability</label>
+                                    <input type="text" class="form-control" id="ad-support" name="ad-support">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Slogan Footer</label>
+                                    <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Email Footer</label>
+                                    <input type="email" class="form-control" id="contact-email-footer" name="contact-email-footer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Number Footer</label>
+                                    <input type="text" class="form-control" id="contact-num-footer" name="contact-num-footer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address Footer</label>
+                                    <input type="text" class="form-control" id="address-footer" name="address-footer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Favicon</label>
+                                    <input type="file" class="form-control" id="favicon" name="favicon" accept="image/x-icon">
+                                    <img id="favicon-preview" src="" alt="Favicon Preview" style="max-width: 32px; margin-top: 10px; display: none;">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Navbar Logo</label>
+                                    <input type="file" class="form-control" id="navbar-logo" name="navbar-logo" accept="image/*">
+                                    <img id="navbar-logo-preview" src="" alt="Navbar Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Homepage Hero Background Image</label>
+                                    <input type="file" class="form-control" id="homepage-hero-bg-image" name="homepage-hero-bg-image" accept="image/*">
+                                    <img id="homepage-hero-bg-image-preview" src="" alt="Homepage Hero Background Image Preview" style="max-width: 100px; margin-top: 10px; display: none;">
+                                </div>
+                                 <div class="mb-3">
+                                    <label class="form-label">Login/Register Banner Image</label>
+                                    <input type="file" class="form-control" id="login-register-banner" name="login-register-banner" accept="image/*">
+                                    <img id="login-register-banner-preview" src="" alt="Login/Register Banner Preview" style="max-width: 100px; margin-top: 10px; display: none;">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Dashboard Color</label>
+                                    <input type="color" class="form-control form-control-color" id="color-dashboard" name="color-dashboard" value="#0d6efd">
+                                </div>
+                                <button type="button" class="btn btn-warning" id="reset-to-default">Reset to Default</button>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
                             </form>
                         </div>
                     </div>
@@ -245,7 +283,7 @@
                     <div class="card bg-warning text-white">
                         <div class="card-body">
                             <h6>Pending</h6>
-                            <h3>5</h3>
+                            <h3>5</h6>
                         </div>
                     </div>
                 </div>
@@ -945,6 +983,42 @@
     <!-- Internal Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Function to display image preview
+            function displayImagePreview(input, previewId) {
+                const preview = document.getElementById(previewId);
+
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                }
+            }
+
+            // Attach file input change listeners for image previews
+            document.getElementById('org-logo').addEventListener('change', function() {
+                displayImagePreview(this, 'org-logo-preview');
+            });
+            document.getElementById('favicon').addEventListener('change', function() {
+                displayImagePreview(this, 'favicon-preview');
+            });
+            document.getElementById('navbar-logo').addEventListener('change', function() {
+                displayImagePreview(this, 'navbar-logo-preview');
+            });
+            document.getElementById('homepage-hero-bg-image').addEventListener('change', function() {
+                displayImagePreview(this, 'homepage-hero-bg-image-preview');
+            });
+             document.getElementById('login-register-banner').addEventListener('change', function() {
+                displayImagePreview(this, 'login-register-banner-preview');
+            });
+
             document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -952,6 +1026,178 @@
                     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
                     link.classList.add('active');
                     document.getElementById(link.dataset.section).classList.add('active');
+                });
+            });
+
+            // Fetch website configuration
+            fetch('/php/website_config/fetch-update_websiteconfig.php', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.error,
+                    });
+                } else {
+                    // Populate form fields with configuration data
+                    document.getElementById('org-name').value = data['org-name'] || '';
+                    // Set image previews if paths exist
+                    if (data['org-logo']) {
+                        document.getElementById('org-logo-preview').src = '/' + data['org-logo'];
+                        document.getElementById('org-logo-preview').style.display = 'block';
+                    }
+                    document.getElementById('homepage-title').value = data['homepage-title'] || '';
+                    document.getElementById('hero-text-title').value = data['hero-text-title'] || '';
+                    document.getElementById('hero-text-subtitle').value = data['hero-text-subtitle'] || '';
+                    document.getElementById('ad-active-users').value = data['ad-active-users'] || '';
+                    document.getElementById('ad-healthcare-partners').value = data['ad-healthcare-partners'] || '';
+                    document.getElementById('ad-uptime').value = data['ad-uptime'] || '';
+                    document.getElementById('ad-support').value = data['ad-support'] || '';
+                    document.getElementById('slogan-footer').value = data['slogan-footer'] || '';
+                    document.getElementById('contact-email-footer').value = data['contact-email-footer'] || '';
+                    document.getElementById('contact-num-footer').value = data['contact-num-footer'] || '';
+                    document.getElementById('address-footer').value = data['address-footer'] || '';
+                    if (data['favicon']) {
+                        document.getElementById('favicon-preview').src = '/' + data['favicon'];
+                        document.getElementById('favicon-preview').style.display = 'block';
+                    }
+                    if (data['navbar-logo']) {
+                        document.getElementById('navbar-logo-preview').src = '/' + data['navbar-logo'];
+                        document.getElementById('navbar-logo-preview').style.display = 'block';
+                    }
+                    if (data['homepage-hero-bg-image']) {
+                        document.getElementById('homepage-hero-bg-image-preview').src = '/' + data['homepage-hero-bg-image'];
+                        document.getElementById('homepage-hero-bg-image-preview').style.display = 'block';
+                    }
+                    if (data['login-register-banner']) {
+                        document.getElementById('login-register-banner-preview').src = '/' + data['login-register-banner'];
+                        document.getElementById('login-register-banner-preview').style.display = 'block';
+                    }
+                    document.getElementById('color-dashboard').value = data['color-dashboard'] || '#0d6efd';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching configuration:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to fetch configuration. Please check the console.',
+                });
+            });
+
+            // Handle form submission
+            document.getElementById('website-settings-form').addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+
+                // Create a config object to hold the non-file data
+                const config = {
+                    'org-name': document.getElementById('org-name').value,
+                    'homepage-title': document.getElementById('homepage-title').value,
+                    'hero-text-title': document.getElementById('hero-text-title').value,
+                    'hero-text-subtitle': document.getElementById('hero-text-subtitle').value,
+                    'ad-active-users': document.getElementById('ad-active-users').value,
+                    'ad-healthcare-partners': document.getElementById('ad-healthcare-partners').value,
+                    'ad-uptime': document.getElementById('ad-uptime').value,
+                    'ad-support': document.getElementById('ad-support').value,
+                    'slogan-footer': document.getElementById('slogan-footer').value,
+                    'contact-email-footer': document.getElementById('contact-email-footer').value,
+                    'contact-num-footer': document.getElementById('contact-num-footer').value,
+                    'address-footer': document.getElementById('address-footer').value,
+                    'color-dashboard': document.getElementById('color-dashboard').value
+                };
+
+                // Append the config object as a JSON string
+                formData.append('config', JSON.stringify(config));
+
+                fetch('/php/website_config/fetch-update_websiteconfig.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.success,
+                            showConfirmButton: false,
+                            timer: 1850,
+                            allowOutsideClick: false
+                        }).then(() => {
+                            location.reload(); // Refresh the page to reflect changes
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.error,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating configuration:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to update configuration. Please check the console.',
+                    });
+                });
+            });
+
+            // Handle reset to default
+            document.getElementById('reset-to-default').addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This will reset all website settings to default!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, reset it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/php/website_config/fetch-update_websiteconfig.php', {
+                            method: 'POST',
+                            body: new URLSearchParams({ reset: 'true' }) // Send reset as URL-encoded data
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.success,
+                                    showConfirmButton: false,
+                                    timer: 1850,
+                                    allowOutsideClick: false
+                                }).then(() => {
+                                    location.reload(); // Refresh the page to reflect changes
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: data.error,
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error resetting configuration:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Failed to reset configuration. Please check the console.',
+                            });
+                        });
+                    }
                 });
             });
         });

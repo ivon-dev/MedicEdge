@@ -1,24 +1,20 @@
 {
-	"org-name": "MedicEdge",
-	"org-logo": "CONFIG/branding/default/org_logo.png",
-	
-	"homepage-title": "MedicEdge — Medical Records Simplified",
-	"hero-text-title": "Medical Records Simplified",
-	"hero-text-subtitle": "Say goodbye to manual process—streamline healthcare management with MedicEdge.",
-	"ad-active-users": "1000+",
-	"ad-healthcare-partners": "100+",
-	"ad-uptime": "97.6%",
-	"ad-support": "24/7",
-	"slogan-footer": "Revolutionizing Healthcare Management with Innovation and Security.",
-	"contact-email-footer": "contact@medicedge.org",
-	"contact-num-footer": "(555) 123-4567",
-	"address-footer": "123 Health Street",
-
-	"favicon": "CONFIG/branding/default/favicon.ico",
-	"navbar-logo": "CONFIG/branding/default/navbar_logo.png",
-	"homepage-hero-bg-image": "CONFIG/branding/default/index_hero_image.png",
-	"login-register-banner": "CONFIG/branding/default/login-register_banner.png",
-
-	"color-dashboard": "#2e7d32",
-	"color-dashboard-selected": ""
+    "org-name": "MedicEdge",
+    "org-logo": "CONFIG\/branding\/default\/org_logo.png",
+    "homepage-title": "MedicEdge \u2014 Medical Records Simplified",
+    "hero-text-title": "Medical Records Simplified",
+    "hero-text-subtitle": "Say goodbye to manual process\u2014streamline healthcare management with MedicEdge.",
+    "ad-active-users": "1000+",
+    "ad-healthcare-partners": "100+",
+    "ad-uptime": "97.6%",
+    "ad-support": "24\/7",
+    "slogan-footer": "Revolutionizing Healthcare Management with Innovation and Security.",
+    "contact-email-footer": "contact@medicedge.org",
+    "contact-num-footer": "(555) 123-4567",
+    "address-footer": "123 Health Street",
+    "favicon": "CONFIG\/branding\/default\/favicon.ico",
+    "navbar-logo": "CONFIG\/branding\/default\/navbar_logo.png",
+    "homepage-hero-bg-image": "CONFIG\/branding\/default\/index_hero_image.png",
+    "login-register-banner": "CONFIG\/branding\/default\/login-register_banner.png",
+    "color-dashboard": "#10730b"
 }
