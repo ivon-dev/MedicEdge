@@ -1,14 +1,9 @@
-<?php 
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/fetch-update_userinfo.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedicEdge patient dashboard">
+    <meta name="description" content="Patient dashboard">
     <title>Patient Dashboard - MedicEdge</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
@@ -135,6 +130,7 @@
 
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->
     <script>

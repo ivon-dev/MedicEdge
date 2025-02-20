@@ -1,14 +1,9 @@
-<?php 
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/dashboard_onload_check.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/dashboard/fetch-update_userinfo.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedicEdge Healthcare Provider Dashboard">
+    <meta name="description" content="Healthcare Provider Dashboard">
     <title>Healthcare Provider Dashboard - MedicEdge</title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
@@ -54,27 +49,27 @@
                 </button>
                 <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="firstname" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="middlename" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="lastname" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control">
+                    <input type="email" name="email" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" class="form-control">
+                    <input type="tel" name="contact_num" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" class="form-control">
+                    <input type="text" name="address" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
@@ -122,6 +117,7 @@
 
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->
     <script>

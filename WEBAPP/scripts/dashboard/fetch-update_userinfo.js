@@ -27,27 +27,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchProfileData() {
+    const formData = new FormData();
+    formData.append('action', 'fetch_profile');
+
     fetch('/php/dashboard/fetch-update_userinfo.php', {
         method: 'POST',
-        body: JSON.stringify({ action: 'fetch_profile' }),
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        body: formData,
         credentials: 'include'
     })
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.text();
-    })
-    .then(text => {
-        console.log('Raw Response:', text);
-        try {
-            return JSON.parse(text);
-        } catch (error) {
-            throw new Error('Invalid JSON: ' + error.message);
-        }
+        return response.json();
     })
     .then(data => {
         if (data.status === 'success') {
