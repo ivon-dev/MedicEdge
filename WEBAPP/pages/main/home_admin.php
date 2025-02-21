@@ -49,6 +49,7 @@
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
             <a href="#" data-section="system_settings"><i class="fas fa-cogs me-2"></i> System Settings</a>
             <a href="#" data-section="reports"><i class="fas fa-chart-bar me-2"></i> Reports & Analytics</a>
+            <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
@@ -129,8 +130,8 @@
                 <div class="col-md-12">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">Website Settings</h5>
                             <form id="website-settings-form">
+                                <h5 class="card-title">Global</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Organization Name</label>
                                     <input type="text" class="form-control" id="org-name" name="org-name">
@@ -139,50 +140,6 @@
                                     <label class="form-label">Organization Logo</label>
                                     <input type="file" class="form-control" id="org-logo" name="org-logo" accept="image/*">
                                     <img id="org-logo-preview" src="" alt="Organization Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Homepage Title</label>
-                                    <input type="text" class="form-control" id="homepage-title" name="homepage-title">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Hero Text Title</label>
-                                    <input type="text" class="form-control" id="hero-text-title" name="hero-text-title">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Hero Text Subtitle</label>
-                                    <input type="text" class="form-control" id="hero-text-subtitle" name="hero-text-subtitle">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Active Users Count</label>
-                                    <input type="text" class="form-control" id="ad-active-users" name="ad-active-users">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Healthcare Partners Count</label>
-                                    <input type="text" class="form-control" id="ad-healthcare-partners" name="ad-healthcare-partners">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Uptime Percentage</label>
-                                    <input type="text" class="form-control" id="ad-uptime" name="ad-uptime">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Support Availability</label>
-                                    <input type="text" class="form-control" id="ad-support" name="ad-support">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Slogan Footer</label>
-                                    <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Contact Email Footer</label>
-                                    <input type="email" class="form-control" id="contact-email-footer" name="contact-email-footer">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Contact Number Footer</label>
-                                    <input type="text" class="form-control" id="contact-num-footer" name="contact-num-footer">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Address Footer</label>
-                                    <input type="text" class="form-control" id="address-footer" name="address-footer">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Favicon</label>
@@ -194,16 +151,65 @@
                                     <input type="file" class="form-control" id="navbar-logo" name="navbar-logo" accept="image/*">
                                     <img id="navbar-logo-preview" src="" alt="Navbar Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
+                                <h5 class="card-title pt-3">Contacts</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Email Footer</label>
+                                    <input type="email" class="form-control" id="contact-email" name="contact-email">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Number Footer</label>
+                                    <input type="text" class="form-control" id="contact-num" name="contact-num">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address Footer</label>
+                                    <input type="text" class="form-control" id="address" name="address">
+                                </div>
+                                <h5 class="card-title pt-3">Homepage</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Homepage &lt;Title&gt; Tag</label>
+                                    <input type="text" class="form-control" id="homepage-title" name="homepage-title">
+                                </div>
                                 <div class="mb-3">
                                     <label class="form-label">Homepage Hero Background Image</label>
                                     <input type="file" class="form-control" id="homepage-hero-bg-image" name="homepage-hero-bg-image" accept="image/*">
                                     <img id="homepage-hero-bg-image-preview" src="" alt="Homepage Hero Background Image Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
-                                 <div class="mb-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Hero Text Title</label>
+                                    <input type="text" class="form-control" id="hero-text-title" name="hero-text-title">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Hero Text Subtitle</label>
+                                    <input type="text" class="form-control" id="hero-text-subtitle" name="hero-text-subtitle">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Promotional - Active Users Count</label>
+                                    <input type="text" class="form-control" id="ad-active-users" name="ad-active-users">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Promotional - Healthcare Partners Count</label>
+                                    <input type="text" class="form-control" id="ad-healthcare-partners" name="ad-healthcare-partners">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Promotional - Uptime Percentage</label>
+                                    <input type="text" class="form-control" id="ad-uptime" name="ad-uptime">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Promotional - Support Availability</label>
+                                    <input type="text" class="form-control" id="ad-support" name="ad-support">
+                                </div>
+                                <h5 class="card-title pt-3">Footer</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Slogan Footer</label>
+                                    <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
+                                </div>
+                                <h5 class="card-title pt-3">Login/Register Form</h5>
+                                <div class="mb-3">
                                     <label class="form-label">Login/Register Banner Image</label>
                                     <input type="file" class="form-control" id="login-register-banner" name="login-register-banner" accept="image/*">
                                     <img id="login-register-banner-preview" src="" alt="Login/Register Banner Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
+                                <h5 class="card-title pt-3">Dashboard</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Dashboard Color</label>
                                     <input type="color" class="form-control form-control-color" id="color-dashboard" name="color-dashboard" value="#0d6efd">
@@ -1055,14 +1061,14 @@
                     document.getElementById('homepage-title').value = data['homepage-title'] || '';
                     document.getElementById('hero-text-title').value = data['hero-text-title'] || '';
                     document.getElementById('hero-text-subtitle').value = data['hero-text-subtitle'] || '';
+                    document.getElementById('contact-email').value = data['contact-email'] || '';
+                    document.getElementById('contact-num').value = data['contact-num'] || '';
+                    document.getElementById('address').value = data['address'] || '';
                     document.getElementById('ad-active-users').value = data['ad-active-users'] || '';
                     document.getElementById('ad-healthcare-partners').value = data['ad-healthcare-partners'] || '';
                     document.getElementById('ad-uptime').value = data['ad-uptime'] || '';
                     document.getElementById('ad-support').value = data['ad-support'] || '';
                     document.getElementById('slogan-footer').value = data['slogan-footer'] || '';
-                    document.getElementById('contact-email-footer').value = data['contact-email-footer'] || '';
-                    document.getElementById('contact-num-footer').value = data['contact-num-footer'] || '';
-                    document.getElementById('address-footer').value = data['address-footer'] || '';
                     if (data['favicon']) {
                         document.getElementById('favicon-preview').src = '/' + data['favicon'];
                         document.getElementById('favicon-preview').style.display = 'block';
@@ -1103,14 +1109,14 @@
                     'homepage-title': document.getElementById('homepage-title').value,
                     'hero-text-title': document.getElementById('hero-text-title').value,
                     'hero-text-subtitle': document.getElementById('hero-text-subtitle').value,
+                    'contact-email': document.getElementById('contact-email').value,
+                    'contact-num': document.getElementById('contact-num').value,
+                    'address': document.getElementById('address').value,
                     'ad-active-users': document.getElementById('ad-active-users').value,
                     'ad-healthcare-partners': document.getElementById('ad-healthcare-partners').value,
                     'ad-uptime': document.getElementById('ad-uptime').value,
                     'ad-support': document.getElementById('ad-support').value,
                     'slogan-footer': document.getElementById('slogan-footer').value,
-                    'contact-email-footer': document.getElementById('contact-email-footer').value,
-                    'contact-num-footer': document.getElementById('contact-num-footer').value,
-                    'address-footer': document.getElementById('address-footer').value,
                     'color-dashboard': document.getElementById('color-dashboard').value
                 };
 
@@ -1119,26 +1125,42 @@
 
                 fetch('/php/website_config/fetch-update_websiteconfig.php', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text(); // Get the raw response text
+                })
                 .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: data.success,
-                            showConfirmButton: false,
-                            timer: 1850,
-                            allowOutsideClick: false
-                        }).then(() => {
-                            location.reload(); // Refresh the page to reflect changes
-                        });
-                    } else {
+                    try {
+                        const jsonData = JSON.parse(data); // Try to parse the response as JSON
+                        if (jsonData.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: jsonData.success,
+                                showConfirmButton: false,
+                                timer: 1850,
+                                allowOutsideClick: false
+                            }).then(() => {
+                                location.reload(); // Refresh the page to reflect changes
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: jsonData.error,
+                            });
+                        }
+                    } catch (e) {
+                        console.error('Error parsing JSON:', e);
+                        console.log('Raw response data:', data); // Log the raw response for inspection
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: data.error,
+                            text: 'Failed to update configuration. Please check the console.',
                         });
                     }
                 })
@@ -1168,7 +1190,12 @@
                             method: 'POST',
                             body: new URLSearchParams({ reset: 'true' }) // Send reset as URL-encoded data
                         })
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             if (data.success) {
                                 Swal.fire({

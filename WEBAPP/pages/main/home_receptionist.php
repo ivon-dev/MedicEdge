@@ -44,6 +44,7 @@
             <a href="#" data-section="checkin"><i class="fas fa-clipboard-check me-2"></i> Patient Check-In</a>
             <a href="#" data-section="records"><i class="fas fa-folder-open me-2"></i> Patient Records</a>
             <a href="#" data-section="messaging"><i class="fas fa-envelope me-2"></i> Messaging</a>
+            <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
 
