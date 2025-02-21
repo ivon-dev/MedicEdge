@@ -22,9 +22,10 @@
     $adSupport = $config_data['ad-support'] ?? '24/7';
     
     $sloganFooter = $config_data['slogan-footer'] ?? 'Revolutionizing Healthcare Management with Innovation and Security.';
-    $contactEmailFooter = $config_data['contact-email-footer'] ?? 'Unavailable';
-    $contactNumberFooter = $config_data['contact-num-footer'] ?? 'Unavailable';
-    $addressFooter = $config_data['address-footer'] ?? 'Unavailable';
+
+    $contactEmail = $config_data['contact-email'] ?? 'Unavailable';
+    $contactNumber = $config_data['contact-num'] ?? 'Unavailable';
+    $address = $config_data['address'] ?? 'Unavailable';
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +52,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/legal/about-us.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/login.php">Login</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/register_as_admin.php">Register as Admin</a></li>
@@ -152,9 +153,9 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Contact</h5>
-                    <p>Email: <a href="mailto:<?php echo htmlspecialchars($contactEmailFooter); ?>" onclick="window.open(this.href, '_blank'); return false;"> <?php echo htmlspecialchars($contactEmailFooter); ?></a><br>
-                    Phone: <?php echo htmlspecialchars($contactNumberFooter); ?><br>
-                    Address: <?php echo htmlspecialchars($addressFooter); ?></p>
+                    <p>Email: <a href="mailto:<?php echo htmlspecialchars($contactEmail); ?>" onclick="window.open(this.href, '_blank'); return false;"> <?php echo htmlspecialchars($contactEmail); ?></a><br>
+                    Phone: <?php echo htmlspecialchars($contactNumber); ?><br>
+                    Address: <?php echo htmlspecialchars($address); ?></p>
                 </div>
             </div>
             <hr class="mt-4 mb-4 border-light">
