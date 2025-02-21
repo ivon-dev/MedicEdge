@@ -1,7 +1,7 @@
 <?php
 
 $webapp_config_file = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/medicedge_webapp_config.json';
-$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/CONFIG/branding/uploads/";
+$target_dir = $_SERVER['DOCUMENT_ROOT'] . "/CONFIG/branding/custom/";
 
 // Function to safely move uploaded files and handle errors
 function safeMoveUploadedFile($file, $target) {
@@ -26,6 +26,28 @@ function safeMoveUploadedFile($file, $target) {
     }
 }
 
+// Default configuration data (hardcoded)
+$default_config_data = [
+    "org-name" => "MedicEdge",
+    "org-logo" => "CONFIG/branding/default/org_logo.png",
+    "favicon" => "CONFIG/branding/default/favicon.ico",
+    "navbar-logo" => "CONFIG/branding/default/navbar_logo.png",
+    "contact-email" => "contact@medicedge.org",
+    "contact-num" => "(555) 123-4567",
+    "address" => "123 Health Street",
+    "homepage-title" => "MedicEdge — Medical Records Simplified",
+    "homepage-hero-bg-image" => "CONFIG/branding/default/index_hero_image.png",
+    "hero-text-title" => "Medical Records Simplified",
+    "hero-text-subtitle" => "Say goodbye to manual process—streamline healthcare management with MedicEdge.",
+    "ad-active-users" => "1000+",
+    "ad-healthcare-partners" => "100+",
+    "ad-uptime" => "97.6%",
+    "ad-support" => "24/7",
+    "slogan-footer" => "Revolutionizing Healthcare Management with Innovation and Security.",
+    "login-register-banner" => "CONFIG/branding/default/login-register_banner.png",
+    "color-dashboard" => "#10730b"
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Fetch configuration data
     if (file_exists($webapp_config_file)) {
@@ -38,6 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Check if 'config' is set in $_POST, indicating a standard form submission
     if (isset($_POST['config'])) {
         $config = json_decode($_POST['config'], true); // Decode the JSON string
+
+        // Load existing configuration
+        $existing_config = json_decode(file_get_contents($webapp_config_file), true);
+
+        // Merge the submitted config with the existing config
+        $config = array_merge($existing_config, $config);
 
         // Handle image uploads
         $image_fields = ['org-logo', 'favicon', 'navbar-logo', 'homepage-hero-bg-image', 'login-register-banner'];
@@ -55,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     exit;
                 }
 
-                // Check file size (example: 2MB limit)
+                // Check file size (example: 5MB limit)
                 if ($image["size"] > 5000000) {
                     echo json_encode(['error' => 'File size exceeds the limit (5MB) for ' . $field . '.']);
                     exit;
@@ -79,17 +107,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     } elseif (isset($_POST['reset'])) {
         // Reset to default configuration
-        $default_config_file = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/medicedge_webapp_config.json';
-
-        if (file_exists($default_config_file)) {
-            $default_config_data = file_get_contents($default_config_file);
-            if (file_put_contents($webapp_config_file, $default_config_data)) {
-                echo json_encode(['success' => 'Configuration reset to default successfully.']);
-            } else {
-                echo json_encode(['error' => 'Failed to reset configuration to default.']);
-            }
+        if (file_put_contents($webapp_config_file, json_encode($default_config_data, JSON_PRETTY_PRINT))) {
+            echo json_encode(['success' => 'Configuration reset to default successfully.']);
         } else {
-            echo json_encode(['error' => 'Default configuration file not found.']);
+            echo json_encode(['error' => 'Failed to reset configuration to default.']);
         }
     } else {
         echo json_encode(['error' => 'No configuration data received.']);
