@@ -205,7 +205,8 @@
                             html: `Your organization already has an administrator. Please contact your administrator via email to create an administrator account for you.<br><br>
                                 <a href="mailto:${data.adminEmails}?subject=Request for Administrator Access&body=Dear Admin,%0D%0A%0D%0AI would like to request administrator access. Please let me know the steps to create an account.%0D%0A%0D%0AThank you." class="btn btn-primary" onclick="window.open(this.href, '_blank'); return false;">Email Admin</a>`,
                             icon: 'info',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
                         }).then((result) => {
                             window.location.href = 'login.php';
                         });
