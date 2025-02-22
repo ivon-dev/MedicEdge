@@ -78,21 +78,28 @@
         <!-- Account Section -->
         <section id="account" class="content-section">
             <h3 class="mb-4">Your Account</h3>
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title">Account Details</h5>
-                            <p class="mb-1"><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
-                            <p class="mb-1"><strong>Member Since:</strong> <span id="memberSince">Jan 2024</span></p>
-                            <p class="mb-1"><strong>Last Login:</strong> <span id="lastLogin">Feb 22, 2025 10:30 AM</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row mb-4">
                 <div class="col">
                     <h5>Account Actions</h5>
+                    <form id="account-form">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" id="userUsername" name="userUsername" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail" name="userEmail" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Username</label>
+                            <input type="text" class="form-control" id="newUsername" name="newUsername">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Email</label>
+                            <input type="email" class="form-control" id="newEmail" name="newEmail">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Update Account</button>
+                    </form>
                     <div class="btn-group-vertical w-100">
                         <button class="btn btn-primary mb-2">Change Email</button>
                         <button class="btn btn-primary mb-2">Change Password</button>
@@ -182,6 +189,85 @@
     <!-- Internal Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Function to fetch account data
+            function fetchAccountData() {
+                fetch('/php/dashboard/fetch-update_useraccount.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=fetch'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('userUsername').textContent = data.data.username;
+                        document.getElementById('userEmail').textContent = data.data.email;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.error,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching account data:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to fetch account data. Please check the console.',
+                    });
+                });
+            }
+
+            // Fetch account data on page load
+            fetchAccountData();
+
+            // Handle form submission for updating account
+            document.getElementById('account-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const newUsername = document.getElementById('newUsername').value;
+                const newEmail = document.getElementById('newEmail').value;
+
+                fetch('/php/dashboard/fetch-update_useraccount.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=update&username=${newUsername}&email=${newEmail}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.success,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            fetchAccountData(); // Refresh account data
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.error,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating account:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to update account. Please check the console.',
+                    });
+                });
+            });
+
             document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
