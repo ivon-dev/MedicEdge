@@ -1,5 +1,5 @@
 <?php
-require_once ('connection.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/php/connection.php';
 
 // Enable error reporting for debugging
 error_reporting(E_ALL);
