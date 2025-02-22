@@ -128,7 +128,7 @@
             <h3 class="mb-4">Webapp Customization</h3>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card mb-3">
+                    <div class="card mb-3 border-0">
                         <div class="card-body">
                             <form id="website-settings-form">
                                 <h5 class="card-title">Global</h5>
