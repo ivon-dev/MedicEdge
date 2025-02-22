@@ -41,6 +41,7 @@
         <!-- Navigation Links -->
         <div class="mt-4 nav-links">
             <a href="#" data-section="dashboard" class="active"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="#" data-section="account" class="active"><i class="fas fa-home me-2"></i> Your Account</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-alt me-2"></i> Appointments</a>
             <a href="#" data-section="records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
             <a href="#" data-section="prescriptions"><i class="fas fa-pills me-2"></i> Prescriptions</a>
@@ -70,6 +71,33 @@
                     <i class="fas fa-pills fa-2x mb-3 text-success"></i>
                     <h3 class="h5">Active Prescriptions</h3>
                     <p>3 medications</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Account Section -->
+        <section id="account" class="content-section">
+            <h3 class="mb-4">Your Account</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Account Details</h5>
+                            <p class="mb-1"><strong>Email:</strong> <span id="userEmail">user@example.com</span></p>
+                            <p class="mb-1"><strong>Member Since:</strong> <span id="memberSince">Jan 2024</span></p>
+                            <p class="mb-1"><strong>Last Login:</strong> <span id="lastLogin">Feb 22, 2025 10:30 AM</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <h5>Account Actions</h5>
+                    <div class="btn-group-vertical w-100">
+                        <button class="btn btn-primary mb-2">Change Email</button>
+                        <button class="btn btn-primary mb-2">Change Password</button>
+                        <button class="btn btn-secondary mb-2">View Session History</button>
+                    </div>
                 </div>
             </div>
         </section>
