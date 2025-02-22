@@ -7,8 +7,7 @@ if (!isset($_GET['file'])) {
 
 // Define the mapping of keys to PDF files
 $document_map = [
-    'qhnA00ECdx7g2ue1jqUrecLU3k4hC01yfy3vn6m4VmrTQG4SaywaFCGMpxyHvd6R' => '/DOCS/Documentation.pdf',
-    'UFehoxr8DTRcgQOuqHmbmBpN61nNUGFXGDqY7MUyDAnCVNRQgCCmbs78olz9H0cg' => '/DOCS/Documentation_2.pdf'
+    'qhnA00ECdx7g2ue1jqUrecLU3k4hC01yfy3vn6m4VmrTQG4SaywaFCGMpxyHvd6R' => '/DOCS/MedicEdge_Docs_02222025.pdf',
 ];
 
 $key = $_GET['file'];
