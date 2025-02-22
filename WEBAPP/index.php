@@ -42,6 +42,8 @@
     <link href="/styles/pages-styles/home_styles.css" rel="stylesheet">
 
     <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($favicon); ?>">
+
+    <script src="/scripts/index/index_onload_check.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
@@ -171,6 +173,7 @@
     <!-- Major Scripts -->
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
+    <script src="/scripts/index/index_onload_check.js"></script>
 
     <!-- Internal Scripts -->
     <script>

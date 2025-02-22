@@ -6,13 +6,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Function to securely delete session token
-function removeSessionToken($conn) {
+// Function to securely expire session token
+function expireSessionToken($conn) {
     $session_token = $_COOKIE['session_token'] ?? null;
     
     if ($session_token) {
-        // Delete the session record from database
-        $stmt = $conn->prepare("DELETE FROM users_sessionlists WHERE session_token = ?");
+        // Update the expire_time to current time in UTC
+        $stmt = $conn->prepare("UPDATE users_sessionlists SET expire_time = CONVERT_TZ(CURRENT_TIMESTAMP, @@session.time_zone, '+00:00') WHERE session_token = ?");
         $stmt->bind_param("s", $session_token);
         $stmt->execute();
         
@@ -37,8 +37,8 @@ try {
     // Start transaction
     $conn->begin_transaction();
 
-    // Remove session token and cleanup
-    removeSessionToken($conn);
+    // Expire session token and cleanup
+    expireSessionToken($conn);
     
     // Destroy PHP session
     $_SESSION = array();

@@ -160,7 +160,7 @@
                             <form id="website-settings-form">
                                 <h5 class="card-title">Global</h5>
                                 <div class="mb-3">
-                                    <label class="form-label">Organization Name</label>
+                                    <label class="form-label">Organization Name</label> <span class="text-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="This is a tooltip message.">❓</span>
                                     <input type="text" class="form-control" id="org-name" name="org-name">
                                 </div>
                                 <div class="mb-3">
@@ -1345,6 +1345,11 @@
                 });
             });
         });
+    </script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
     </script>
 </body>
 </html>

@@ -291,7 +291,7 @@ switch ($action) {
                 'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
                 'path' => '/',
                 'secure' => true,
-                'httponly' => true,
+                'httponly' => false,
                 'samesite' => 'Strict'
             ]);
                 
