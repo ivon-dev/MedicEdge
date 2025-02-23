@@ -181,6 +181,7 @@
     
     <!-- Major Scripts -->
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
+    <script src="/scripts/external/aos.js"></script>
 
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -276,6 +277,14 @@
                     link.classList.add('active');
                     document.getElementById(link.dataset.section).classList.add('active');
                 });
+            });
+        });
+    </script>
+    <script> // Bootstrap Tooltip
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
     </script>

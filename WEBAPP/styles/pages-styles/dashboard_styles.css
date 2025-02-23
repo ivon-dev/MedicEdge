@@ -147,3 +147,9 @@
 .gap-4 {
     gap: 1rem;
 }
+
+/* Field Styles */
+.help-tooltip {
+    color: #337ab7;
+    font-size: 13px;
+}

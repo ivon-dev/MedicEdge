@@ -158,87 +158,121 @@
                     <div class="card mb-3 border-0">
                         <div class="card-body">
                             <form id="website-settings-form">
-                                <h5 class="card-title">Global</h5>
+                                <h5 class="card-title">Organization</h5>
                                 <div class="mb-3">
-                                    <label class="form-label">Organization Name</label> <span class="text-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="This is a tooltip message.">❓</span>
+                                    <label class="form-label">Name</label> <i class="fa fa-question-circle help-tooltip"
+                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization name. This will be reflected system-wide."></i>
                                     <input type="text" class="form-control" id="org-name" name="org-name">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Organization Logo</label>
+                                    <label class="form-label">Slogan</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization slogan. This will be reflected system-wide."></i>
+                                    <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Logo</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization logo. Recommended to upload your org logo with it's logo name bundled in an image file. This will be reflected in some areas of the Webapp."></i>
                                     <input type="file" class="form-control" id="org-logo" name="org-logo" accept="image/*">
                                     <img id="org-logo-preview" src="" alt="Organization Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Favicon</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization favicon. Favicons typically have a 32x32 or 64x64 .ico file, please upload on that size. This will be reflected system-wide in the browser's tab."></i>
                                     <input type="file" class="form-control" id="favicon" name="favicon" accept="image/x-icon">
                                     <img id="favicon-preview" src="" alt="Favicon Preview" style="max-width: 32px; margin-top: 10px; display: none;">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Navbar Logo</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization logo. Recommended to upload your org logo only without the logo text. This will be reflected in some areas of the Webapp."></i>
                                     <input type="file" class="form-control" id="navbar-logo" name="navbar-logo" accept="image/*">
                                     <img id="navbar-logo-preview" src="" alt="Navbar Logo Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
-                                <h5 class="card-title pt-3">Contacts</h5>
+                                <h5 class="card-title pt-3">Organization Contacts</h5>
                                 <div class="mb-3">
-                                    <label class="form-label">Contact Email Footer</label>
+                                    <label class="form-label">Email</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="This will be reflected system-wide."></i>
                                     <input type="email" class="form-control" id="contact-email" name="contact-email">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Contact Number Footer</label>
+                                    <label class="form-label">Contact Number</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="This will be reflected system-wide."></i>
                                     <input type="text" class="form-control" id="contact-num" name="contact-num">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Address Footer</label>
+                                    <label class="form-label">Address</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="This will be reflected system-wide."></i>
                                     <input type="text" class="form-control" id="address" name="address">
                                 </div>
                                 <h5 class="card-title pt-3">Homepage</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Homepage &lt;Title&gt; Tag</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="HTML <title> tag of index.html in MedicEdge's Webapp."></i>
                                     <input type="text" class="form-control" id="homepage-title" name="homepage-title">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Homepage Hero Background Image</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the hero background image in the homepage. Recommended to upload a high resolution photo."></i>
                                     <input type="file" class="form-control" id="homepage-hero-bg-image" name="homepage-hero-bg-image" accept="image/*">
                                     <img id="homepage-hero-bg-image-preview" src="" alt="Homepage Hero Background Image Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Hero Text Title</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the main hero text in the homepage."></i>
                                     <input type="text" class="form-control" id="hero-text-title" name="hero-text-title">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Hero Text Subtitle</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the subtitle hero text in the homepage."></i>
                                     <input type="text" class="form-control" id="hero-text-subtitle" name="hero-text-subtitle">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Promotional - Active Users Count</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the Active Users fields under the feature card in index.html."></i>
                                     <input type="text" class="form-control" id="ad-active-users" name="ad-active-users">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Promotional - Healthcare Partners Count</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the Healthcare Partners fields under the feature card in index.html."></i>
                                     <input type="text" class="form-control" id="ad-healthcare-partners" name="ad-healthcare-partners">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Promotional - Uptime Percentage</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the Uptime Users fields under the feature card in index.html."></i>
                                     <input type="text" class="form-control" id="ad-uptime" name="ad-uptime">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Promotional - Support Availability</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the Support Users fields under the feature card in index.html."></i>
                                     <input type="text" class="form-control" id="ad-support" name="ad-support">
-                                </div>
-                                <h5 class="card-title pt-3">Footer</h5>
-                                <div class="mb-3">
-                                    <label class="form-label">Slogan Footer</label>
-                                    <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
                                 </div>
                                 <h5 class="card-title pt-3">Login/Register Form</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Login/Register Banner Image</label>
+                                    <i class="fa fa-question-circle help-tooltip"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Modify the banner image in the login/register form."></i>
                                     <input type="file" class="form-control" id="login-register-banner" name="login-register-banner" accept="image/*">
                                     <img id="login-register-banner-preview" src="" alt="Login/Register Banner Preview" style="max-width: 100px; margin-top: 10px; display: none;">
                                 </div>
                                 <h5 class="card-title pt-3">Dashboard</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Dashboard Color</label>
+                                     <i class="fa fa-question-circle help-tooltip"
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Select a color palette in Dashboard pages."></i>
                                     <input type="color" class="form-control form-control-color" id="color-dashboard" name="color-dashboard" value="#0d6efd">
                                 </div>
                                 <button type="button" class="btn btn-warning" id="reset-to-default">Reset to Default</button>
@@ -1013,6 +1047,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
+    <!-- Major Scripts -->
+    <script src="/scripts/external/bootstrap.bundle.min.js"></script>
+    <script src="/scripts/external/aos.js"></script>
+
     <!-- Internal Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1346,10 +1384,13 @@
             });
         });
     </script>
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+    <script> // Bootstrap Tooltip
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
     </script>
 </body>
 </html>
