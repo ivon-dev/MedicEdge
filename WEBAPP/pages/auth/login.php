@@ -10,7 +10,17 @@
     $favicon = $config_data['favicon'] ?? 'CONFIG/branding/default/favicon.ico';
     $navbarLogo = $config_data['navbar-logo'] ?? 'CONFIG/branding/default/navbar_logo.png';
 
+    $homepageTitle = $config_data['homepage-title'] ?? 'MedicEdge — Medical Records Simplified';
+    $heroTextTitle = $config_data['hero-text-title'] ?? 'Medical Records Simplified';
+    $heroTextSubtitle = $config_data['hero-text-subtitle'] ?? 'Say goodbye to manual process—streamline healthcare management with MedicEdge.';
+
     $loginRegisterBanner = $config_data['login-register-banner'] ?? 'CONFIG/branding/default/login_register_banner.png';
+
+    $sloganFooter = $config_data['slogan-footer'] ?? 'Revolutionizing Healthcare Management with Innovation and Security.';
+
+    $contactEmail = $config_data['contact-email'] ?? 'Unavailable';
+    $contactNumber = $config_data['contact-num'] ?? 'Unavailable';
+    $address = $config_data['address'] ?? 'Unavailable';
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +33,7 @@
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/styles/global-styles/footer_globalstyles.css" rel="stylesheet">
     <link href="/styles/pages-styles/login-register_styles.css" rel="stylesheet">
 
@@ -54,24 +65,25 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <img src="/<?php echo htmlspecialchars($loginRegisterBanner); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Login Banner" width="300" height="100" class="img-fluid login-register-form-banner">
+                            <img src="/<?php echo htmlspecialchars($loginRegisterBanner); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Login Banner" width="300" height="100" class="img-fluid login-register-form-banner" draggable="false">
                         </div>
                         <h2 class="text-center mb-4"><b>Login</b></h2>
                         <form id="loginForm" method="POST" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="login">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username*</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control" id="username" name="username" required data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="focus" title="Input your username here">
                                 <div class="invalid-feedback">Please enter your username.</div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password*</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password" required data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="focus" title="Input your password here">
                                 <div class="invalid-feedback">Please enter your password.</div>
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
                                 <label class="form-check-label" for="remember_me">Remember me</label>
+                                <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Remember me for 30 days. Otherwise, it will only remember you for a day."></i>
                             </div>
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-primary">Login</button>
@@ -92,8 +104,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>MedicEdge</h5>
-                    <p>Revolutionizing Healthcare Management with Innovation and Security.</p>
+                    <h5><?php echo htmlspecialchars($orgName); ?></h5>
+                    <p><?php echo htmlspecialchars($sloganFooter); ?></p>
                 </div>
                 <div class="col-md-4">
                     <h5>Quick Links</h5>
@@ -105,7 +117,9 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Contact</h5>
-                    <p>Email: contact@medicedge.com<br>Phone: (555) 123-4567<br>Address: 123 Health Street</p>
+                    <p>Email: <a href="mailto:<?php echo htmlspecialchars($contactEmail); ?>" onclick="window.open(this.href, '_blank'); return false;"> <?php echo htmlspecialchars($contactEmail); ?></a><br>
+                    Phone: <?php echo htmlspecialchars($contactNumber); ?><br>
+                    Address: <?php echo htmlspecialchars($address); ?></p>
                 </div>
             </div>
             <hr class="mt-4 mb-4 border-light">
@@ -261,6 +275,14 @@
                 if (result.isConfirmed) {
                     Swal.fire({ icon: 'success', title: 'Reset Link Sent', text: 'Please check your email for password reset instructions.' });
                 }
+            });
+        });
+    </script>
+    <script> // Bootstrap Tooltip
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
     </script>

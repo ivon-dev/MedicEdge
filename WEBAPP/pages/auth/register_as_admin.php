@@ -23,6 +23,7 @@
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/styles/global-styles/footer_globalstyles.css" rel="stylesheet">
     <link href="/styles/pages-styles/login-register_styles.css" rel="stylesheet">
 
@@ -52,7 +53,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <img src="/<?php echo htmlspecialchars($loginRegisterBanner); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Registration Banner" width="300" height="100" class="img-fluid login-register-form-banner">
+                            <img src="/<?php echo htmlspecialchars($loginRegisterBanner); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Registration Banner" width="300" height="100" class="img-fluid login-register-form-banner" draggable="false">
                         </div>
                         <h2 class="text-center mb-4"><b>Administrator Registration</b></h2>
                         
@@ -68,7 +69,7 @@
                             <input type="hidden" name="action" value="register">
                             
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username*</label>
+                                <label for="username" class="form-label">Username*</label> <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="You can signup with a space on your username, but it is not recommended."></i>
                                 <input type="text" class="form-control" id="username" name="username" required>
                                 <div class="invalid-feedback">Please choose a username.</div>
                             </div>
@@ -96,19 +97,19 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="contact_num" class="form-label">Contact Number*</label>
+                                <label for="contact_num" class="form-label">Contact Number*</label> <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="You can encode both cellphone and landline numbers in this field. You can also add hyphens and other symbols here."></i>
                                 <input type="tel" class="form-control" id="contact_num" name="contact_num" required>
                                 <div class="invalid-feedback">Contact number is required.</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password*</label>
+                                <label for="password" class="form-label">Password*</label> <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="A strong password is recommended (a mix of letters, numbers, and symbols), especially since you're signing up as an admin."></i>
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <div class="invalid-feedback">Please enter a password.</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="confirm_password" class="form-label">Retype Password*</label>
+                                <label for="confirm_password" class="form-label">Retype Password*</label> <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Passwords must match!"></i>
                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                                 <div class="invalid-feedback">Please retype your password.</div>
                             </div>
@@ -214,6 +215,13 @@
               });
         });
     </script>
-
+    <script> // Bootstrap Tooltip
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 </body>
 </html>
