@@ -290,9 +290,9 @@ switch ($action) {
             setcookie('session_token', $session_token, [
                 'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
                 'path' => '/',
-                'secure' => true,
-                'httponly' => false,
-                'samesite' => 'Strict'
+                'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on', // Conditionally set secure
+                'httponly' => true, // Recommending to set it to true
+                'samesite' => 'Lax' // Adjust based on your needs, consider 'None' if necessary but ensure 'Secure' is true
             ]);
                 
             // Clear login attempts on successful login
