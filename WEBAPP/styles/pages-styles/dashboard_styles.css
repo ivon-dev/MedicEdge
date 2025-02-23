@@ -151,5 +151,14 @@
 /* Field Styles */
 .help-tooltip {
     color: #337ab7;
-    font-size: 13px;
+    font-size: 15.5px;
+}
+
+
+/* MOBILE STYLES */
+@media (max-width: 768px) {
+    .help-tooltip {
+        color: #337ab7;
+        font-size: 18px;
+    }
 }
