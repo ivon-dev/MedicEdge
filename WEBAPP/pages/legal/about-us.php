@@ -83,9 +83,8 @@
                 <div class="col-md-4">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="/pages/legal/privacy.php">Privacy Policy</a></li>
+                        <li><a href="/pages/legal/terms.php">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
