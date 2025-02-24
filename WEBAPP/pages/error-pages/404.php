@@ -44,7 +44,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/pages/legal/about-us.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/login.php">Login</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/register_as_admin.php">Register as Admin</a></li>
                 </ul>
@@ -55,7 +54,7 @@
     <main class="main-content d-flex flex-column align-items-center justify-content-center text-center">
         <img class="img-fluid mb-4" src="/img/icon/error-pages/404.png" alt="Error 403 Image" draggable="false">
         <h3 class="fw-bold">Oops! Resource Not Found!</h3>
-        <p class="text-muted">You are trying to access a resource on your organization's system that doesn't exist.</p>
+        <p class="text-muted">You are trying to access a resource on <?php echo htmlspecialchars($orgName); ?>'s information system that doesn't exist.</p>
         <p class="text-secondary fw-semibold">HTTP Error 404: Not Found</p>
         <a href="/" class="btn btn-primary mt-3">Back to Homepage &#8594;</a>
     </main>

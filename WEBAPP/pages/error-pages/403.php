@@ -44,7 +44,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/pages/legal/about-us.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/login.php">Login</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/register_as_admin.php">Register as Admin</a></li>
                 </ul>
@@ -54,8 +53,8 @@
 
     <main class="main-content d-flex flex-column align-items-center justify-content-center text-center">
         <img class="img-fluid mb-4" src="/img/icon/error-pages/403.png" alt="Error 403 Image" draggable="false">
-        <h3 class="fw-bold">Oops! It looks like you don’t have permission to access this page.</h3>
-        <p class="text-muted">If you believe this is an error, please check your credentials or contact your webapp administrator for assistance.</p>
+        <h3 class="fw-bold">Oops! Access Denied!</h3>
+        <p class="text-muted">Your webapp administrator in your organization, <?php echo htmlspecialchars($orgName); ?> has restricted access in this resource. Please contact your webapp administrator for assistance.</p>
         <p class="text-secondary fw-semibold">HTTP Error 403: Forbidden</p>
         <a href="/" class="btn btn-primary mt-3">Back to Homepage &#8594;</a>
     </main>
