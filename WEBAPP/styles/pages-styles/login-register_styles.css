@@ -10,6 +10,8 @@
 .login-register-form-banner {
     width: 50%;
     height: 50%;
+    max-height: 100px;
+    max-width: fit-content;
 }
 
 /* Field Styles */

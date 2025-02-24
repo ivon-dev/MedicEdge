@@ -48,7 +48,7 @@
 
     <div class="container mt-5 pt-5 login-register-form-wrapper">
         <div class="row justify-content-center">
-            <div class="col-md-6 login-register-form">
+            <div class="col-md-7 login-register-form">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
@@ -112,8 +112,10 @@
                                 <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                                 <div class="invalid-feedback">Please retype your password.</div>
                             </div>
-
                             <div class="d-grid">
+                                <p class="text-left">
+                                    <small>By signing up, I agree to the organization's <a href="/pages/legal/terms.php" target="_blank">Terms of Service</a> and <a href="/pages/legal/privacy.php" target="_blank">Privacy Policy</a>.</small>
+                                </p>
                                 <button type="submit" class="btn btn-primary">Register</button>
                             </div>
                             <div class="text-center">

@@ -60,7 +60,7 @@
     
     <div class="container mt-5 pt-5 login-register-form-wrapper">
         <div class="row justify-content-center">
-            <div class="col-md-6 login-register-form">
+            <div class="col-md-7 login-register-form">
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center mb-4">
@@ -84,10 +84,13 @@
                                 <label class="form-check-label" for="remember_me">Remember me</label>
                                 <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Remember me for 30 days. Otherwise, it will only remember you for a day."></i>
                             </div>
-                            <div class="d-grid mb-3">
+                            <div class="d-grid">
+                                <p class="text-left">
+                                    <small>By logging in, I agree to the organization's <a href="/pages/legal/terms.php" target="_blank">Terms of Service</a> and <a href="/pages/legal/privacy.php" target="_blank">Privacy Policy</a>.</small>
+                                </p>
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </div>
-                            <div class="text-center">
+                            <div class="text-center mt-2">
                                 <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
                                 <br>
                                 <a href="/" class="text-muted">Back to Homepage</a>
