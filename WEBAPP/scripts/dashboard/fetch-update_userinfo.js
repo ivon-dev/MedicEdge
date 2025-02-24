@@ -45,12 +45,10 @@ function fetchProfileData() {
         if (data.status === 'success') {
             populateProfileForm(data.data);
         } else {
-            console.error('Error:', data.message);
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: 'Failed to load profile data: ' + data.message,
-                confirmButtonColor: '#3085d6'
+                title: 'Error!',
+                text: data.message || 'An unknown error occurred',
             });
         }
     })
@@ -220,7 +218,11 @@ function selectProfilePicture(picturePath) {
                 showConfirmButton: false
             });
         } else {
-            throw new Error(data.message || 'Failed to update profile picture');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message || 'An unknown error occurred',
+            });
         }
     })
     .catch(error => {
@@ -297,9 +299,8 @@ function updateProfile() {
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: 'Failed to update profile: ' + data.message,
-                confirmButtonColor: '#3085d6'
+                title: 'Error!',
+                text: data.message || 'An unknown error occurred',
             });
         }
     })

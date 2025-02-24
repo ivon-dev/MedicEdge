@@ -124,22 +124,14 @@
                 <div class="col">
                     <h5>Account Actions</h5>
                     <form id="account-form">
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" id="userUsername" name="userUsername" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="userEmail" name="userEmail" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Username</label>
-                            <input type="text" class="form-control" id="newUsername" name="newUsername">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Email</label>
-                            <input type="email" class="form-control" id="newEmail" name="newEmail">
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" id="userUsername" name="userUsername">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="userEmail" name="userEmail">
+                    </div>
                         <button type="submit" class="btn btn-primary mb-2">Update Account</button>
                     </form>
                     <div class="btn-group-vertical w-100">
@@ -1268,8 +1260,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        document.getElementById('userUsername').textContent = data.data.username;
-                        document.getElementById('userEmail').textContent = data.data.email;
+                        document.getElementById('userUsername').textContent = data.username;
+                        document.getElementById('userEmail').textContent = data.email;
                     } else {
                         Swal.fire({
                             icon: 'error',
