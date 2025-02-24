@@ -19,7 +19,7 @@ function markdownToHtml(string $markdown): string {
     $html = preg_replace('/\> (.*)/', '<blockquote class="blockquote">$1</blockquote>', $html);
 
     // Lists (Unordered and Ordered)
-    $html = preg_replace('/^- (.*)$/m', '<ul class="list-group"><li class="list-group-item">$1</li></ul>', $html);
+    $html = preg_replace('/^\- (.*)$/m', '<span style="margin-left: 1em;">• $1</span><br>', $html);
     $html = preg_replace('/^1\. (.*)$/m', '<ol class="list-group"><li class="list-group-item">$1</li></ol>', $html);
 
     // Code
@@ -29,7 +29,7 @@ function markdownToHtml(string $markdown): string {
     $html = preg_replace('/---/', '<hr class="my-4">', $html);
 
     // Links
-    $html = preg_replace('/\[([^\]]*)\]\(([^)]*)\)/', '<a href="$2" class="text-primary">$1</a>', $html);
+    $html = preg_replace('/\[([^\]]*)\]\(([^)]*)\)/', '<a href="$2">$1</a>', $html);
 
     // Line Breaks (only if not preceded by a header)
     $html = preg_replace('/(?<!<\/h[1-6]>)\n/', '<br>', $html);

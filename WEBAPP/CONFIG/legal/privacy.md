@@ -1,5 +1,3 @@
-# Privacy Policy
-
 This Privacy Policy describes how MedicEdge ("we," "us," or "our") collects, uses, and shares personal information of users ("you") of our web application.
 
 ## Information We Collect
