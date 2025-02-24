@@ -161,7 +161,7 @@
             </div>
             <hr class="mt-4 mb-4 border-light">
             <div class="text-center">
-                <p class="mb-0">&copy; <span id="currentYear"></span> MedicEdge. All rights reserved.</p>
+                <p class="mb-0">&copy; <span id="currentYear"></span> <?php echo htmlspecialchars($orgName); ?>. All rights reserved.</p>
             </div>
         </div>
     </footer>
