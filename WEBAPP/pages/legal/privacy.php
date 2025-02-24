@@ -12,6 +12,8 @@
 
     $sloganFooter = $config_data['slogan-footer'] ?? 'Revolutionizing Healthcare Management with Innovation and Security.';
 
+    $legalRevisionDate = $config_data['legal-pages-revision-date'] ?? 'NULL';
+
     $contactEmail = $config_data['contact-email'] ?? 'Unavailable';
     $contactNumber = $config_data['contact-num'] ?? 'Unavailable';
     $address = $config_data['address'] ?? 'Unavailable';
@@ -65,7 +67,7 @@
     <div class="container py-5 mt-5">
         <header class="text-center mb-5">
             <h1 class="display-4">Privacy Policy</h1>
-            <p class="lead">Updated on February 21 2025</p>
+            <p class="lead">Updated on <?php echo htmlspecialchars($legalRevisionDate); ?></p>
         </header>
 
         <main>

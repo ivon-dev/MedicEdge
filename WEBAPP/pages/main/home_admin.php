@@ -41,14 +41,14 @@
         <div class="mt-4 nav-links">
             <a href="#" data-section="profile" class="active"><i class="fas fa-user me-2"></i> Your Profile</a>
             <a href="#" data-section="account"><i class="fas fa-key me-2"></i> Your Account</a>
-            <a href="#" data-section="customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
+            <a href="#" data-section="webapp_settings"><i class="fas fa-cogs me-2"></i> Webapp Settings</a>
+            <a href="#" data-section="webapp_customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
             <a href="#" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
             <a href="#" data-section="healthcare_providers"><i class="fas fa-user-md me-2"></i> Healthcare Providers</a>
             <a href="#" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
-            <a href="#" data-section="system_settings"><i class="fas fa-cogs me-2"></i> System Settings</a>
             <a href="#" data-section="reports"><i class="fas fa-chart-bar me-2"></i> Reports & Analytics</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
@@ -151,9 +151,9 @@
             </div>
         </section>
 
-        <!-- Webapp Customization Section -->
-        <section id="customization" class="content-section">
-            <h3 class="mb-4">Webapp Customization</h3>
+        <!-- Webapp Settings Section -->
+        <section id="webapp_settings" class="content-section">
+            <h3 class="mb-4">Webapp Settings</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3 border-0">
@@ -161,16 +161,50 @@
                             <form id="website-settings-form">
                                 <h5 class="card-title">Organization</h5>
                                 <div class="mb-3">
-                                    <label class="form-label">Name</label> <i class="fa fa-question-circle help-tooltip"
-                                    data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization name. This will be reflected system-wide."></i>
+                                    <label class="form-label">Name</label>
+                                    <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization name. This will be reflected system-wide."></i>
                                     <input type="text" class="form-control" id="org-name" name="org-name">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Slogan</label>
-                                    <i class="fa fa-question-circle help-tooltip"
-                                       data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization slogan. This will be reflected system-wide."></i>
+                                    <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Your organization slogan. This will be reflected system-wide."></i>
                                     <input type="text" class="form-control" id="slogan-footer" name="slogan-footer">
                                 </div>
+                                <h5 class="card-title">Legal</h5>
+                                <div class="btn-group-vertical w-100">
+                                    <a href="/pages/util/text_editor.php?file=about_us" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=about_us'; return false;">Edit About Us Page</button>
+                                    </a>
+                                    <a href="/pages/util/text_editor.php?file=terms_of_service" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=terms_of_service'; return false;">Edit Terms of Service Statement</button>
+                                    </a>
+                                    <a href="/pages/util/text_editor.php?file=privacy_policy" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=privacy_policy'; return false;">Edit Privacy Policy Statement</button>
+                                    </a>
+                                    <div class="mb-3 w-100">
+                                        <label class="form-label">Terms/Privacy Revision Date</label>
+                                        <i class="fa fa-question-circle help-tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Terms of Service and Privacy Policy Revision Date. This will be encoded as is when you submit it. (Example, you've written '12-06-2024', it will appear as '12-06-2024' on legal pages.)"></i>
+                                        <input type="text" class="form-control" id="legal-pages-revision-date" name="legal-pages-revision-date">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-warning" id="reset-to-default">Reset to Default</button>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Webapp Customization Section -->
+        <section id="webapp_customization" class="content-section">
+            <h3 class="mb-4">Webapp Customization</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-3 border-0">
+                        <div class="card-body">
+                            <form id="website-settings-form">
+                                <h5 class="card-title">Organization</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Logo</label>
                                     <i class="fa fa-question-circle help-tooltip"
@@ -273,7 +307,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Dashboard Color</label>
                                      <i class="fa fa-question-circle help-tooltip"
-                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Select a color palette in Dashboard pages."></i>
+                                        data-bs-toggle="tooltip" data-bs-placement="right" title="Select a color in Dashboard pages' sidebar."></i>
                                     <input type="color" class="form-control form-control-color" id="color-dashboard" name="color-dashboard" value="#0d6efd">
                                 </div>
                                 <button type="button" class="btn btn-warning" id="reset-to-default">Reset to Default</button>
@@ -838,80 +872,6 @@
             </div>
         </section>
 
-        <!-- System Settings Section -->
-        <section id="system_settings" class="content-section">
-            <h3 class="mb-4">System Settings</h3>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">General Settings</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">System Name</label>
-                                    <input type="text" class="form-control" value="MedicEdge">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Timezone</label>
-                                    <select class="form-select">
-                                        <option>UTC</option>
-                                        <option>PST</option>
-                                        <option>EST</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Date Format</label>
-                                    <select class="form-select">
-                                        <option>MM/DD/YYYY</option>
-                                        <option>DD/MM/YYYY</option>
-                                        <option>YYYY-MM-DD</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Language</label>
-                                    <select class="form-select">
-                                        <option>English</option>
-                                        <option>Spanish</option>
-                                        <option>French</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">System Maintenance</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Maintenance Mode</label>
-                                    <select class="form-select">
-                                        <option>Disabled</option>
-                                        <option>Enabled</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Backup Schedule</label>
-                                    <select class="form-select">
-                                        <option>Daily</option>
-                                        <option>Weekly</option>
-                                        <option>Monthly</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Session Timeout (minutes)</label>
-                                    <input type="number" class="form-control" value="30">
-                                </div>
-                                <button type="submit" class="btn btn-success">Save Settings</button>
-                                <button type="button" class="btn btn-warning">Backup Now</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Report and Analytics Section -->
         <section id="reports" class="content-section">
             <h3 class="mb-4">Reports & Analytics</h3>
@@ -1152,6 +1112,7 @@
                         document.getElementById('login-register-banner-preview').style.display = 'block';
                     }
                     document.getElementById('color-dashboard').value = data['color-dashboard'] || '#0d6efd';
+                    document.getElementById('legal-pages-revision-date').value = data['legal-pages-revision-date'] || '';
                 }
             })
             .catch(error => {
@@ -1183,7 +1144,8 @@
                     'ad-uptime': document.getElementById('ad-uptime').value,
                     'ad-support': document.getElementById('ad-support').value,
                     'slogan-footer': document.getElementById('slogan-footer').value,
-                    'color-dashboard': document.getElementById('color-dashboard').value
+                    'color-dashboard': document.getElementById('color-dashboard').value,
+                    'legal-pages-revision-date': document.getElementById('legal-pages-revision-date').value
                 };
 
                 // Append the config object as a JSON string

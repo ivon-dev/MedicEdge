@@ -29,6 +29,7 @@ function safeMoveUploadedFile($file, $target) {
 // Default configuration data (hardcoded)
 $default_config_data = [
     "org-name" => "MedicEdge",
+    "slogan-footer" => "Revolutionizing Healthcare Management with Innovation and Security.",
     "org-logo" => "CONFIG/branding/default/org_logo.png",
     "favicon" => "CONFIG/branding/default/favicon.ico",
     "navbar-logo" => "CONFIG/branding/default/navbar_logo.png",
@@ -43,9 +44,9 @@ $default_config_data = [
     "ad-healthcare-partners" => "N/A",
     "ad-uptime" => "N/A%",
     "ad-support" => "N/A",
-    "slogan-footer" => "Revolutionizing Healthcare Management with Innovation and Security.",
     "login-register-banner" => "CONFIG/branding/default/login-register_banner.png",
-    "color-dashboard" => "#10730b"
+    "color-dashboard" => "#10730b",
+    "legal-pages-revision-date" => "February 24 2025"
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
