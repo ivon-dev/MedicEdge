@@ -23,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Error 403 - <?php echo htmlspecialchars($orgName); ?></title>
+    <title>Error 403: Forbidden - <?php echo htmlspecialchars($orgName); ?></title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
@@ -52,7 +52,12 @@
         </div>
     </nav>
 
-    <main class="main-content">
+    <main class="main-content d-flex flex-column align-items-center justify-content-center text-center">
+        <img class="img-fluid mb-4" src="/img/icon/error-pages/403.png" alt="Error 403 Image" draggable="false">
+        <h3 class="fw-bold">Oops! It looks like you don’t have permission to access this page.</h3>
+        <p class="text-muted">If you believe this is an error, please check your credentials or contact your webapp administrator for assistance.</p>
+        <p class="text-secondary fw-semibold">HTTP Error 403: Forbidden</p>
+        <a href="/" class="btn btn-primary mt-3">Back to Homepage &#8594;</a>
     </main>
 
     <footer>

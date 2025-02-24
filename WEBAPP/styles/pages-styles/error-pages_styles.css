@@ -1,3 +1,10 @@
 .main-content {
     height: 87.3vh;
 }
+
+.main-content img {
+    width: auto;
+    height: auto;
+    max-height: 27vh;
+    max-width: 27vw;
+}

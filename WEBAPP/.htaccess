@@ -1,0 +1,16 @@
+# Custom HTML Documents for HTTP 403 and 404 errors
+ErrorDocument 404 /pages/error-pages/404.php
+ErrorDocument 403 /pages/error-pages/403.php
+
+# Disable File Indexing in Clients
+Options -Indexes
+
+# Blocks Bytespider user-agent (as I don't Trust the web crawler. See more @ https://stackoverflow.com/questions/57908900/what-is-the-bytespider-user-agent)
+RewriteEngine On
+RewriteCond %{HTTP_USER_AGENT} Bytespider [NC]
+RewriteRule .* - [F]
+
+# Testing: Blocks Firefox
+# RewriteEngine On
+# RewriteCond %{HTTP_USER_AGENT} Firefox [NC]
+# RewriteRule .* - [F]
