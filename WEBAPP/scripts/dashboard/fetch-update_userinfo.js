@@ -73,12 +73,16 @@ function populateProfileForm(data) {
         `${data.firstname} ${data.lastname}`;
 
     // Populate form fields
-    const fields = ['firstname', 'middlename', 'lastname', 'email', 'contact_num', 'address'];
+    const fields = ['username', 'firstname', 'middlename', 'lastname', 'email', 'contact_num', 'address'];
     fields.forEach(field => {
         const input = document.querySelector(`input[name="${field}"]`);
         if (input) {
             input.value = data[field] || '';
         }
+        const element = document.getElementById(`${field}`);
+            if (element) {
+                element.value = data[field] || '';
+            }
     });
 }
 
@@ -291,7 +295,7 @@ function updateProfile() {
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
-                text: 'Profile updated successfully',
+                text: data.message || 'Profile updated successfully',
                 timer: 1500,
                 showConfirmButton: false
             });

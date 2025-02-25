@@ -39,8 +39,7 @@
         </div>
 
         <div class="mt-4 nav-links">
-            <a href="#" data-section="profile" class="active"><i class="fas fa-user me-2"></i> Your Profile</a>
-            <a href="#" data-section="account"><i class="fas fa-key me-2"></i> Your Account</a>
+            <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Assigned Appointments</a>
             <a href="#" data-section="patients"><i class="fas fa-notes-medical me-2"></i> Patient Records</a>
             <a href="#" data-section="messaging"><i class="fas fa-envelope me-2"></i> Messaging</a>
@@ -58,7 +57,7 @@
 
     <main class="content">
         <!-- Profile Section -->
-        <section id="profile" class="content-section active">
+        <section id="account" class="content-section active">
             <h3 class="mb-4">Your Profile</h3>
             <form>
                 <div class="mb-3">
@@ -69,28 +68,32 @@
                     Select Profile Picture
                 </button>
                 <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="username">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" name="firstname" class="form-control">
+                    <input type="text" name="firstname" class="form-control" id="firstname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" name="middlename" class="form-control">
+                    <input type="text" name="middlename" class="form-control" id="middlename">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control">
+                    <input type="text" name="lastname" class="form-control" id="lastname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control" id="email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" name="contact_num" class="form-control">
+                    <input type="tel" name="contact_num" class="form-control" id="contact_num">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" name="address" class="form-control">
+                    <input type="text" name="address" class="form-control" id="address">
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
@@ -107,40 +110,6 @@
                     </div>
                     <div id="gallery-grid" class="grid grid-cols-3 gap-4">
                         <!-- Images will be loaded here -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Account Section -->
-        <section id="account" class="content-section">
-            <h3 class="mb-4">Your Account</h3>
-            <div class="row mb-4">
-                <div class="col">
-                    <h5>Account Actions</h5>
-                    <form id="account-form">
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" id="userUsername" name="userUsername" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="userEmail" name="userEmail" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Username</label>
-                            <input type="text" class="form-control" id="newUsername" name="newUsername">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">New Email</label>
-                            <input type="email" class="form-control" id="newEmail" name="newEmail">
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-2">Update Account</button>
-                    </form>
-                    <div class="btn-group-vertical w-100">
-                        <button class="btn btn-primary mb-2">Change Email</button>
-                        <button class="btn btn-primary mb-2">Change Password</button>
-                        <button class="btn btn-secondary mb-2">View Session History</button>
                     </div>
                 </div>
             </div>
@@ -180,113 +149,14 @@
     </main>
 
     <!-- External Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/dashboard/dashboard_all.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Major Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
     <!-- Internal Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Function to fetch account data
-            function fetchAccountData() {
-                fetch('/php/dashboard/fetch-update_useraccount.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'action=fetch'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('userUsername').textContent = data.data.username;
-                        document.getElementById('userEmail').textContent = data.data.email;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: data.error,
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching account data:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to fetch account data. Please check the console.',
-                    });
-                });
-            }
-
-            // Fetch account data on page load
-            fetchAccountData();
-
-            // Handle form submission for updating account
-            document.getElementById('account-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const newUsername = document.getElementById('newUsername').value;
-                const newEmail = document.getElementById('newEmail').value;
-
-                fetch('/php/dashboard/fetch-update_useraccount.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=update&username=${newUsername}&email=${newEmail}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: data.success,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            fetchAccountData(); // Refresh account data
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: data.error,
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating account:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to update account. Please check the console.',
-                    });
-                });
-            });
-
-            document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-                    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                    link.classList.add('active');
-                    document.getElementById(link.dataset.section).classList.add('active');
-                });
-            });
-        });
-    </script>
-    <script> // Bootstrap Tooltip
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </script>
 </body>
 </html>

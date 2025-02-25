@@ -7,7 +7,6 @@ ini_set('display_errors', 1);
 
 // Get input data (assumes form submission via POST)
 $action = isset($_POST['action']) ? $_POST['action'] : '';
-$inputData = $_POST;
 
 // Get user data from session token
 function getUserFromSession($sessionToken) {
@@ -69,6 +68,7 @@ switch ($action) {
             echo json_encode([
                 'status' => 'success',
                 'data' => [
+                    'username' => $user['username'],
                     'picture' => $user['picture'],
                     'firstname' => $user['firstname'],
                     'middlename' => $user['middlename'],
@@ -192,12 +192,13 @@ switch ($action) {
 
         $stmt = $conn->prepare("
             UPDATE users_table 
-            SET firstname = ?, middlename = ?, lastname = ?, 
+            SET username = ?, firstname = ?, middlename = ?, lastname = ?, 
                 email = ?, contact_num = ?, address = ?
             WHERE user_id = ?
         ");
         
-        $stmt->bind_param("sssssss", 
+        $stmt->bind_param("ssssssss", 
+            $_POST['username'],
             $_POST['firstname'],
             $_POST['middlename'],
             $_POST['lastname'],
@@ -208,7 +209,7 @@ switch ($action) {
         );
         
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success']);
+            echo json_encode(['status' => 'success', 'message' => 'Profile updated successfully']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Update failed: ' . $stmt->error]);
         }
@@ -228,7 +229,7 @@ switch ($action) {
         $stmt->bind_param("ss", $picturePath, $user['user_id']);
 
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success']);
+            echo json_encode(['status' => 'success', 'message' => 'Profile picture updated successfully']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Update failed: ' . $stmt->error]);
         }
@@ -254,6 +255,9 @@ switch ($action) {
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Picture not found']);
         }
+        break;
+    default:
+        echo json_encode(['status' => 'error', 'message' => 'Invalid action']);
         break;
 }
 ?>

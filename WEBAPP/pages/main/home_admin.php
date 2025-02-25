@@ -39,8 +39,7 @@
         </div>
 
         <div class="mt-4 nav-links">
-            <a href="#" data-section="profile" class="active"><i class="fas fa-user me-2"></i> Your Profile</a>
-            <a href="#" data-section="account"><i class="fas fa-key me-2"></i> Your Account</a>
+            <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
             <a href="#" data-section="webapp_settings"><i class="fas fa-cogs me-2"></i> Webapp Settings</a>
             <a href="#" data-section="webapp_customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
             <a href="#" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
@@ -49,7 +48,6 @@
             <a href="#" data-section="healthcare_providers"><i class="fas fa-user-md me-2"></i> Healthcare Providers</a>
             <a href="#" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
-            <a href="#" data-section="reports"><i class="fas fa-chart-bar me-2"></i> Reports & Analytics</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
@@ -63,7 +61,7 @@
 
     <main class="content">
         <!-- Profile Section -->
-        <section id="profile" class="content-section active">
+        <section id="account" class="content-section active">
             <h3 class="mb-4">Your Profile</h3>
             <form>
                 <div class="mb-3">
@@ -74,28 +72,32 @@
                     Select Profile Picture
                 </button>
                 <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="username">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" name="firstname" class="form-control">
+                    <input type="text" name="firstname" class="form-control" id="firstname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" name="middlename" class="form-control">
+                    <input type="text" name="middlename" class="form-control" id="middlename">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control">
+                    <input type="text" name="lastname" class="form-control" id="lastname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control" id="email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" name="contact_num" class="form-control">
+                    <input type="tel" name="contact_num" class="form-control" id="contact_num">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" name="address" class="form-control">
+                    <input type="text" name="address" class="form-control" id="address">
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
@@ -126,11 +128,19 @@
                     <form id="account-form">
                     <div class="mb-3">
                         <label class="form-label">Username</label>
-                        <input type="text" class="form-control" id="userUsername" name="userUsername">
+                        <input type="text" class="form-control" id="userUsername" name="userUsername" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" id="userEmail" name="userEmail">
+                        <input type="email" class="form-control" id="userEmail" name="userEmail" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New Username</label>
+                        <input type="text" class="form-control" id="newUsername" name="newUsername">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New Email</label>
+                        <input type="email" class="form-control" id="newEmail" name="newEmail">
                     </div>
                         <button type="submit" class="btn btn-primary mb-2">Update Account</button>
                     </form>
@@ -863,489 +873,18 @@
                 </nav>
             </div>
         </section>
-
-        <!-- Report and Analytics Section -->
-        <section id="reports" class="content-section">
-            <h3 class="mb-4">Reports & Analytics</h3>
-            <!-- Overview Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h6>Total Revenue</h6>
-                            <h3>$145,250</h3>
-                            <small>+12% from last month</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <h6>Total Patients</h6>
-                            <h3>1,234</h3>
-                            <small>+8% from last month</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white">
-                        <div class="card-body">
-                            <h6>Appointments</h6>
-                            <h3>450</h3>
-                            <small>+15% from last month</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <h6>Average Rating</h6>
-                            <h3>4.8/5.0</h3>
-                            <small>Based on 350 reviews</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filters -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <select class="form-select">
-                                <option>All Departments</option>
-                                <option>Cardiology</option>
-                                <option>Neurology</option>
-                                <option>Pediatrics</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select">
-                                <option>This Month</option>
-                                <option>Last Month</option>
-                                <option>Last 3 Months</option>
-                                <option>Last 6 Months</option>
-                                <option>This Year</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="date" class="form-control" placeholder="From Date">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="date" class="form-control" placeholder="To Date">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Department Performance -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title">Department Performance</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Department</th>
-                                    <th>Revenue</th>
-                                    <th>Patients</th>
-                                    <th>Appointments</th>
-                                    <th>Satisfaction</th>
-                                    <th>Growth</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Cardiology</td>
-                                    <td>$45,250</td>
-                                    <td>324</td>
-                                    <td>180</td>
-                                    <td>4.9/5.0</td>
-                                    <td><span class="badge bg-success">+15%</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Neurology</td>
-                                    <td>$38,450</td>
-                                    <td>289</td>
-                                    <td>145</td>
-                                    <td>4.7/5.0</td>
-                                    <td><span class="badge bg-success">+12%</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Pediatrics</td>
-                                    <td>$35,800</td>
-                                    <td>312</td>
-                                    <td>165</td>
-                                    <td>4.8/5.0</td>
-                                    <td><span class="badge bg-warning">+5%</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Export Options -->
-            <div class="mb-4">
-                <button class="btn btn-primary"><i class="fas fa-file-pdf"></i> Export PDF</button>
-                <button class="btn btn-success"><i class="fas fa-file-excel"></i> Export Excel</button>
-                <button class="btn btn-info"><i class="fas fa-print"></i> Print Report</button>
-                <button class="btn btn-secondary"><i class="fas fa-envelope"></i> Email Report</button>
-            </div>
     </main>
     
     <!-- External Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/dashboard/dashboard_all.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
+    <script src="/scripts/reset-to-default_websiteconfig.js"></script>
 
     <!-- Major Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
     <!-- Internal Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Function to display image preview
-            function displayImagePreview(input, previewId) {
-                const preview = document.getElementById(previewId);
-
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        preview.style.display = 'block';
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    preview.src = '';
-                    preview.style.display = 'none';
-                }
-            }
-
-            // Attach file input change listeners for image previews
-            document.getElementById('org-logo').addEventListener('change', function() {
-                displayImagePreview(this, 'org-logo-preview');
-            });
-            document.getElementById('favicon').addEventListener('change', function() {
-                displayImagePreview(this, 'favicon-preview');
-            });
-            document.getElementById('navbar-logo').addEventListener('change', function() {
-                displayImagePreview(this, 'navbar-logo-preview');
-            });
-            document.getElementById('homepage-hero-bg-image').addEventListener('change', function() {
-                displayImagePreview(this, 'homepage-hero-bg-image-preview');
-            });
-             document.getElementById('login-register-banner').addEventListener('change', function() {
-                displayImagePreview(this, 'login-register-banner-preview');
-            });
-
-            document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-                    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                    link.classList.add('active');
-                    document.getElementById(link.dataset.section).classList.add('active');
-                });
-            });
-
-            // Fetch website configuration
-            fetch('/php/website_config/fetch-update_websiteconfig.php', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: data.error,
-                    });
-                } else {
-                    // Populate form fields with configuration data
-                    document.getElementById('org-name').value = data['org-name'] || '';
-                    // Set image previews if paths exist
-                    if (data['org-logo']) {
-                        document.getElementById('org-logo-preview').src = '/' + data['org-logo'];
-                        document.getElementById('org-logo-preview').style.display = 'block';
-                    }
-                    document.getElementById('homepage-title').value = data['homepage-title'] || '';
-                    document.getElementById('hero-text-title').value = data['hero-text-title'] || '';
-                    document.getElementById('hero-text-subtitle').value = data['hero-text-subtitle'] || '';
-                    document.getElementById('contact-email').value = data['contact-email'] || '';
-                    document.getElementById('contact-num').value = data['contact-num'] || '';
-                    document.getElementById('address').value = data['address'] || '';
-                    document.getElementById('ad-active-users').value = data['ad-active-users'] || '';
-                    document.getElementById('ad-healthcare-partners').value = data['ad-healthcare-partners'] || '';
-                    document.getElementById('ad-uptime').value = data['ad-uptime'] || '';
-                    document.getElementById('ad-support').value = data['ad-support'] || '';
-                    document.getElementById('slogan-footer').value = data['slogan-footer'] || '';
-                    if (data['favicon']) {
-                        document.getElementById('favicon-preview').src = '/' + data['favicon'];
-                        document.getElementById('favicon-preview').style.display = 'block';
-                    }
-                    if (data['navbar-logo']) {
-                        document.getElementById('navbar-logo-preview').src = '/' + data['navbar-logo'];
-                        document.getElementById('navbar-logo-preview').style.display = 'block';
-                    }
-                    if (data['homepage-hero-bg-image']) {
-                        document.getElementById('homepage-hero-bg-image-preview').src = '/' + data['homepage-hero-bg-image'];
-                        document.getElementById('homepage-hero-bg-image-preview').style.display = 'block';
-                    }
-                    if (data['login-register-banner']) {
-                        document.getElementById('login-register-banner-preview').src = '/' + data['login-register-banner'];
-                        document.getElementById('login-register-banner-preview').style.display = 'block';
-                    }
-                    document.getElementById('color-dashboard').value = data['color-dashboard'] || '#0d6efd';
-                    document.getElementById('legal-pages-revision-date').value = data['legal-pages-revision-date'] || '';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching configuration:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Failed to fetch configuration. Please check the console.',
-                });
-            });
-
-            // Handle form submission
-            document.getElementById('website-settings-form').addEventListener('submit', async function(event) {
-                event.preventDefault();
-
-                const formData = new FormData(this);
-
-                // Create a config object to hold the non-file data
-                const config = {
-                    'org-name': document.getElementById('org-name').value,
-                    'homepage-title': document.getElementById('homepage-title').value,
-                    'hero-text-title': document.getElementById('hero-text-title').value,
-                    'hero-text-subtitle': document.getElementById('hero-text-subtitle').value,
-                    'contact-email': document.getElementById('contact-email').value,
-                    'contact-num': document.getElementById('contact-num').value,
-                    'address': document.getElementById('address').value,
-                    'ad-active-users': document.getElementById('ad-active-users').value,
-                    'ad-healthcare-partners': document.getElementById('ad-healthcare-partners').value,
-                    'ad-uptime': document.getElementById('ad-uptime').value,
-                    'ad-support': document.getElementById('ad-support').value,
-                    'slogan-footer': document.getElementById('slogan-footer').value,
-                    'color-dashboard': document.getElementById('color-dashboard').value,
-                    'legal-pages-revision-date': document.getElementById('legal-pages-revision-date').value
-                };
-
-                // Append the config object as a JSON string
-                formData.append('config', JSON.stringify(config));
-
-                fetch('/php/website_config/fetch-update_websiteconfig.php', {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text(); // Get the raw response text
-                })
-                .then(data => {
-                    try {
-                        const jsonData = JSON.parse(data); // Try to parse the response as JSON
-                        if (jsonData.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: jsonData.success,
-                                showConfirmButton: false,
-                                timer: 1850,
-                                allowOutsideClick: false
-                            }).then(() => {
-                                location.reload(); // Refresh the page to reflect changes
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: jsonData.error,
-                            });
-                        }
-                    } catch (e) {
-                        console.error('Error parsing JSON:', e);
-                        console.log('Raw response data:', data); // Log the raw response for inspection
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Failed to update configuration. Please check the console.',
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating configuration:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to update configuration. Please check the console.',
-                    });
-                });
-            });
-
-            // Handle reset to default
-            document.getElementById('reset-to-default').addEventListener('click', function() {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "This will reset all website settings to default!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, reset it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch('/php/website_config/fetch-update_websiteconfig.php', {
-                            method: 'POST',
-                            body: new URLSearchParams({ reset: 'true' }) // Send reset as URL-encoded data
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: data.success,
-                                    showConfirmButton: false,
-                                    timer: 1850,
-                                    allowOutsideClick: false
-                                }).then(() => {
-                                    location.reload(); // Refresh the page to reflect changes
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: data.error,
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error resetting configuration:', error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: 'Failed to reset configuration. Please check the console.',
-                            });
-                        });
-                    }
-                });
-            });
-
-            // Function to fetch account data
-            function fetchAccountData() {
-                fetch('/php/dashboard/fetch-update_useraccount.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'action=fetch'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('userUsername').textContent = data.username;
-                        document.getElementById('userEmail').textContent = data.email;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: data.error,
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching account data:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to fetch account data. Please check the console.',
-                    });
-                    console.log("Raw JSON data:", error);
-                });
-            }
-
-            // Fetch account data on page load
-            fetchAccountData();
-
-            // Handle form submission for updating account
-            document.getElementById('account-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const newUsername = document.getElementById('newUsername').value;
-                const newEmail = document.getElementById('newEmail').value;
-
-                fetch('/php/dashboard/fetch-update_useraccount.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=update&username=${newUsername}&email=${newEmail}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: data.success,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            fetchAccountData(); // Refresh account data
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: data.error,
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating account:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to update account. Please check the console.',
-                    });
-                });
-            });
-
-            document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-                    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                    link.classList.add('active');
-                    document.getElementById(link.dataset.section).classList.add('active');
-                });
-            });
-        });
-    </script>
-    <script> // Bootstrap Tooltip
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </script>
 </body>
 </html>
