@@ -43,10 +43,10 @@
             <a href="#" data-section="webapp_settings"><i class="fas fa-cogs me-2"></i> Webapp Settings</a>
             <a href="#" data-section="webapp_customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
             <a href="#" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
-            <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
-            <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
             <a href="#" data-section="healthcare_providers"><i class="fas fa-user-md me-2"></i> Healthcare Providers</a>
             <a href="#" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
+            <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
+            <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
@@ -361,233 +361,6 @@
             </div>
         </section>
 
-        <!-- Appointments Section -->
-        <section id="appointments" class="content-section">
-            <h3 class="mb-4">Appointments Master List</h3>
-            
-            <!-- Stats Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h6>Today's Appointments</h6>
-                            <h3>24</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <h6>Confirmed</h6>
-                            <h3>18</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <h6>Pending</h6>
-                            <h3>5</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-danger text-white">
-                        <div class="card-body">
-                            <h6>Cancelled</h6>
-                            <h3>1</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filters -->
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <select class="form-select">
-                        <option>All Departments</option>
-                        <option>Cardiology</option>
-                        <option>Neurology</option>
-                        <option>Pediatrics</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select class="form-select">
-                        <option>All Doctors</option>
-                        <option>Dr. Smith</option>
-                        <option>Dr. Johnson</option>
-                        <option>Dr. Williams</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select class="form-select">
-                        <option>All Status</option>
-                        <option>Pending</option>
-                        <option>Confirmed</option>
-                        <option>Completed</option>
-                        <option>Cancelled</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="date" class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search appointments...">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="mb-3">
-                <button class="btn btn-info"><i class="fas fa-eye"></i> View</button>
-                <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
-                <button class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button>
-                <button class="btn btn-secondary"><i class="fas fa-clock"></i> Reschedule</button>
-                <button class="btn btn-primary"><i class="fas fa-envelope"></i> Send Email</button>
-                <button class="btn btn-dark"><i class="fas fa-file-alt"></i> Generate Report</button>
-                <button class="btn btn-primary float-end"><i class="fas fa-plus"></i> New Appointment</button>
-            </div>
-
-            <!-- Appointments Table -->
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" class="form-check-input">
-                            </th>
-                            <th>ID</th>
-                            <th>Patient</th>
-                            <th>Doctor</th>
-                            <th>Department</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" class="form-check-input">
-                            </td>
-                            <td>APT001</td>
-                            <td>John Doe</td>
-                            <td>Dr. Smith</td>
-                            <td>Cardiology</td>
-                            <td>2024-02-13</td>
-                            <td>10:00 AM</td>
-                            <td>Check-up</td>
-                            <td><span class="badge bg-warning">Pending</span></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                        Actions
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">View Details</a></li>
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
-                                        <li><a class="dropdown-item" href="#">Send Reminder</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" class="form-check-input">
-                            </td>
-                            <td>APT002</td>
-                            <td>Jane Smith</td>
-                            <td>Dr. Johnson</td>
-                            <td>Neurology</td>
-                            <td>2024-02-13</td>
-                            <td>11:30 AM</td>
-                            <td>Follow-up</td>
-                            <td><span class="badge bg-success">Confirmed</span></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                        Actions
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">View Details</a></li>
-                                        <li><a class="dropdown-item" href="#">Edit</a></li>
-                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
-                                        <li><a class="dropdown-item" href="#">Send Reminder</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <nav aria-label="Appointments pagination">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </section>
-
-        <!-- Patients Section -->
-        <section id="patients" class="content-section">
-            <h3 class="mb-4">Patients Master List</h3>
-            <div class="row mb-3">
-                <div class="col-md-9">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search patients...">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                        <i class="fas fa-plus"></i> Add Patient
-                    </button>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Contact</th>
-                            <th>Last Visit</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>P001</td>
-                            <td>Jane Doe</td>
-                            <td>45</td>
-                            <td>Female</td>
-                            <td>555-0123</td>
-                            <td>2024-01-15</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-primary">Edit</button>
-                                <button class="btn btn-sm btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
         <!-- Healthcare Providers Section -->
         <section id="healthcare_providers" class="content-section">
             <h3 class="mb-4">Healthcare Providers Master List</h3>
@@ -685,6 +458,228 @@
                     </tbody>
                 </table>
             </div>
+        </section>
+
+        <!-- Patients Section -->
+        <section id="patients" class="content-section">
+            <h3 class="mb-4">Patients Master List</h3>
+            <div class="row mb-3">
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search patients...">
+                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+                        <i class="fas fa-plus"></i> Add Patient
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Contact</th>
+                            <th>Last Visit</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P001</td>
+                            <td>Jane Doe</td>
+                            <td>45</td>
+                            <td>Female</td>
+                            <td>555-0123</td>
+                            <td>2024-01-15</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info">View</button>
+                                <button class="btn btn-sm btn-primary">Edit</button>
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Appointments Section -->
+        <section id="appointments" class="content-section">
+            <h3 class="mb-4">Appointments Master List</h3>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h6>Today's Appointments</h6>
+                            <h3>24</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h6>Confirmed</h6>
+                            <h3>18</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h6>Pending</h6>
+                            <h3>5</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h6>Cancelled</h6>
+                            <h3>1</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <select class="form-select">
+                        <option>All Departments</option>
+                        <option>Cardiology</option>
+                        <option>Neurology</option>
+                        <option>Pediatrics</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select">
+                        <option>All Doctors</option>
+                        <option>Dr. Smith</option>
+                        <option>Dr. Johnson</option>
+                        <option>Dr. Williams</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select">
+                        <option>All Status</option>
+                        <option>Pending</option>
+                        <option>Confirmed</option>
+                        <option>Completed</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search appointments...">
+                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-info"><i class="fas fa-eye"></i> View</button>
+                <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
+                <button class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button>
+                <button class="btn btn-secondary"><i class="fas fa-clock"></i> Reschedule</button>
+                <button class="btn btn-primary"><i class="fas fa-envelope"></i> Send Email</button>
+                <button class="btn btn-dark"><i class="fas fa-file-alt"></i> Generate Report</button>
+                <button class="btn btn-primary float-end"><i class="fas fa-plus"></i> New Appointment</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="form-check-input">
+                            </th>
+                            <th>ID</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Department</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="form-check-input">
+                            </td>
+                            <td>APT001</td>
+                            <td>John Doe</td>
+                            <td>Dr. Smith</td>
+                            <td>Cardiology</td>
+                            <td>2024-02-13</td>
+                            <td>10:00 AM</td>
+                            <td>Check-up</td>
+                            <td><span class="badge bg-warning">Pending</span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">View Details</a></li>
+                                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
+                                        <li><a class="dropdown-item" href="#">Send Reminder</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="form-check-input">
+                            </td>
+                            <td>APT002</td>
+                            <td>Jane Smith</td>
+                            <td>Dr. Johnson</td>
+                            <td>Neurology</td>
+                            <td>2024-02-13</td>
+                            <td>11:30 AM</td>
+                            <td>Follow-up</td>
+                            <td><span class="badge bg-success">Confirmed</span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">View Details</a></li>
+                                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                                        <li><a class="dropdown-item" href="#">Cancel</a></li>
+                                        <li><a class="dropdown-item" href="#">Send Reminder</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <nav aria-label="Appointments pagination">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </section>
 
         <!-- User Activity Logs Section -->
