@@ -62,8 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_POST['config'])) {
         $config = json_decode($_POST['config'], true); // Decode the JSON string
 
-        // Load existing configuration
-        $existing_config = json_decode(file_get_contents($webapp_config_file), true);
+        // Load existing configuration if file exists
+        $existing_config = [];
+        if (file_exists($webapp_config_file)) {
+            $existing_config = json_decode(file_get_contents($webapp_config_file), true) ?: [];
+        }
 
         // Merge the submitted config with the existing config
         $config = array_merge($existing_config, $config);

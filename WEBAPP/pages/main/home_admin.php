@@ -205,7 +205,7 @@
                 <div class="col-md-12">
                     <div class="card mb-3 border-0">
                         <div class="card-body">
-                            <form id="website-settings-form">
+                            <form id="website-customization-form">
                                 <h5 class="card-title">Organization</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Logo</label>
@@ -788,18 +788,10 @@
 
     <!-- Major Scripts -->
     <script src="/scripts/dashboard/dashboard_all.js"></script>
-    <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
-    <script src="/scripts/reset-to-default_websiteconfig.js"></script>
     <script src="/scripts/dashboard/dashboard_admin.js"></script>
+    <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
+    <script src="/scripts/dashboard/reset-to-default_websiteconfig.js"></script>
 
     <!-- Internal Scripts -->
-    <script> // Bootstrap Tooltip
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </script>
 </body>
 </html>
