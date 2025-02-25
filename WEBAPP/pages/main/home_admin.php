@@ -174,13 +174,13 @@
                                 </div>
                                 <h5 class="card-title">Legal</h5>
                                 <div class="btn-group-vertical w-100">
-                                    <a href="/pages/util/text_editor.php?file=about_us" class="w-100">
+                                    <a href="/pages/util/text_editor.php?file=about_us" target="_blank" class="w-100">
                                         <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=about_us'; return false;">Edit About Us Page</button>
                                     </a>
-                                    <a href="/pages/util/text_editor.php?file=terms_of_service" class="w-100">
+                                    <a href="/pages/util/text_editor.php?file=terms_of_service" target="_blank" class="w-100">
                                         <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=terms_of_service'; return false;">Edit Terms of Service Statement</button>
                                     </a>
-                                    <a href="/pages/util/text_editor.php?file=privacy_policy" class="w-100">
+                                    <a href="/pages/util/text_editor.php?file=privacy_policy" target="_blank" class="w-100">
                                         <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=privacy_policy'; return false;">Edit Privacy Policy Statement</button>
                                     </a>
                                     <div class="mb-3 w-100">
@@ -325,7 +325,7 @@
         <section id="administrators" class="content-section">
             <h3 class="mb-4">Administrators Master List</h3>
             <div class="mb-3">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal">
+                <button class="btn btn-primary" onclick="addAdmin()">
                     <i class="fas fa-plus"></i> Add Admin
                 </button>
             </div>
@@ -336,26 +336,11 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Last Login</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>A001</td>
-                            <td>John Admin</td>
-                            <td>john@medic.com</td>
-                            <td>Super Admin</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>2024-02-12 09:30 AM</td>
-                            <td>
-                                <button class="btn btn-sm btn-info">Edit</button>
-                                <button class="btn btn-sm btn-warning">Permissions</button>
-                                <button class="btn btn-sm btn-danger">Remove</button>
-                            </td>
-                        </tr>
+                    <tbody id="adminTableBody">
+                        <!-- Data will be loaded here -->
                     </tbody>
                 </table>
             </div>
@@ -364,57 +349,23 @@
         <!-- Healthcare Providers Section -->
         <section id="healthcare_providers" class="content-section">
             <h3 class="mb-4">Healthcare Providers Master List</h3>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>All Departments</option>
-                        <option>Cardiology</option>
-                        <option>Neurology</option>
-                        <option>Pediatrics</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select">
-                        <option>All Status</option>
-                        <option>Active</option>
-                        <option>On Leave</option>
-                        <option>Inactive</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search providers...">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" onclick="addHealthcareProvider()">
+                    <i class="fas fa-plus"></i> Add Healthcare Provider
+                </button>
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Specialization</th>
-                            <th>Department</th>
-                            <th>Schedule</th>
-                            <th>Status</th>
+                            <th>Email</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>D001</td>
-                            <td>Dr. Smith</td>
-                            <td>Cardiologist</td>
-                            <td>Cardiology</td>
-                            <td>Mon-Fri, 9AM-5PM</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-primary">Schedule</button>
-                                <button class="btn btn-sm btn-warning">Edit</button>
-                            </td>
-                        </tr>
+                    <tbody id="healthcareProviderTableBody">
+                        <!-- Data will be loaded here -->
                     </tbody>
                 </table>
             </div>
@@ -424,37 +375,22 @@
         <section id="receptionists" class="content-section">
             <h3 class="mb-4">Receptionists Master List</h3>
             <div class="mb-3">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReceptionistModal">
+                <button class="btn btn-primary" onclick="addReceptionist()">
                     <i class="fas fa-plus"></i> Add Receptionist
                 </button>
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Contact</th>
-                            <th>Shift</th>
-                            <th>Department</th>
-                            <th>Status</th>
+                            <th>Email</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>R001</td>
-                            <td>Mary Johnson</td>
-                            <td>555-0124</td>
-                            <td>Morning</td>
-                            <td>Main Desk</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-warning">Edit</button>
-                                <button class="btn btn-sm btn-danger">Remove</button>
-                            </td>
-                        </tr>
+                    <tbody id="receptionistTableBody">
+                        <!-- Data will be loaded here -->
                     </tbody>
                 </table>
             </div>
@@ -463,48 +399,23 @@
         <!-- Patients Section -->
         <section id="patients" class="content-section">
             <h3 class="mb-4">Patients Master List</h3>
-            <div class="row mb-3">
-                <div class="col-md-9">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search patients...">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addPatientModal">
-                        <i class="fas fa-plus"></i> Add Patient
-                    </button>
-                </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" onclick="addPatient()">
+                    <i class="fas fa-plus"></i> Add Patient
+                </button>
             </div>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Contact</th>
-                            <th>Last Visit</th>
-                            <th>Status</th>
+                            <th>Email</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>P001</td>
-                            <td>Jane Doe</td>
-                            <td>45</td>
-                            <td>Female</td>
-                            <td>555-0123</td>
-                            <td>2024-01-15</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-primary">Edit</button>
-                                <button class="btn btn-sm btn-danger">Delete</button>
-                            </td>
-                        </tr>
+                    <tbody id="patientTableBody">
+                        <!-- Data will be loaded here -->
                     </tbody>
                 </table>
             </div>
@@ -879,6 +790,7 @@
     <script src="/scripts/dashboard/dashboard_all.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
     <script src="/scripts/reset-to-default_websiteconfig.js"></script>
+    <script src="/scripts/dashboard/dashboard_admin.js"></script>
 
     <!-- Internal Scripts -->
     <script> // Bootstrap Tooltip
