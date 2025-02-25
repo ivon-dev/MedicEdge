@@ -333,13 +333,5 @@
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->
-    <script> // Bootstrap Tooltip
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </script>
 </body>
 </html>
