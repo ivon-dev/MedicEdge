@@ -1,3 +1,4 @@
+/* LOGIN/REGISTER PAGE STYLES */
 .login-register-form-wrapper {
     margin-bottom: 50px;
 }
@@ -12,6 +13,11 @@
     height: 50%;
     max-height: 100px;
     max-width: fit-content;
+}
+
+/* FORGOT PASSWORD FORM STYLES */
+.forgot-password-form-wrapper {
+    margin-bottom: 50px;
 }
 
 /* Field Styles */
