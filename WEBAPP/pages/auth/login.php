@@ -40,7 +40,7 @@
     <link rel="icon" type="image/x-icon" href="/<?php echo htmlspecialchars($favicon); ?>">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a href="/">
                 <img src="/<?php echo htmlspecialchars($navbarLogo); ?>" alt="<?php echo htmlspecialchars($orgName); ?> Logo" class="img-fluid" draggable="false">
@@ -91,7 +91,7 @@
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </div>
                             <div class="text-center mt-2">
-                                <a href="#" id="forgotPassword" class="text-muted">Forgot Password?</a>
+                                <a href="/pages/auth/forgot_password.php" id="forgotPassword" class="text-muted">Forgot Password?</a>
                                 <br>
                                 <a href="/" class="text-muted">Back to Homepage</a>
                             </div>
@@ -256,27 +256,6 @@
             })
             .catch(error => {
                 console.error('Login check error:', error);
-            });
-        });
-
-        // Forget Password
-        document.getElementById('forgotPassword').addEventListener('click', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Reset Password',
-                input: 'email',
-                inputLabel: 'Enter your email address',
-                inputPlaceholder: 'email@example.com',
-                showCancelButton: true,
-                confirmButtonText: 'Send Reset Link',
-                showLoaderOnConfirm: true,
-                preConfirm: (email) => {
-                    return new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }).then(result => {
-                if (result.isConfirmed) {
-                    Swal.fire({ icon: 'success', title: 'Reset Link Sent', text: 'Please check your email for password reset instructions.' });
-                }
             });
         });
     </script>
