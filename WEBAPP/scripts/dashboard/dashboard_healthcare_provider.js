@@ -226,47 +226,38 @@ function updateMedicalRecord(userId, medicalRecord) {
 
 // Healthcare Provider specific functions
 function loadAppointments(status = 'upcoming', searchTerm = '') {
-    // Get the actual session token value
-    const sessionCookie = document.cookie.split(';').find(cookie => cookie.trim().startsWith('session_token='));
-    if (!sessionCookie) {
-        console.error("No session token found");
-        return;
-    }
-
-    const sessionToken = sessionCookie.split('=')[1].trim();
+    const sessionToken = document.cookie.replace(/(?:(?:^|.*;\s*)session_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     let userId = null;
-
+    
     if (sessionToken) {
         try {
-            // Parse user_id from session token
-            const [header, payload] = sessionToken.split('.');
-            const decodedUserInfo = JSON.parse(atob(payload));
-            userId = decodedUserInfo.data.user_id; // Access user_id from data object
-
-            console.log("Decoded user info:", decodedUserInfo); // Debug line
-            console.log("Healthcare provider ID:", userId); // Debug line
-            
-            const url = `/php/dashboard/dashboard_healthcare_provider.php?action=getAppointments&status=${status}&provider=${userId}&search=${searchTerm}`;
-            console.log("Fetching URL:", url); // Debug line
-
-            fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Received data:", data); // Debug line
-                if (data.status === 'success') {
-                    populateAppointmentsTable(data.appointments);
-                } else {
-                    console.error('Error fetching appointments:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
+            const decodedToken = JSON.parse(atob(sessionToken.split('.')[1]));
+            userId = decodedToken.user_id;
+            console.log("Current healthcare provider ID:", userId); // Debug line
         } catch (e) {
             console.error("Error decoding session token:", e);
             return;
         }
     }
+
+    const url = `/php/dashboard/dashboard_healthcare_provider.php?action=getAppointments&status=${status}&provider=${userId}&search=${searchTerm}`;
+    console.log("Fetching URL:", url); // Debug line
+
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        console.log("Received data:", data); // Debug line
+        if (data.status === 'success') {
+            populateAppointmentsTable(data.appointments);
+            // Debug info
+            console.log("Debug info:", data.debug);
+        } else {
+            console.error('Error fetching appointments:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
 }
 
 function populateAppointmentsTable(appointments) {
