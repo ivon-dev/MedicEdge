@@ -118,14 +118,21 @@ function getAppointments() {
     $providerId = $_GET['provider'] ?? '';
     $searchTerm = $_GET['search'] ?? '';
     
+    // Debug log
+    error_log("Provider ID: " . $providerId);
+    error_log("Status: " . $status);
+    error_log("Search Term: " . $searchTerm);
+    
+    // Fixed query to properly join tables and handle empty search
     $query = "SELECT 
                 a.*,
                 CONCAT(p.firstname, ' ', p.lastname) as patient_name
               FROM appointments_table a
-              JOIN users_table p ON a.patient = p.user_id
-              WHERE a.healthcare_provider = ? 
+              INNER JOIN users_table p ON a.patient = p.user_id
+              WHERE a.healthcare_provider = ?
               AND a.status = ?
               AND (
+                  ? = '' OR  /* Handle empty search */
                   p.firstname LIKE ? OR 
                   p.lastname LIKE ? OR
                   a.type LIKE ?
@@ -134,9 +141,10 @@ function getAppointments() {
     
     $searchPattern = "%$searchTerm%";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssss", 
+    $stmt->bind_param("ssssss", 
         $providerId,
         $status,
+        $searchTerm,
         $searchPattern, 
         $searchPattern, 
         $searchPattern
@@ -144,16 +152,30 @@ function getAppointments() {
     
     $stmt->execute();
     $result = $stmt->get_result();
+    error_log("Found " . $result->num_rows . " appointments");
     
     $appointments = [];
     while ($row = $result->fetch_assoc()) {
+        error_log("Processing appointment: " . print_r($row, true));
         $row['time_start'] = (new DateTime($row['time_start']))->format('Y-m-d H:i:s');
         $row['time_end'] = (new DateTime($row['time_end']))->format('Y-m-d H:i:s');
         $appointments[] = $row;
     }
     
     $stmt->close();
-    echo json_encode(['status' => 'success', 'appointments' => $appointments]);
+    
+    $response = [
+        'status' => 'success',
+        'appointments' => $appointments,
+        'debug' => [
+            'provider_id' => $providerId,
+            'status' => $status,
+            'search' => $searchTerm,
+            'count' => count($appointments)
+        ]
+    ];
+    
+    echo json_encode($response);
 }
 
 function completeAppointment() {
