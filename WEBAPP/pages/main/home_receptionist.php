@@ -171,57 +171,23 @@
 
         <!-- Appointment Management Section -->
         <section id="appointments" class="content-section">
-            <h3 class="mb-4">Appointment Management</h3>
+            <h3 class="mb-4">Appointments</h3>
             
-            <!-- Stats Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h6>Today's Appointments</h6>
-                            <h3>24</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <h6>Checked In</h6>
-                            <h3>12</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <h6>Waiting</h6>
-                            <h3>8</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white">
-                        <div class="card-body">
-                            <h6>Upcoming</h6>
-                            <h3>4</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Quick Actions</h5>
-                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Appointment</button>
-                    <button class="btn btn-warning"><i class="fas fa-clock"></i> Reschedule</button>
-                    <button class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button>
-                    <button class="btn btn-success"><i class="fas fa-check"></i> Confirm</button>
-                    <button class="btn btn-info"><i class="fas fa-envelope"></i> Send Reminder</button>
+                    <div class="input-group">
+                        <input type="text" id="appointmentsSearch" class="form-control" placeholder="Search appointments...">
+                        <button class="btn btn-primary" onclick="searchAppointments()"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Appointment List -->
+            <div class="mb-3">
+                <button class="btn btn-primary" onclick="addAppointment()">
+                    <i class="fas fa-plus"></i> Add Appointment
+                </button>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -234,19 +200,8 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>09:00 AM</td>
-                            <td>John Doe</td>
-                            <td>Dr. Smith</td>
-                            <td>Check-up</td>
-                            <td><span class="badge bg-success">Confirmed</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary">Check-in</button>
-                                <button class="btn btn-sm btn-warning">Reschedule</button>
-                                <button class="btn btn-sm btn-danger">Cancel</button>
-                            </td>
-                        </tr>
+                    <tbody id="appointmentsTableBody">
+                        <!-- Data will be loaded here -->
                     </tbody>
                 </table>
             </div>
