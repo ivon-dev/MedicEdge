@@ -40,9 +40,8 @@
 
         <div class="mt-4 nav-links">
             <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
-            <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointment Management</a>
-            <a href="#" data-section="checkin"><i class="fas fa-clipboard-check me-2"></i> Patient Check-In</a>
-            <a href="#" data-section="records"><i class="fas fa-folder-open me-2"></i> Patient Records</a>
+            <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
+            <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
@@ -72,27 +71,27 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" name="firstname" class="form-control">
+                    <input type="text" name="firstname" class="form-control" id="firstname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" name="middlename" class="form-control">
+                    <input type="text" name="middlename" class="form-control" id="middlename">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control">
+                    <input type="text" name="lastname" class="form-control" id="lastname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control" id="email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" name="contact_num" class="form-control">
+                    <input type="tel" name="contact_num" class="form-control" id="contact_num">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" name="address" class="form-control">
+                    <input type="text" name="address" class="form-control" id="address">
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
@@ -111,6 +110,32 @@
                         <!-- Images will be loaded here -->
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Patients Section -->
+        <section id="patients" class="content-section">
+            <h3 class="mb-4">Patients Master List</h3>
+            <div class="mb-3">
+                <button class="btn btn-primary" onclick="addPatient()">
+                    <i class="fas fa-plus"></i> Add Patient
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -330,6 +355,7 @@
 
     <!-- Major Scripts -->
     <script src="/scripts/dashboard/dashboard_all.js"></script>
+    <script src="/scripts/dashboard/dashboard_receptionist.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->
