@@ -80,16 +80,45 @@
         global $conn;
         $user_id = $_POST['user_id'];
 
-        $query = "DELETE FROM users_table WHERE user_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $user_id);
+        // First, check if the user exists and is a patient
+        $checkQuery = "SELECT user_type FROM users_table WHERE user_id = ?";
+        $checkStmt = $conn->prepare($checkQuery);
+        $checkStmt->bind_param("s", $user_id);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        $user = $result->fetch_assoc();
+        $checkStmt->close();
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            echo json_encode(['status' => 'success', 'message' => 'User removed successfully.']);
+        if ($user && $user['user_type'] === 'patient') {
+            // Setup directories
+            $sourceDir = $_SERVER['DOCUMENT_ROOT'] . "/DATA/patients/$user_id";
+            $deletedDir = $_SERVER['DOCUMENT_ROOT'] . "/DATA/patients/deleted";
+            $targetDir = $deletedDir . "/$user_id";
+
+            // Create deleted directory if it doesn't exist
+            if (!is_dir($deletedDir)) {
+                mkdir($deletedDir, 0777, true);
+            }
+
+            // Move patient directory if it exists
+            if (is_dir($sourceDir)) {
+                rename($sourceDir, $targetDir);
+            }
+
+            // Delete user from database
+            $query = "DELETE FROM users_table WHERE user_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $user_id);
+
+            if ($stmt->execute()) {
+                $stmt->close();
+                echo json_encode(['status' => 'success', 'message' => 'User removed successfully.']);
+            } else {
+                $stmt->close();
+                echo json_encode(['status' => 'error', 'message' => 'Error removing user: ' . $stmt->error]);
+            }
         } else {
-            $stmt->close();
-            echo json_encode(['status' => 'error', 'message' => 'Error removing user: ' . $stmt->error]);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid user or not a patient.']);
         }
     }
 
@@ -146,10 +175,18 @@
         } else {
             // Return empty medical record if file doesn't exist
             echo json_encode(['status' => 'success', 'medicalRecord' => [
-                'medical_history' => '',
-                'allergies' => '',
-                'current_medications' => '',
-                'blood_type' => ''
+                'Date of Birth' => '',
+                'Gender' => '',
+                'Blood Type' => '',
+                'Height' => '',
+                'Weight' => '',
+                'Allergies' => '',
+                'Chronic Conditions' => '',
+                'Current Medications' => '',
+                'Medical History' => '',
+                'Surgical History' => '',
+                'Family Medical History' => '',
+                'Emergency Contact' => ''
             ]]);
         }
     }

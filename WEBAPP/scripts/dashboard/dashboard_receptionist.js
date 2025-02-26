@@ -39,11 +39,10 @@ function populateTable(users, tableId, userType) {
     users.forEach(user => {
         let row = tableBody.insertRow();
         row.insertCell(0).innerHTML = `<img src="/${user.picture}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">`;
-        row.insertCell(1).textContent = user.user_id;
-        row.insertCell(2).textContent = user.fullname || user.username;
-        row.insertCell(3).textContent = user.email;
+        row.insertCell(1).textContent = user.fullname || user.username;
+        row.insertCell(2).textContent = user.email;
 
-        let actionsCell = row.insertCell(4);
+        let actionsCell = row.insertCell(3);
         let removeButton = `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', '${userType}')">Remove</button>`;
         
         if (user.user_id === loggedInUserId) {
@@ -61,7 +60,7 @@ function populateTable(users, tableId, userType) {
 function removeUser(userId, userType) {
     Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "This action will move the patient's data to archive. You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -79,10 +78,10 @@ function removeUser(userId, userType) {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    Swal.fire({ // Added properties
+                    Swal.fire({
                         icon: 'success',
                         title: 'Deleted!',
-                        text: 'User has been deleted.',
+                        text: 'User has been deleted and data has been archived.',
                         showConfirmButton: false,
                         timer: 1850,
                         allowOutsideClick: false
@@ -92,7 +91,7 @@ function removeUser(userId, userType) {
                 } else {
                     Swal.fire(
                         'Error!',
-                        'There was an error deleting the user.',
+                        data.message || 'There was an error deleting the user.',
                         'error'
                     );
                 }
@@ -284,10 +283,6 @@ function showMedicalRecordEditor(userId, medicalRecord) {
         title: 'Edit Medical Record',
         html: `
             <div class="medical-record-editor">
-                <div class="form-group mb-3">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" id="fullName" class="form-control" value="${medicalRecord.Full_Name || ''}">
-                </div>
                 <div class="row mb-3">
                     <div class="col">
                         <label class="form-label">Date of Birth</label>
@@ -363,7 +358,6 @@ function showMedicalRecordEditor(userId, medicalRecord) {
         focusConfirm: false,
         preConfirm: () => {
             return {
-                'Full Name': document.getElementById('fullName').value,
                 'Date of Birth': document.getElementById('dateOfBirth').value,
                 'Gender': document.getElementById('gender').value,
                 'Blood Type': document.getElementById('bloodType').value,

@@ -127,7 +127,6 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Actions</th>
