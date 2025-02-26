@@ -18,6 +18,15 @@
         case 'getUser':
             getUser();
             break;
+        case 'getMedicalRecords':
+            getMedicalRecords();
+            break;
+        case 'getMedicalRecord':
+            getMedicalRecord();
+            break;
+        case 'updateMedicalRecord':
+            updateMedicalRecord();
+            break;
         default:
             echo json_encode(['status' => 'error', 'message' => 'Invalid action.']);
     }
@@ -100,6 +109,66 @@
             echo json_encode(['status' => 'success', 'user' => $user]);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'User not found.']);
+        }
+    }
+
+    function getMedicalRecords() {
+        global $conn;
+        $searchTerm = $_GET['search'] ?? '';
+        
+        $query = "SELECT user_id, username, firstname, middlename, lastname, picture 
+                  FROM users_table 
+                  WHERE user_type = 'patient'
+                  AND (username LIKE ? OR firstname LIKE ? OR lastname LIKE ?)";
+        
+        $searchPattern = "%$searchTerm%";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $patients = [];
+        while ($row = $result->fetch_assoc()) {
+            $patients[] = $row;
+        }
+        $stmt->close();
+        
+        echo json_encode(['status' => 'success', 'patients' => $patients]);
+    }
+
+    function getMedicalRecord() {
+        $userId = $_GET['user_id'];
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/DATA/patients/$userId/medical_records.json";
+        
+        if (file_exists($filePath)) {
+            $medicalRecord = json_decode(file_get_contents($filePath), true);
+            echo json_encode(['status' => 'success', 'medicalRecord' => $medicalRecord]);
+        } else {
+            // Return empty medical record if file doesn't exist
+            echo json_encode(['status' => 'success', 'medicalRecord' => [
+                'medical_history' => '',
+                'allergies' => '',
+                'current_medications' => '',
+                'blood_type' => ''
+            ]]);
+        }
+    }
+
+    function updateMedicalRecord() {
+        $userId = $_POST['user_id'];
+        $data = json_decode($_POST['data'], true);
+        
+        $directory = $_SERVER['DOCUMENT_ROOT'] . "/DATA/patients/$userId";
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        
+        $filePath = "$directory/medical_records.json";
+        
+        if (file_put_contents($filePath, json_encode($data, JSON_PRETTY_PRINT))) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save medical record']);
         }
     }
 ?>
