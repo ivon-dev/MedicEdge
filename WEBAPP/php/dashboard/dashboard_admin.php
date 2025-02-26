@@ -21,7 +21,7 @@
         case 'addAdmin':
             addUser('administrator');
             break;
-         case 'addHealthcareProvider':
+        case 'addHealthcareProvider':
             addUser('healthcare_provider');
             break;
         case 'addReceptionist':
@@ -42,7 +42,7 @@
 
     function getUsers($userType) {
         global $conn;
-        $query = "SELECT user_id, username, firstname, middlename, lastname, email FROM users_table WHERE user_type = ?";
+        $query = "SELECT user_id, username, firstname, middlename, lastname, email, picture FROM users_table WHERE user_type = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("s", $userType);
         $stmt->execute();

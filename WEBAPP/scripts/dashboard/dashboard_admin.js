@@ -112,7 +112,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadUsers(userType, tableId) {
-    fetch('/php/dashboard/dashboard_admin.php?action=get' + userType.charAt(0).toUpperCase() + userType.slice(1) + 's')
+    let action = '';
+    switch (userType) {
+        case 'administrator':
+            action = 'getAdmins';
+            break;
+        case 'healthcare_provider':
+            action = 'getHealthcareProviders';
+            break;
+        case 'receptionist':
+            action = 'getReceptionists';
+            break;
+        case 'patient':
+            action = 'getPatients';
+            break;
+        default:
+            console.error('Invalid user type:', userType);
+            return;
+    }
+
+    fetch(`/php/dashboard/dashboard_admin.php?action=${action}`)
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
@@ -127,16 +146,35 @@ function populateTable(users, tableId, userType) {
     const tableBody = document.getElementById(tableId);
     tableBody.innerHTML = ''; // Clear existing data
 
+    // Get the user_id from the session token (cookie)
+    const sessionToken = document.cookie.replace(/(?:(?:^|.*;\s*)session_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    let loggedInUserId = null;
+    if (sessionToken) {
+        try {
+            const decodedToken = JSON.parse(atob(sessionToken.split('.')[1]));
+            loggedInUserId = decodedToken.user_id;
+        } catch (e) {
+            console.error("Error decoding session token:", e);
+        }
+    }
+
     users.forEach(user => {
         let row = tableBody.insertRow();
-        row.insertCell(0).textContent = user.user_id;
-        row.insertCell(1).textContent = user.fullname || user.username;
-        row.insertCell(2).textContent = user.email;
+        row.insertCell(0).innerHTML = `<img src="/${user.picture}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">`;
+        row.insertCell(1).textContent = user.user_id;
+        row.insertCell(2).textContent = user.fullname || user.username;
+        row.insertCell(3).textContent = user.email;
 
-        let actionsCell = row.insertCell(3);
+        let actionsCell = row.insertCell(4);
+        let removeButton = `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', '${userType}')">Remove</button>`;
+        
+        if (user.user_id === loggedInUserId) {
+            removeButton = `<button class="btn btn-sm btn-secondary" disabled>Remove</button>`;
+        }
+
         actionsCell.innerHTML = `
             <button class="btn btn-sm btn-info" onclick="editUser('${user.user_id}', '${userType}')">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', '${userType}')">Remove</button>
+            ${removeButton}
             <a class="btn btn-sm btn-info" href="mailto:${user.email}" target="_blank">Message</a>
         `;
     });
@@ -163,12 +201,15 @@ function removeUser(userId, userType) {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    Swal.fire(
-                        'Deleted!',
-                        'User has been deleted.',
-                        'success'
-                    ).then(() => {
-                        loadUsers(userType, userType + 'TableBody');
+                    Swal.fire({ // Added properties
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'User has been deleted.',
+                        showConfirmButton: false,
+                        timer: 1850,
+                        allowOutsideClick: false
+                    }).then(() => {
+                        location.reload();
                     });
                 } else {
                     Swal.fire(
@@ -183,6 +224,25 @@ function removeUser(userId, userType) {
 }
 
 function addUser(userType) {
+    let action = '';
+    switch (userType) {
+        case 'administrator':
+            action = 'addAdmin';
+            break;
+        case 'healthcare_provider':
+            action = 'addHealthcareProvider';
+            break;
+        case 'receptionist':
+            action = 'addReceptionist';
+            break;
+        case 'patient':
+            action = 'addPatient';
+            break;
+        default:
+            console.error('Invalid user type:', userType);
+            return;
+    }
+
     Swal.fire({
         title: 'Add New ' + userType.charAt(0).toUpperCase() + userType.slice(1),
         html: `
@@ -217,17 +277,20 @@ function addUser(userType) {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `action=add${userType.charAt(0).toUpperCase() + userType.slice(1)}&username=${userData.username}&firstname=${userData.firstname}&middlename=${userData.middlename}&lastname=${userData.lastname}&password=${userData.password}&email=${userData.email}&contact_num=${userData.contact_num}&address=${userData.address}`
+                body: `action=${action}&username=${userData.username}&firstname=${userData.firstname}&middlename=${userData.middlename}&lastname=${userData.lastname}&password=${userData.password}&email=${userData.email}&contact_num=${userData.contact_num}&address=${userData.address}`
             })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    Swal.fire(
-                        'Added!',
-                        'New ' + userType + ' has been added.',
-                        'success'
-                    ).then(() => {
-                        loadUsers(userType, userType + 'TableBody');
+                    Swal.fire({ // Added properties
+                        icon: 'success',
+                        title: 'Added!',
+                        text: 'New ' + userType + ' has been added.',
+                        showConfirmButton: false,
+                        timer: 1850,
+                        allowOutsideClick: false
+                    }).then(() => {
+                        location.reload();
                     });
                 } else {
                     Swal.fire(
