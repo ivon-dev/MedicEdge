@@ -35,17 +35,16 @@
     <nav class="sidebar" style="background-color: <?php echo htmlspecialchars($dashboardColor); ?>;">
         <!-- Profile Section -->
         <div class="profile-section">
-            <img src="profile.jpg" draggable="false">
-            <h5 class="mt-2">John Doe</h5>
+            <img src="" id="current-profile-picture" draggable="false">
+            <h5 class="mt-2" id="patient-name">Loading...</h5>
         </div>
 
         <!-- Navigation Links -->
         <div class="mt-4 nav-links">
-            <a href="#" data-section="account" class="active"><i class="fas fa-home me-2"></i> Your Account</a>
+            <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-alt me-2"></i> Appointments</a>
             <a href="#" data-section="records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
             <a href="#" data-section="prescriptions"><i class="fas fa-pills me-2"></i> Prescriptions</a>
-            <a href="#" data-section="profile"><i class="fas fa-user me-2"></i> Profile</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
@@ -60,32 +59,37 @@
     <main class="content">
         <!-- Profile Section -->
         <section id="account" class="content-section active">
-            <h3 class="mb-4">Your Profile</h3>
+            <h3 class="mb-4">Your Account</h3>
             <form>
                 <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username" id="username">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">First Name</label>
-                    <input type="text" name="firstname" class="form-control" id="firstname" readonly>
+                    <input type="text" class="form-control" name="firstname" id="firstname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Middle Name</label>
-                    <input type="text" name="middlename" class="form-control" id="middlename" readonly>
+                    <input type="text" class="form-control"  name="middlename" id="middlename">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Last Name</label>
-                    <input type="text" name="lastname" class="form-control" id="lastname" readonly>
+                    <input type="text" class="form-control" name="lastname" id="lastname">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" readonly>
+                    <input type="email" class="form-control" name="email" id="email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Contact Number</label>
-                    <input type="tel" name="contact_num" class="form-control" id="contact_num" readonly>
+                    <input type="tel" class="form-control" name="contact_num" id="contact_num">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Address</label>
-                    <input type="text" name="address" class="form-control" id="address" readonly>
+                    <input type="text" class="form-control" name="address" id="address">
                 </div>
+                <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
         </section>
 
@@ -136,26 +140,6 @@
                 <li class="list-group-item">Ibuprofen - 200mg (As needed) - Expires: Dec 2025</li>
                 <li class="list-group-item text-muted">Amoxicillin - 500mg (Completed) - Expired: Jan 2025</li>
             </ul>
-        </section>
-
-        <!-- Profile -->
-        <section id="profile" class="content-section">
-            <h3 class="mb-4">Profile</h3>
-            <form>
-                <div class="mb-3">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-control" value="John Doe">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" value="john.doe@email.com">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" value="+1 234 567 890">
-                </div>
-                <button type="submit" class="btn btn-success">Save Changes</button>
-            </form>
         </section>
     </main>
     
