@@ -95,7 +95,7 @@
 
         <!-- Appointments -->
         <section id="appointments" class="content-section">
-            <h3 class="mb-4">Appointments</h3>
+            <h3 class="mb-4">Your Appointments</h3>
             <ul class="list-group">
                 <li class="list-group-item">Feb 15, 2025 - General Checkup with Dr. Smith</li>
                 <li class="list-group-item">Mar 20, 2025 - Dental Cleaning with Dr. Brown</li>
@@ -105,7 +105,7 @@
 
         <!-- Medical Records -->
         <section id="records" class="content-section">
-            <h3 class="mb-4">Medical Records</h3>
+            <h3 class="mb-4">Your Medical Records</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -134,7 +134,7 @@
 
         <!-- Prescriptions -->
         <section id="prescriptions" class="content-section">
-            <h3 class="mb-4">Prescriptions</h3>
+            <h3 class="mb-4">Your Prescriptions</h3>
             <ul class="list-group">
                 <li class="list-group-item">Lisinopril - 10mg (Daily) - Expires: June 2025</li>
                 <li class="list-group-item">Ibuprofen - 200mg (As needed) - Expires: Dec 2025</li>
