@@ -41,9 +41,8 @@
         <div class="mt-4 nav-links">
             <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Assigned Appointments</a>
-            <a href="#" data-section="patients"><i class="fas fa-notes-medical me-2"></i> Patient Records</a>
-            <a href="#" data-section="messaging"><i class="fas fa-envelope me-2"></i> Messaging</a>
-            <a href="#" data-section="availability"><i class="fas fa-clock me-2"></i> Availability</a>
+            <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
+            <a href="#" data-section="medical-records"><i class="fas fa-file-medical me-2"></i> Patient Medical Records</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
@@ -118,19 +117,94 @@
         <!-- Assigned Appointments Section -->
         <section id="appointments" class="content-section">
             <h3 class="mb-4">Assigned Appointments</h3>
-            <button class="btn btn-info">View</button>
-            <button class="btn btn-warning">Cancel</button>
-            <button class="btn btn-primary">Reschedule</button>
-            <button class="btn btn-success">Mark as Completed</button>
-            <button class="btn btn-secondary">Add Notes</button>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="appointmentsSearch" class="form-control" placeholder="Search appointments...">
+                        <button class="btn btn-primary" onclick="searchAppointments()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="loadAppointments('upcoming')" data-bs-toggle="tab" href="#upcoming">Upcoming</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="loadAppointments('completed')" data-bs-toggle="tab" href="#completed">Completed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="loadAppointments('cancelled')" data-bs-toggle="tab" href="#cancelled">Cancelled</a>
+                </li>
+            </ul>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Patient</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <!-- Patient Records Section -->
+        <!-- Patients Section -->
         <section id="patients" class="content-section">
-            <h3 class="mb-4">Patient Records</h3>
-            <button class="btn btn-info">View Patient History</button>
-            <button class="btn btn-success">Add Prescriptions</button>
-            <button class="btn btn-secondary">Upload Test Results</button>
+            <h3 class="mb-4">Patients Master List</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Patient Medical Records Section -->
+        <section id="medical-records" class="content-section">
+            <h3 class="mb-4">Patient Medical Records</h3>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="medicalRecordsSearch" class="form-control" placeholder="Search patients...">
+                        <button class="btn btn-primary" onclick="searchMedicalRecords()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicalRecordsTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Messaging Section -->
@@ -155,6 +229,7 @@
 
     <!-- Major Scripts -->
     <script src="/scripts/dashboard/dashboard_all.js"></script>
+    <script src="/scripts/dashboard/dashboard_healthcare_provider.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Internal Scripts -->

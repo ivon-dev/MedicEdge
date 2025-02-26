@@ -397,7 +397,387 @@ function updateMedicalRecord(userId, medicalRecord) {
     });
 }
 
+function addAppointment() {
+    // Fetch patients and healthcare providers first
+    Promise.all([
+        fetch('/php/dashboard/dashboard_receptionist.php?action=getPatientsList'),
+        fetch('/php/dashboard/dashboard_receptionist.php?action=getHealthcareProvidersList')
+    ])
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(([patientsData, providersData]) => {
+        const patients = patientsData.users;
+        const providers = providersData.users;
+
+        const predefinedTypes = [
+            'General Consultation',
+            'Dental Check-up',
+            'Follow-up Appointment',
+            'Pediatric Consultation',
+            'Vaccination Appointment',
+            'Specialist Consultation',
+            'Physical Therapy Session',
+            'Mental Health Counseling',
+            'Lab Test Appointment',
+            'Maternity & Prenatal Check-up'
+        ];
+
+        Swal.fire({
+            title: 'New Appointment',
+            html: `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Select Patient</label>
+                        <select id="patient-select" class="form-control">
+                            <option value="">Choose a patient...</option>
+                            ${patients.map(p => `<option value="${p.user_id}">${p.firstname} ${p.lastname}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Select Healthcare Provider</label>
+                        <select id="provider-select" class="form-control">
+                            <option value="">Choose a provider...</option>
+                            ${providers.map(p => `<option value="${p.user_id}">${p.firstname} ${p.lastname}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Appointment Type</label>
+                    <input list="type-options" id="type-input" class="form-control" placeholder="Enter or select type">
+                    <datalist id="type-options">
+                        ${predefinedTypes.map(type => `<option value="${type}">`).join('')}
+                    </datalist>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Start Time</label>
+                        <input type="datetime-local" id="time-start" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">End Time</label>
+                        <input type="datetime-local" id="time-end" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Symptoms</label>
+                    <textarea id="symptoms" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Diagnosis</label>
+                    <textarea id="diagnosis" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Remarks</label>
+                    <textarea id="remarks" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select id="status" class="form-control">
+                        <option value="upcoming" selected>Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Create Appointment',
+            preConfirm: () => {
+                const patient = document.getElementById('patient-select').value;
+                const provider = document.getElementById('provider-select').value;
+                const type = document.getElementById('type-input').value;
+                const timeStart = document.getElementById('time-start').value;
+                const timeEnd = document.getElementById('time-end').value;
+                const symptoms = document.getElementById('symptoms').value;
+                const diagnosis = document.getElementById('diagnosis').value;
+                const remarks = document.getElementById('remarks').value;
+                const status = document.getElementById('status').value;
+
+                if (!patient || !provider || !type || !timeStart || !timeEnd) {
+                    Swal.showValidationMessage('Please fill in all required fields');
+                    return false;
+                }
+
+                return {
+                    patient,
+                    provider,
+                    type,
+                    timeStart,
+                    timeEnd,
+                    symptoms,
+                    diagnosis,
+                    remarks,
+                    status
+                };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formData = new URLSearchParams(result.value);
+                formData.append('action', 'addAppointment');
+
+                fetch('/php/dashboard/dashboard_receptionist.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        Swal.fire('Success', 'Appointment created successfully', 'success');
+                        // Reload appointments list if needed
+                    } else {
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                });
+            }
+        });
+    });
+}
+
+function loadAppointments(searchTerm = '') {
+    fetch(`/php/dashboard/dashboard_receptionist.php?action=getAppointments&search=${searchTerm}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            populateAppointmentsTable(data.appointments);
+        } else {
+            console.error('Error fetching appointments:', data.message);
+        }
+    });
+}
+
+function populateAppointmentsTable(appointments) {
+    const tableBody = document.getElementById('appointmentsTableBody');
+    tableBody.innerHTML = '';
+
+    appointments.forEach(appointment => {
+        let row = tableBody.insertRow();
+        
+        // Format datetime for display without seconds
+        const startTime = new Date(appointment.time_start).toLocaleString([], { 
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        const endTime = new Date(appointment.time_end).toLocaleString([], {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        row.insertCell(0).textContent = `${startTime} - ${endTime}`;
+        row.insertCell(1).textContent = appointment.patient_name;
+        row.insertCell(2).textContent = appointment.provider_name;
+        row.insertCell(3).textContent = appointment.type;
+
+        let statusCell = row.insertCell(4);
+        let statusClass = '';
+        switch(appointment.status) {
+            case 'upcoming':
+                statusClass = 'bg-primary';
+                break;
+            case 'completed':
+                statusClass = 'bg-success';
+                break;
+            case 'cancelled':
+                statusClass = 'bg-danger';
+                break;
+        }
+        statusCell.innerHTML = `<span class="badge ${statusClass}">${appointment.status}</span>`;
+
+        let actionsCell = row.insertCell(5);
+        actionsCell.innerHTML = `
+            <button class="btn btn-sm btn-info" onclick="editAppointment('${appointment.id}')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteAppointment('${appointment.id}')">Delete</button>
+        `;
+    });
+}
+
+function editAppointment(appointmentId) {
+    // First fetch the appointment details
+    fetch(`/php/dashboard/dashboard_receptionist.php?action=getAppointment&id=${appointmentId}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const appointment = data.appointment;
+            
+            // Fetch patients and providers for the dropdowns
+            Promise.all([
+                fetch('/php/dashboard/dashboard_receptionist.php?action=getPatientsList'),
+                fetch('/php/dashboard/dashboard_receptionist.php?action=getHealthcareProvidersList')
+            ])
+            .then(responses => Promise.all(responses.map(r => r.json())))
+            .then(([patientsData, providersData]) => {
+                const patients = patientsData.users;
+                const providers = providersData.users;
+
+                const predefinedTypes = [
+                    'General Consultation',
+                    'Dental Check-up',
+                    'Follow-up Appointment',
+                    'Pediatric Consultation',
+                    'Vaccination Appointment',
+                    'Specialist Consultation',
+                    'Physical Therapy Session',
+                    'Mental Health Counseling',
+                    'Lab Test Appointment',
+                    'Maternity & Prenatal Check-up'
+                ];
+
+                // Format datetime-local value
+                const startTime = new Date(appointment.time_start).toISOString().slice(0,16);
+                const endTime = new Date(appointment.time_end).toISOString().slice(0,16);
+
+                Swal.fire({
+                    title: 'Edit Appointment',
+                    html: `
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Select Patient</label>
+                                <select id="patient-select" class="form-control">
+                                    <option value="">Choose a patient...</option>
+                                    ${patients.map(p => `<option value="${p.user_id}" ${p.user_id === appointment.patient ? 'selected' : ''}>${p.firstname} ${p.lastname}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Select Healthcare Provider</label>
+                                <select id="provider-select" class="form-control">
+                                    <option value="">Choose a provider...</option>
+                                    ${providers.map(p => `<option value="${p.user_id}" ${p.user_id === appointment.healthcare_provider ? 'selected' : ''}>${p.firstname} ${p.lastname}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Appointment Type</label>
+                            <input list="type-options" id="type-input" class="form-control" value="${appointment.type}" placeholder="Enter or select type">
+                            <datalist id="type-options">
+                                ${predefinedTypes.map(type => `<option value="${type}">`).join('')}
+                            </datalist>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Start Time</label>
+                                <input type="datetime-local" id="time-start" class="form-control" value="${startTime}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">End Time</label>
+                                <input type="datetime-local" id="time-end" class="form-control" value="${endTime}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Symptoms</label>
+                            <textarea id="symptoms" class="form-control" rows="2">${appointment.symptoms}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Diagnosis</label>
+                            <textarea id="diagnosis" class="form-control" rows="2">${appointment.diagnosis}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Remarks</label>
+                            <textarea id="remarks" class="form-control" rows="2">${appointment.remarks}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select id="status" class="form-control">
+                                <option value="upcoming" ${appointment.status === 'upcoming' ? 'selected' : ''}>Upcoming</option>
+                                <option value="completed" ${appointment.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                <option value="cancelled" ${appointment.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Update Appointment',
+                    preConfirm: () => {
+                        const formData = {
+                            id: appointmentId,
+                            patient: document.getElementById('patient-select').value,
+                            provider: document.getElementById('provider-select').value,
+                            type: document.getElementById('type-input').value,
+                            timeStart: document.getElementById('time-start').value,
+                            timeEnd: document.getElementById('time-end').value,
+                            symptoms: document.getElementById('symptoms').value,
+                            diagnosis: document.getElementById('diagnosis').value,
+                            remarks: document.getElementById('remarks').value,
+                            status: document.getElementById('status').value
+                        };
+
+                        if (!formData.patient || !formData.provider || !formData.type || !formData.timeStart || !formData.timeEnd) {
+                            Swal.showValidationMessage('Please fill in all required fields');
+                            return false;
+                        }
+
+                        return formData;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new URLSearchParams(result.value);
+                        formData.append('action', 'updateAppointment');
+
+                        fetch('/php/dashboard/dashboard_receptionist.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire('Success', 'Appointment updated successfully', 'success');
+                                loadAppointments();
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    });
+}
+
+function deleteAppointment(appointmentId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to delete this appointment?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/php/dashboard/dashboard_receptionist.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=deleteAppointment&id=${appointmentId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Deleted!', 'Appointment has been deleted.', 'success');
+                    loadAppointments();
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            });
+        }
+    });
+}
+
+function searchAppointments() {
+    const searchTerm = document.getElementById('appointmentsSearch').value.toLowerCase();
+    loadAppointments(searchTerm);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     loadUsers('patient', 'patientTableBody');
     loadMedicalRecords();
+    loadAppointments();
 });

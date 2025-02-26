@@ -41,7 +41,7 @@
         <div class="mt-4 nav-links">
             <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
             <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
-            <a href="#" data-section="medical-records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
+            <a href="#" data-section="medical-records"><i class="fas fa-file-medical me-2"></i> Patient Medical Records</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
@@ -139,9 +139,9 @@
             </div>
         </section>
 
-        <!-- Medical Records Section -->
+        <!-- Patient Medical Records Section -->
         <section id="medical-records" class="content-section">
-            <h3 class="mb-4">Medical Records</h3>
+            <h3 class="mb-4">Patient Medical Records</h3>
             
             <div class="card mb-4">
                 <div class="card-body">
