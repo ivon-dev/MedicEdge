@@ -119,14 +119,14 @@
         </div>
     </footer>
 
+    <!-- External Scripts -->
+    <script src="/scripts/external/bootstrap.bundle.min.js"></script>
+    <script src="/scripts/external/aos.js"></script>
+
     <!-- Minor Scripts -->
     <script src="/scripts/copyright-year.js"></script>
 
     <!-- Major Scripts -->
-    <script src="/scripts/external/bootstrap.bundle.min.js"></script>
-    <script src="/scripts/external/aos.js"></script>
-
-    <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Internal Scripts -->

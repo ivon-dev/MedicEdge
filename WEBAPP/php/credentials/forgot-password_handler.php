@@ -19,19 +19,30 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    // Use the existing connection from connection.php
-    global $conn;
-
+    
+    // Validate required parameters based on action
     switch($action) {
         case 'verify_code':
+            if (!isset($_POST['code']) || empty($_POST['code'])) {
+                echo json_encode(['success' => false, 'message' => 'Operation cancelled']);
+                exit;
+            }
             verifyResetCode($conn, $_POST['code']);
             break;
         
         case 'update_password':
+            if (!isset($_POST['password']) || empty($_POST['password'])) {
+                echo json_encode(['success' => false, 'message' => 'Operation cancelled']);
+                exit;
+            }
             updatePassword($conn, $_POST['password']);
             break;
         
         default:
+            if (!isset($_POST['username']) || empty($_POST['username'])) {
+                echo json_encode(['success' => false, 'message' => 'Operation cancelled']);
+                exit;
+            }
             handleInitialRequest($conn);
             break;
     }
@@ -79,7 +90,7 @@ function handleInitialRequest($conn) {
         
         // Create HTML email
         $to = $email;
-        $subject = "Password Reset Code - $orgName";
+        $subject = "$orgName - Password Reset Code";
         
         // HTML Email Template
         $message = "
@@ -121,7 +132,7 @@ function handleInitialRequest($conn) {
         // Email Headers
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: {$orgName} <noreply@medicedge.com>\r\n";
+        $headers .= "From: {$orgName}\r\n";
         
         mail($to, $subject, $message, $headers);
         
@@ -132,6 +143,11 @@ function handleInitialRequest($conn) {
 }
 
 function verifyResetCode($conn, $code) {
+    if (empty($code)) {
+        echo json_encode(['success' => false, 'message' => 'Operation cancelled']);
+        exit;
+    }
+    
     if (!isset($_COOKIE['resetpwd_id'])) {
         echo json_encode(['success' => false, 'message' => 'Reset session expired']);
         exit;
@@ -152,6 +168,11 @@ function verifyResetCode($conn, $code) {
 }
 
 function updatePassword($conn, $password) {
+    if (empty($password)) {
+        echo json_encode(['success' => false, 'message' => 'Operation cancelled']);
+        exit;
+    }
+    
     if (!isset($_COOKIE['resetpwd_id'])) {
         echo json_encode(['success' => false, 'message' => 'Reset session expired']);
         exit;
