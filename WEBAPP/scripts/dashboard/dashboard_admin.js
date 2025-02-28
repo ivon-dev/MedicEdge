@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const heroTextSubtitleSelector = isCustomizationForm ? 'hero-text-subtitle' : 'hero-text-subtitle';
                 const contactEmailSelector = isCustomizationForm ? 'contact-email' : 'contact-email';
                 const contactNumSelector = isCustomizationForm ? 'contact-num' : 'contact-num';
-                const addressSelector = isCustomizationForm ? 'address' : 'address';
+                const addressSelector = isCustomizationForm ? 'org-address' : 'org-address';
                 const adActiveUsersSelector = isCustomizationForm ? 'ad-active-users' : 'ad-active-users';
                 const adHealthcarePartnersSelector = isCustomizationForm ? 'ad-healthcare-partners' : 'ad-healthcare-partners';
                 const adUptimeSelector = isCustomizationForm ? 'ad-uptime' : 'ad-uptime';
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     'hero-text-subtitle': document.getElementById(heroTextSubtitleSelector)?.value || '',
                     'contact-email': document.getElementById(contactEmailSelector)?.value || '',
                     'contact-num': document.getElementById(contactNumSelector)?.value || '',
-                    'address': document.getElementById(addressSelector)?.value || '',
+                    'org-address': document.getElementById(addressSelector)?.value || '', // Changed from 'address' to 'org-address'
                     'ad-active-users': document.getElementById(adActiveUsersSelector)?.value || '',
                     'ad-healthcare-partners': document.getElementById(adHealthcarePartnersSelector)?.value || '',
                     'ad-uptime': document.getElementById(adUptimeSelector)?.value || '',

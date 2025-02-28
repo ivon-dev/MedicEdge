@@ -232,6 +232,9 @@
     <script src="/scripts/dashboard/dashboard_healthcare_provider.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
+    <!-- Minor Scripts -->
+    <script src="/scripts/bootstrap-tooltip.js"></script>
+
     <!-- Internal Scripts -->
 </body>
 </html>

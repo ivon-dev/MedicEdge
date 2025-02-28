@@ -1,5 +1,8 @@
 <?php
 
+// Add debugging
+error_log("Received config data: " . print_r($_POST, true));
+
 $webapp_config_file = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/medicedge_webapp_config.json';
 $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/CONFIG/branding/custom/";
 
@@ -61,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Check if 'config' is set in $_POST, indicating a standard form submission
     if (isset($_POST['config'])) {
         $config = json_decode($_POST['config'], true); // Decode the JSON string
+
+        // Add debugging
+        error_log("Parsed config data: " . print_r($config, true));
 
         // Load existing configuration if file exists
         $existing_config = [];

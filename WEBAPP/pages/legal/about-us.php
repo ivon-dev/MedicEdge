@@ -107,5 +107,6 @@
 
     <!-- Minor Scripts -->
     <script src="/scripts/copyright-year.js"></script>
+    <script src="/scripts/bootstrap-tooltip.js"></script>
 </body>
 </html>

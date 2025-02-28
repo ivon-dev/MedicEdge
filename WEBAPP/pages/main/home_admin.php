@@ -245,7 +245,7 @@
                                     <label class="form-label">Address</label>
                                     <i class="fa fa-question-circle help-tooltip"
                                        data-bs-toggle="tooltip" data-bs-placement="right" title="This will be reflected system-wide."></i>
-                                    <input type="text" class="form-control" id="address" name="address">
+                                    <input type="text" class="form-control" id="org-address" name="address">
                                 </div>
                                 <h5 class="card-title pt-3">Homepage</h5>
                                 <div class="mb-3">

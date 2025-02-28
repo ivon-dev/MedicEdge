@@ -159,14 +159,15 @@
     </footer>
 
     <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
+    <!-- Major Scripts -->
+
     <!-- Minor Scripts -->
     <script src="/scripts/copyright-year.js"></script>
-
-    <!-- Major Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/bootstrap-tooltip.js"></script>
 
     <!-- Internal Scripts -->
     <script>
@@ -214,14 +215,6 @@
                         });
                     }
               });
-        });
-    </script>
-    <script> // Bootstrap Tooltip
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
         });
     </script>
 </body>
