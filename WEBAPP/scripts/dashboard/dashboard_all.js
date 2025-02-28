@@ -207,11 +207,3 @@ document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
         document.getElementById(link.dataset.section).classList.add('active');
     });
 });
-
-// BOOTSTRAP TOOLTIP
-document.addEventListener("DOMContentLoaded", function () {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-});
