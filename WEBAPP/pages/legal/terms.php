@@ -103,11 +103,11 @@
         </div>
     </footer>
 
-    <!-- Minor Scripts -->
-    <script src="/scripts/copyright-year.js"></script>
-
-    <!-- Major Scripts -->
+    <!-- External Scripts -->
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
+
+    <!-- Minor Scripts -->
+    <script src="/scripts/copyright-year.js"></script>
 </body>
 </html>

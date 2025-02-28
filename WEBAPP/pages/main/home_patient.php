@@ -143,12 +143,12 @@
         </section>
     </main>
     
-    <!-- Major Scripts -->
+    <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
 
-    <!-- External Scripts -->
+    <!-- Major Scripts -->
     <script src="/scripts/dashboard/dashboard_all.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
