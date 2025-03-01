@@ -55,6 +55,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/help/help.php">Help</a></li>
                     <li class="nav-item"><a class="nav-link" href="/pages/legal/about-us.php">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="/pages/legal/privacy.php">Privacy Policy</a></li>
                     <li class="nav-item"><a class="btn btn-primary ms-2" href="/pages/auth/login.php">Login</a></li>
