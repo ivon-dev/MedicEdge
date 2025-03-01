@@ -14,8 +14,8 @@ $document_map = [
 ];
 
 function parseMarkdown($markdown) {
-    $parsedown = new Parsedown();
-    return $parsedown->text($markdown);
+    $Parsedown = new Parsedown();
+    return $Parsedown->text($markdown);
 }
 
 function saveFile($key, $content) {

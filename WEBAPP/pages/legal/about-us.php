@@ -18,11 +18,12 @@
 ?>
 
 <?php
-    include_once $_SERVER['DOCUMENT_ROOT'] . '/php/legal/markdown_handler.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/php/external/Parsedown.php';
+    $Parsedown = new Parsedown();
 
     $markdownFile = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/legal/about-us.md';
     $markdown = file_get_contents($markdownFile);
-    $htmlContent = markdownToHtml($markdown);
+    $htmlContent = $Parsedown->text($markdown);
 ?>
 
 <!DOCTYPE html>
