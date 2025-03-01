@@ -18,7 +18,18 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', functio
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error('Invalid server response. Please contact administrator for help.');
+            }
+        });
+    })
     .then(data => {
         if (data.success) {
             // Show code input popup
@@ -43,7 +54,18 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', functio
                             'Content-Type': 'application/x-www-form-urlencoded',
                         },
                         body: `action=verify_code&code=${result.value}`
-                    }).then(response => response.json());
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text().then(text => {
+                            try {
+                                return JSON.parse(text);
+                            } catch (e) {
+                                throw new Error('Invalid server response. Please contact administrator for help.');
+                            }
+                        });
+                    });
                 }
             }).then(verifyResult => {
                 if (verifyResult && verifyResult.success) {
@@ -83,7 +105,18 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', functio
                             'Content-Type': 'application/x-www-form-urlencoded',
                         },
                         body: `action=update_password&password=${result.value.password}`
-                    }).then(response => response.json());
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text().then(text => {
+                            try {
+                                return JSON.parse(text);
+                            } catch (e) {
+                                throw new Error('Invalid server response. Please contact administrator for help.');
+                            }
+                        });
+                    });
                 }
             }).then(updateResult => {
                 if (updateResult && updateResult.success) {

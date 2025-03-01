@@ -134,7 +134,19 @@ function handleInitialRequest($conn) {
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         $headers .= "From: {$orgName}\r\n";
         
-        mail($to, $subject, $message, $headers);
+        // Attempt to send email with error handling
+        if (!mail($to, $subject, $message, $headers)) {
+            // If mail fails, delete the reset request and return error
+            $delete_stmt = $conn->prepare("DELETE FROM users_forgotpassword WHERE id = ?");
+            $delete_stmt->bind_param("s", $reset_id);
+            $delete_stmt->execute();
+            
+            // Remove cookie
+            setcookie('resetpwd_id', '', time() - 3600, '/');
+            
+            // echo json_encode(['success' => false, 'message' => 'Unable to send email. Please try again later or contact support.']);
+            exit;
+        }
         
         echo json_encode(['success' => true, 'message' => 'Reset code sent to your email']);
     } else {
