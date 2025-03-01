@@ -176,13 +176,13 @@
                                 <h5 class="card-title">Legal</h5>
                                 <div class="btn-group-vertical w-100">
                                     <a href="/pages/util/text_editor.php?file=about_us" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit About Us Page</button>
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.open('/pages/util/text_editor.php?file=about_us', '_blank'); return false;">Edit About Us Page</button>
                                     </a>
                                     <a href="/pages/util/text_editor.php?file=terms_of_service" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit Terms of Service Statement</button>
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.open('/pages/util/text_editor.php?file=terms_of_service', '_blank'); return false;">Edit Terms of Service Statement</button>
                                     </a>
                                     <a href="/pages/util/text_editor.php?file=privacy_policy" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit Privacy Policy Statement</button>
+                                        <button class="btn btn-primary mb-2 w-100" onclick="window.open('/pages/util/text_editor.php?file=privacy_policy', '_blank'); return false;">Edit Privacy Policy Statement</button>
                                     </a>
                                     <div class="mb-3 w-100">
                                         <label class="form-label">Terms/Privacy Revision Date</label>
@@ -881,6 +881,9 @@
     <script src="/scripts/dashboard/dashboard_admin.js"></script>
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
     <script src="/scripts/dashboard/reset-to-default_websiteconfig.js"></script>
+
+    <!-- Minor Scripts -->
+    <script src="/scripts/bootstrap-tooltip.js"></script>
 
     <!-- Internal Scripts -->
 </body>
