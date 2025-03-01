@@ -48,6 +48,7 @@
             <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="#" data-section="activity_logs"><i class="fas fa-clipboard-list me-2"></i> User Activity Logs</a>
+            <a href="#" data-section="documentation"><i class="fas fa-book me-2"></i> Documentation for Admins</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
@@ -174,14 +175,14 @@
                                 </div>
                                 <h5 class="card-title">Legal</h5>
                                 <div class="btn-group-vertical w-100">
-                                    <a href="/pages/util/text_editor.php?file=about_us" target="_blank" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=about_us'; return false;">Edit About Us Page</button>
+                                    <a href="/pages/util/text_editor.php?file=about_us" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit About Us Page</button>
                                     </a>
-                                    <a href="/pages/util/text_editor.php?file=terms_of_service" target="_blank" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=terms_of_service'; return false;">Edit Terms of Service Statement</button>
+                                    <a href="/pages/util/text_editor.php?file=terms_of_service" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit Terms of Service Statement</button>
                                     </a>
-                                    <a href="/pages/util/text_editor.php?file=privacy_policy" target="_blank" class="w-100">
-                                        <button class="btn btn-primary mb-2 w-100" onclick="window.location.href='/pages/util/text_editor.php?file=privacy_policy'; return false;">Edit Privacy Policy Statement</button>
+                                    <a href="/pages/util/text_editor.php?file=privacy_policy" class="w-100">
+                                        <button class="btn btn-primary mb-2 w-100" target="_blank">Edit Privacy Policy Statement</button>
                                     </a>
                                     <div class="mb-3 w-100">
                                         <label class="form-label">Terms/Privacy Revision Date</label>
@@ -781,6 +782,91 @@
                         <li class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="documentation" class="content-section">
+            <h3 class="mb-4">Documentation</h3>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">User Guides</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    <a href="/docs/admin_guide.pdf" target="_blank">Administrator Manual</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    <a href="/docs/provider_guide.pdf" target="_blank">Healthcare Provider Guide</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    <a href="/docs/receptionist_guide.pdf" target="_blank">Receptionist Guide</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    <a href="/docs/patient_guide.pdf" target="_blank">Patient Portal Guide</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Technical Documentation</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-code me-2 text-primary"></i>
+                                    <a href="/docs/api_documentation.html" target="_blank">API Documentation</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-code me-2 text-primary"></i>
+                                    <a href="/docs/database_schema.html" target="_blank">Database Schema</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-code me-2 text-primary"></i>
+                                    <a href="/docs/deployment_guide.html" target="_blank">Deployment Guide</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-file-code me-2 text-primary"></i>
+                                    <a href="/docs/security_guidelines.html" target="_blank">Security Guidelines</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Support Resources</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="fas fa-question-circle me-2 text-warning"></i>
+                                    <a href="/docs/faq.html" target="_blank">Frequently Asked Questions</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    <a href="/docs/known_issues.html" target="_blank">Known Issues</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-life-ring me-2 text-warning"></i>
+                                    <a href="/support" target="_blank">Support Portal</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="fas fa-comments me-2 text-warning"></i>
+                                    <a href="/community" target="_blank">Community Forum</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
