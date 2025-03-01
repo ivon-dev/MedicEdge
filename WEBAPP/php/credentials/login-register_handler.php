@@ -291,7 +291,7 @@ switch ($action) {
                 'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
                 'path' => '/',
                 'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on', // Conditionally set secure
-                'httponly' => true, // Recommending to set it to true
+                'httponly' => false, // Recommending to set it to true, but instead set to false for index_onload_check cookie checker
                 'samesite' => 'Lax' // Adjust based on your needs, consider 'None' if necessary but ensure 'Secure' is true
             ]);
                 

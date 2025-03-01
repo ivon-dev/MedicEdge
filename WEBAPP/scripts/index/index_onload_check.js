@@ -1,25 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to check if a cookie exists
-    function cookieExists(name) {
-        return document.cookie.split('; ').some((cookie) => cookie.trim().startsWith(name + '='));
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
     }
 
-    if (cookieExists('session_token')) {
-        let heroLink = document.querySelector('.hero-section a');
+    const sessionToken = getCookie('session_token');
+
+    if (sessionToken) {
+        // Hero section modification
+        const heroLink = document.querySelector('.hero-section a');
         if (heroLink) {
             heroLink.href = '/pages/main/redirect.php';
-            heroLink.querySelector('button').textContent = 'Go to your Dashboard';
+            const heroButton = heroLink.querySelector('button');
+            if (heroButton) {
+                heroButton.textContent = 'Go to your Dashboard';
+            }
         }
 
-        let navbarLink = document.querySelector('.navbar-nav a[href="/pages/auth/register_as_admin.php"]');
+        // Navbar register link modification
+        const navbarLink = document.querySelector('a[href="/pages/auth/register_as_admin.php"]');
         if (navbarLink) {
             navbarLink.href = '/pages/main/redirect.php';
             navbarLink.textContent = 'Go to your Dashboard';
         }
 
-        let loginLinkItem = document.querySelector('.navbar-nav a[href="/pages/auth/login.php"]').closest('.nav-item');
-        if (loginLinkItem) {
-            loginLinkItem.style.display = 'none';
+        // Hide login link
+        const loginLink = document.querySelector('a[href="/pages/auth/login.php"]');
+        if (loginLink) {
+            const loginLinkItem = loginLink.closest('.nav-item');
+            if (loginLinkItem) {
+                loginLinkItem.style.display = 'none';
+            }
         }
     }
 });
