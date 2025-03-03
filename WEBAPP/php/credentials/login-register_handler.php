@@ -1,10 +1,16 @@
 <?php
+// Set timezone to UTC
+date_default_timezone_set('UTC');
+
+// Add session start at the beginning
+session_start();
+
 include('../connection.php');
 
 // Constants
 define('SESSION_LIFETIME', 86400); // 24 hours
 define('MAX_LOGIN_ATTEMPTS', 5);
-define('COOLDOWN_PERIOD', 900); // 15 minutes in seconds
+define('COOLDOWN_PERIOD', 300); // 5 minutes in seconds
 
 // Utility Functions
 class AuthUtils {
@@ -48,60 +54,117 @@ class AuthUtils {
     }
 
     public static function checkRateLimit($ip, $conn) {
-        // First, clean up expired blocks
-        $stmt = $conn->prepare("DELETE FROM users_session_blocklist WHERE block_end <= NOW()");
-        $stmt->execute();
-        
-        // Check if IP is currently blocked
-        $stmt = $conn->prepare("SELECT block_end FROM users_session_blocklist WHERE ip_address = ? AND block_end > NOW()");
-        $stmt->bind_param("s", $ip);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $remaining = ceil((strtotime($row['block_end']) - time()) / 60);
-            return ['locked' => true, 'remaining' => $remaining];
-        }
-        
-        if (!isset($_SESSION['login_attempts'])) {
-            $_SESSION['login_attempts'] = [];
-        }
-
-        if (!isset($_SESSION['login_attempts'][$ip])) {
-            $_SESSION['login_attempts'][$ip] = [
-                'attempts' => 0,
-                'last_attempt' => time()
-            ];
-        }
-
-        $attempts = &$_SESSION['login_attempts'][$ip];
-        
-        // Reset attempts if cooldown period has passed
-        if (time() - $attempts['last_attempt'] > COOLDOWN_PERIOD) {
-            $attempts['attempts'] = 0;
-        }
-
-        // Check if max attempts reached
-        if ($attempts['attempts'] >= MAX_LOGIN_ATTEMPTS) {
-            // Add to blocklist
-            $block_id = 'block_' . date('mdY_His');
-            $block_end = date('Y-m-d H:i:s', time() + COOLDOWN_PERIOD);
+        try {
+            // Check for active blocks using UTC_TIMESTAMP()
+            $stmt = $conn->prepare("
+                SELECT block_end 
+                FROM users_session_blocklist 
+                WHERE ip_address = ? 
+                    AND block_end > UTC_TIMESTAMP() 
+                ORDER BY block_end DESC 
+                LIMIT 1
+            ");
             
-            $stmt = $conn->prepare("INSERT INTO users_session_blocklist (id, ip_address, block_end) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $block_id, $ip, $block_end);
-            $stmt->execute();
+            if (!$stmt) {
+                error_log("Failed to prepare block check statement: " . $conn->error);
+                return ['locked' => false, 'remaining' => 0];
+            }
             
-            // Clear session attempts
-            unset($_SESSION['login_attempts'][$ip]);
+            $stmt->bind_param("s", $ip);
+            if (!$stmt->execute()) {
+                error_log("Failed to execute block check: " . $stmt->error);
+                return ['locked' => false, 'remaining' => 0];
+            }
             
-            return ['locked' => true, 'remaining' => COOLDOWN_PERIOD / 60];
+            $result = $stmt->get_result();
+            
+            if ($result && $result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $remaining = ceil((strtotime($row['block_end']) - strtotime('UTC')) / 60);
+                return ['locked' => true, 'remaining' => $remaining];
+            }
+
+            // Rest of rate limit checking logic
+            // Track attempts in session
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = [];
+            }
+
+            if (!isset($_SESSION['login_attempts'][$ip])) {
+                $_SESSION['login_attempts'][$ip] = [
+                    'attempts' => 0,
+                    'last_attempt' => time()
+                ];
+            }
+
+            $attempts = &$_SESSION['login_attempts'][$ip];
+            
+            // Reset attempts if cooldown period has passed
+            if (time() - $attempts['last_attempt'] > COOLDOWN_PERIOD) {
+                $attempts['attempts'] = 0;
+            }
+
+            // Check if max attempts reached
+            if ($attempts['attempts'] >= MAX_LOGIN_ATTEMPTS) {
+                // Generate the block end time in UTC
+                $block_end = gmdate('Y-m-d H:i:s', time() + COOLDOWN_PERIOD);
+                
+                // Generate block_id with format: block_[MMDDYYYY]_[HHMMSS] in UTC
+                $block_id = "block_" . gmdate('mdY_His');
+                
+                try {
+                    $conn->begin_transaction();
+
+                    // First, check if there's already an active block using UTC_TIMESTAMP()
+                    $check_stmt = $conn->prepare("
+                        SELECT COUNT(*) as active_blocks 
+                        FROM users_session_blocklist 
+                        WHERE ip_address = ? AND block_end > UTC_TIMESTAMP()
+                    ");
+                    $check_stmt->bind_param("s", $ip);
+                    $check_stmt->execute();
+                    $check_result = $check_stmt->get_result();
+                    $active_blocks = $check_result->fetch_assoc()['active_blocks'];
+
+                    // Only insert new block if no active blocks exist
+                    if ($active_blocks == 0) {
+                        // Insert using UTC for issued_on (handled by default UTC_TIMESTAMP())
+                        $stmt = $conn->prepare("
+                            INSERT INTO users_session_blocklist 
+                            (id, ip_address, block_end, issued_on) 
+                            VALUES (?, ?, ?, UTC_TIMESTAMP())
+                        ");
+                        
+                        if (!$stmt) {
+                            throw new Exception("Failed to prepare block statement: " . $conn->error);
+                        }
+                        
+                        $stmt->bind_param("sss", $block_id, $ip, $block_end);
+                        if (!$stmt->execute()) {
+                            throw new Exception("Failed to execute block statement: " . $stmt->error);
+                        }
+                    }
+
+                    $conn->commit();
+                    unset($_SESSION['login_attempts'][$ip]);
+                    return ['locked' => true, 'remaining' => COOLDOWN_PERIOD / 60];
+
+                } catch (Exception $e) {
+                    $conn->rollback();
+                    error_log("Block insertion error: " . $e->getMessage());
+                    return ['locked' => true, 'remaining' => COOLDOWN_PERIOD / 60];
+                }
+            }
+
+            $attempts['attempts']++;
+            $attempts['last_attempt'] = time();
+
+            return ['locked' => false, 'remaining' => 0];
+
+        } catch (Exception $e) {
+            error_log("Rate limit check error: " . $e->getMessage());
+            return ['locked' => false, 'remaining' => 0];
         }
-
-        $attempts['attempts']++;
-        $attempts['last_attempt'] = time();
-
-        return ['locked' => false, 'remaining' => 0];
     }
 
     public static function clearLoginAttempts($ip) {
@@ -206,16 +269,29 @@ switch ($action) {
                 'message' => 'Invalid request method'
             ]));
         }
-            
-        // Check rate limit first
-        $rateLimitCheck = AuthUtils::checkRateLimit($_SERVER['REMOTE_ADDR'], $conn);
-        if ($rateLimitCheck['locked']) {
+
+        // STEP 1: Check if IP is currently blocked using UTC_TIMESTAMP()
+        $stmt = $conn->prepare("
+            SELECT block_end 
+            FROM users_session_blocklist 
+            WHERE ip_address = ? 
+                AND block_end > UTC_TIMESTAMP() 
+            ORDER BY block_end DESC 
+            LIMIT 1
+        ");
+        $stmt->bind_param("s", $_SERVER['REMOTE_ADDR']);
+        $stmt->execute();
+        $blockResult = $stmt->get_result();
+        
+        if ($blockResult->num_rows > 0) {
+            $blockData = $blockResult->fetch_assoc();
+            $remaining = ceil((strtotime($blockData['block_end']) - time()) / 60);
             exit(json_encode([
                 'success' => false,
-                'message' => "Too many failed attempts. Please try again in {$rateLimitCheck['remaining']} minutes."
+                'message' => "Too many login attempts. Please try again in {$remaining} minutes."
             ]));
         }
-            
+
         // Get and sanitize inputs
         $username = AuthUtils::sanitizeInput($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
@@ -225,6 +301,13 @@ switch ($action) {
         $conn->begin_transaction();
             
         try {
+            // STEP 2: Check rate limits
+            $rateLimitCheck = AuthUtils::checkRateLimit($_SERVER['REMOTE_ADDR'], $conn);
+            if ($rateLimitCheck['locked']) {
+                throw new Exception("Too many failed attempts. Please try again in {$rateLimitCheck['remaining']} minutes.");
+            }
+
+            // STEP 3: Process login
             // Query user data
             $stmt = $conn->prepare("SELECT * FROM users_table WHERE username = ?");
             $stmt->bind_param("s", $username);
@@ -266,10 +349,10 @@ switch ($action) {
                     
             } while (true);
                 
-            // Generate session data
+            // Generate session data using UTC
             $session_token = AuthUtils::generateSessionToken();
             $login_time = gmdate('Y-m-d H:i:s');
-            $expire_time = gmdate('Y-m-d H:i:s', time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
+            $expire_time = gmdate('Y-m-d H:i:s', strtotime('UTC') + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 
@@ -286,9 +369,9 @@ switch ($action) {
             );
             $stmt->execute();
                 
-            // Set session cookie
+            // Set session cookie with UTC expiry
             setcookie('session_token', $session_token, [
-                'expires' => time() + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
+                'expires' => strtotime('UTC') + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
                 'path' => '/',
                 'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on', // Conditionally set secure
                 'httponly' => false, // Recommending to set it to true, but instead set to false for index_onload_check cookie checker
@@ -310,6 +393,21 @@ switch ($action) {
         } catch (Exception $e) {
             // Rollback transaction on error
             $conn->rollback();
+                
+            // Double check if this attempt triggered a block
+            $stmt = $conn->prepare("SELECT block_end FROM users_session_blocklist WHERE ip_address = ? AND block_end > UTC_TIMESTAMP() ORDER BY block_end DESC LIMIT 1");
+            $stmt->bind_param("s", $_SERVER['REMOTE_ADDR']);
+            $stmt->execute();
+            $blockResult = $stmt->get_result();
+            
+            if ($blockResult->num_rows > 0) {
+                $blockData = $blockResult->fetch_assoc();
+                $remaining = ceil((strtotime($blockData['block_end']) - time()) / 60);
+                exit(json_encode([
+                    'success' => false,
+                    'message' => "Too many login attempts. Please try again in {$remaining} minutes."
+                ]));
+            }
                 
             // Log error
             error_log("Login error: " . $e->getMessage());
