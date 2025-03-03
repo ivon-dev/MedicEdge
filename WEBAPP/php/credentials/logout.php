@@ -21,9 +21,9 @@ function expireSessionToken($conn) {
             'expires' => time() - 3600,
             'path' => '/',
             'domain' => '',
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => 'Strict'
+            'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+            'httponly' => false,
+            'samesite' => 'Lax'
         ];
         setcookie('session_token', '', $cookie_options);
     }
