@@ -47,7 +47,6 @@
             <a href="#" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
             <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
             <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
-            <a href="#" data-section="documentation"><i class="fas fa-book me-2"></i> Documentation for Admins</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
