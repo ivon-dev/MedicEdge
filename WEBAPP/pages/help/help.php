@@ -59,7 +59,7 @@
     </nav>
 
     <main class="mt-5 pt-5 px-4">
-        <div class="container-fluid" style="min-height: 59.5vh; background-color: #f8f9fa;">
+        <div class="container-fluid" style="min-height: 59.5vh;">
             <div class="row">
                 <div class="col-lg-4 col-sm-12 mb-4">
                     <div class="card h-100">
