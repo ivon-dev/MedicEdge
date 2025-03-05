@@ -1,3 +1,7 @@
+main {
+    min-height: 38.1vh;
+}
+
 .max-w-3xl {
     max-width: 48rem;
 }
