@@ -53,6 +53,7 @@
             <p><?php echo htmlspecialchars($orgName); ?></p>
         </div>
     </nav>
+    <button class="sidebar-toggle"><i class="fas fa-chevron-left"></i></button>
 
     <main class="content">
         <!-- Profile Section -->
@@ -236,5 +237,39 @@
     <script src="/scripts/bootstrap-tooltip.js"></script>
 
     <!-- Internal Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const icon = sidebarToggle.querySelector('i');
+
+            // Check localStorage for saved state
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                sidebar.classList.add('collapsed');
+                content.classList.add('sidebar-collapsed');
+                sidebarToggle.classList.add('collapsed');
+                icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+            }
+
+            // Toggle handler
+            sidebarToggle.addEventListener('click', () => {
+                const willCollapse = !sidebar.classList.contains('collapsed');
+                
+                sidebar.classList.toggle('collapsed');
+                content.classList.toggle('sidebar-collapsed');
+                sidebarToggle.classList.toggle('collapsed');
+                
+                if (willCollapse) {
+                    icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                } else {
+                    icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                }
+                
+                localStorage.setItem('sidebarCollapsed', willCollapse);
+            });
+        });
+    </script>
 </body>
 </html>
