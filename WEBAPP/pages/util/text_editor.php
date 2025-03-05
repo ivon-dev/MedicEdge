@@ -116,7 +116,7 @@ $webapp_config_file = $_SERVER['DOCUMENT_ROOT'] . '/CONFIG/medicedge_webapp_conf
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Text Editor</title>
+    <title>Text Editor — <?php echo htmlspecialchars($orgName); ?></title>
 
     <link rel="stylesheet" href="/styles/external/bootstrap.min.css">
     <link href="/styles/global-styles/footer_globalstyles.css" rel="stylesheet">
