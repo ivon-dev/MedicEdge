@@ -42,9 +42,36 @@
 
     function getUsers($userType) {
         global $conn;
-        $query = "SELECT user_id, username, firstname, middlename, lastname, email, picture FROM users_table WHERE user_type = ?";
+        $searchTerm = $_GET['search'] ?? '';
+        
+        $query = "SELECT user_id, username, firstname, middlename, lastname, email, picture 
+                  FROM users_table 
+                  WHERE user_type = ?";
+                  
+        if (!empty($searchTerm)) {
+            $query .= " AND (
+                LOWER(firstname) LIKE LOWER(?) OR 
+                LOWER(middlename) LIKE LOWER(?) OR 
+                LOWER(lastname) LIKE LOWER(?)
+            )";
+        }
+        
+        $query .= " ORDER BY firstname ASC";
+        
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $userType);
+        
+        if (!empty($searchTerm)) {
+            $searchPattern = "%$searchTerm%";
+            $stmt->bind_param("ssss", 
+                $userType,
+                $searchPattern, 
+                $searchPattern, 
+                $searchPattern
+            );
+        } else {
+            $stmt->bind_param("s", $userType);
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result();
         $users = [];
@@ -53,7 +80,13 @@
             $users[] = $row;
         }
         $stmt->close();
-        echo json_encode(['status' => 'success', 'users' => $users]);
+        
+        echo json_encode([
+            'status' => 'success', 
+            'users' => $users,
+            'count' => count($users),
+            'search' => $searchTerm
+        ]);
     }
 
     function addUser($userType) {

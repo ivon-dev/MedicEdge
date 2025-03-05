@@ -118,6 +118,14 @@
         <!-- Patients Section -->
         <section id="patients" class="content-section">
             <h3 class="mb-4">Patients Master List</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="patientsSearch" class="form-control" placeholder="Search for a Patient's name...">
+                        <button class="btn btn-primary" onclick="searchPatients()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" onclick="addPatient()">
                     <i class="fas fa-plus"></i> Add Patient
@@ -128,6 +136,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Actions</th>

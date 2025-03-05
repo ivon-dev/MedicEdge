@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    loadUsers('administrator', 'adminTableBody');
-    loadUsers('healthcare_provider', 'healthcareProviderTableBody');
-    loadUsers('receptionist', 'receptionistTableBody');
-    loadUsers('patient', 'patientTableBody');
+    // Modified these calls to use the new loadUsers function with correct actions
+    loadUsers('getAdmins', 'adminTableBody', '');         // Empty string for no search filter
+    loadUsers('getHealthcareProviders', 'healthcareProviderTableBody', '');
+    loadUsers('getReceptionists', 'receptionistTableBody', '');
+    loadUsers('getPatients', 'patientTableBody', '');
 
     // Handle both forms
     ['website-settings-form', 'website-customization-form'].forEach(formId => {
@@ -109,37 +110,63 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn(`Form with ID ${formId} not found.`);
         }
     });
+
+    const searchInputs = {
+        'adminSearch': searchAdmins,
+        'providersSearch': searchProviders,
+        'receptionistsSearch': searchReceptionists,
+        'patientsSearch': searchPatients
+    };
+
+    for (const [inputId, searchFunction] of Object.entries(searchInputs)) {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', () => {
+                clearTimeout(input.searchTimeout);
+                input.searchTimeout = setTimeout(searchFunction, 300);
+            });
+        }
+    }
 });
 
-function loadUsers(userType, tableId) {
-    let action = '';
-    switch (userType) {
-        case 'administrator':
-            action = 'getAdmins';
-            break;
-        case 'healthcare_provider':
-            action = 'getHealthcareProviders';
-            break;
-        case 'receptionist':
-            action = 'getReceptionists';
-            break;
-        case 'patient':
-            action = 'getPatients';
-            break;
-        default:
-            console.error('Invalid user type:', userType);
-            return;
-    }
+// Search functions modified to handle empty search
+function searchAdmins() {
+    const searchTerm = document.getElementById('adminSearch').value;
+    loadUsers('getAdmins', 'adminTableBody', searchTerm);
+}
 
-    fetch(`/php/dashboard/dashboard_admin.php?action=${action}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            populateTable(data.users, tableId, userType);
-        } else {
-            console.error('Error fetching ' + userType + 's:', data.message);
-        }
-    });
+function searchProviders() {
+    const searchTerm = document.getElementById('providersSearch').value;
+    loadUsers('getHealthcareProviders', 'healthcareProviderTableBody', searchTerm);
+}
+
+function searchReceptionists() {
+    const searchTerm = document.getElementById('receptionistsSearch').value;
+    loadUsers('getReceptionists', 'receptionistTableBody', searchTerm);
+}
+
+function searchPatients() {
+    const searchTerm = document.getElementById('patientsSearch').value;
+    loadUsers('getPatients', 'patientTableBody', searchTerm);
+}
+
+// Modified loadUsers function to properly handle empty search terms
+function loadUsers(action, tableId, searchTerm) {
+    let url = `/php/dashboard/dashboard_admin.php?action=${action}`;
+    if (searchTerm !== '') {
+        url += `&search=${encodeURIComponent(searchTerm)}`;
+    }
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                populateTable(data.users, tableId, action);
+            } else {
+                console.error('Error loading users:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 function populateTable(users, tableId, userType) {

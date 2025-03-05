@@ -1,59 +1,124 @@
-function loadUsers(userType, tableId) {
-    let action = '';
-    switch (userType) {
-        case 'patient':
-            action = 'getPatients';
-            break;
-        default:
-            console.error('Invalid user type:', userType);
-            return;
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial load of patients with empty search term
+    loadUsers('getPatients', 'patientTableBody', '');
 
-    fetch(`/php/dashboard/dashboard_receptionist.php?action=${action}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            populateTable(data.users, tableId, userType);
-        } else {
-            console.error('Error fetching ' + userType + 's:', data.message);
-        }
-    });
+    // Setup search input event listener
+    const searchInput = document.getElementById('patientsSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchInput.searchTimeout);
+            searchInput.searchTimeout = setTimeout(() => {
+                searchPatients();
+            }, 300);
+        });
+    }
+    
+    loadMedicalRecords();
+    loadAppointments();
+});
+
+function searchPatients() {
+    const searchTerm = document.getElementById('patientsSearch').value;
+    loadUsers('getPatients', 'patientTableBody', searchTerm);
 }
 
-function populateTable(users, tableId, userType) {
+function loadUsers(action, tableId, searchTerm) {
+    let url = `/php/dashboard/dashboard_receptionist.php?action=${action}`;
+    if (searchTerm !== '') {
+        url += `&search=${encodeURIComponent(searchTerm)}`;
+    }
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                populateTable(data.users, tableId);
+            } else {
+                console.error('Error loading users:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function populateTable(users, tableId) {
     const tableBody = document.getElementById(tableId);
     tableBody.innerHTML = ''; // Clear existing data
-
-    // Get the user_id from the session token (cookie)
-    const sessionToken = document.cookie.replace(/(?:(?:^|.*;\s*)session_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    let loggedInUserId = null;
-    if (sessionToken) {
-        try {
-            const decodedToken = JSON.parse(atob(sessionToken.split('.')[1]));
-            loggedInUserId = decodedToken.user_id;
-        } catch (e) {
-            console.error("Error decoding session token:", e);
-        }
-    }
 
     users.forEach(user => {
         let row = tableBody.insertRow();
         row.insertCell(0).innerHTML = `<img src="/${user.picture}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">`;
-        row.insertCell(1).textContent = user.fullname || user.username;
-        row.insertCell(2).textContent = user.email;
+        row.insertCell(1).textContent = user.user_id;
+        row.insertCell(2).textContent = user.fullname || user.username;
+        row.insertCell(3).textContent = user.email;
 
-        let actionsCell = row.insertCell(3);
-        let removeButton = `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', '${userType}')">Remove</button>`;
-        
-        if (user.user_id === loggedInUserId) {
-            removeButton = `<button class="btn btn-sm btn-secondary" disabled>Remove</button>`;
-        }
-
+        let actionsCell = row.insertCell(4);
         actionsCell.innerHTML = `
-            <button class="btn btn-sm btn-info" onclick="editUser('${user.user_id}', '${userType}')">Edit</button>
-            ${removeButton}
+            <button class="btn btn-sm btn-info" onclick="editUser('${user.user_id}', 'patient')">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', 'patient')">Remove</button>
             <a class="btn btn-sm btn-info" href="mailto:${user.email}" target="_blank">Message</a>
         `;
+    });
+}
+
+function addPatient() {
+    Swal.fire({
+        title: 'Add New Patient',
+        html: `
+            <input id="swal-input-username" class="swal2-input" placeholder="Username">
+            <input id="swal-input-firstname" class="swal2-input" placeholder="First Name">
+            <input id="swal-input-middlename" class="swal2-input" placeholder="Middle Name">
+            <input id="swal-input-lastname" class="swal2-input" placeholder="Last Name">
+            <input id="swal-input-password" class="swal2-input" placeholder="Password" type="password">
+            <input id="swal-input-email" class="swal2-input" placeholder="Email" type="email">
+            <input id="swal-input-contact" class="swal2-input" placeholder="Contact Number">
+            <input id="swal-input-address" class="swal2-input" placeholder="Address">
+        `,
+        confirmButtonText: 'Add',
+        focusConfirm: false,
+        preConfirm: () => {
+            return {
+                username: document.getElementById('swal-input-username').value,
+                firstname: document.getElementById('swal-input-firstname').value,
+                middlename: document.getElementById('swal-input-middlename').value,
+                lastname: document.getElementById('swal-input-lastname').value,
+                password: document.getElementById('swal-input-password').value,
+                email: document.getElementById('swal-input-email').value,
+                contact_num: document.getElementById('swal-input-contact').value,
+                address: document.getElementById('swal-input-address').value
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const userData = result.value;
+            fetch('/php/dashboard/dashboard_receptionist.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=addPatient&username=${userData.username}&firstname=${userData.firstname}&middlename=${userData.middlename}&lastname=${userData.lastname}&password=${userData.password}&email=${userData.email}&contact_num=${userData.contact_num}&address=${userData.address}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added!',
+                        text: 'New patient has been added.',
+                        showConfirmButton: false,
+                        timer: 1850,
+                        allowOutsideClick: false
+                    }).then(() => {
+                        loadUsers('getPatients', 'patientTableBody', '');
+                    });
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'There was an error adding the patient.',
+                        'error'
+                    );
+                }
+            });
+        }
     });
 }
 
@@ -170,10 +235,6 @@ function addUser(userType) {
             });
         }
     })
-}
-
-function addPatient() {
-    addUser('patient');
 }
 
 function editUser(userId, userType) {
@@ -775,9 +836,3 @@ function searchAppointments() {
     const searchTerm = document.getElementById('appointmentsSearch').value.toLowerCase();
     loadAppointments(searchTerm);
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    loadUsers('patient', 'patientTableBody');
-    loadMedicalRecords();
-    loadAppointments();
-});

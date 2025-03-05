@@ -324,6 +324,14 @@
         <!-- Administrators Section -->
         <section id="administrators" class="content-section">
             <h3 class="mb-4">Administrators Master List</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="adminSearch" class="form-control" placeholder="Search for an Administrator's name...">
+                        <button class="btn btn-primary" onclick="searchAdmins()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" onclick="addAdmin()">
                     <i class="fas fa-plus"></i> Add Admin
@@ -350,6 +358,14 @@
         <!-- Healthcare Providers Section -->
         <section id="healthcare_providers" class="content-section">
             <h3 class="mb-4">Healthcare Providers Master List</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="providersSearch" class="form-control" placeholder="Search for a Healthcare Provider's name...">
+                        <button class="btn btn-primary" onclick="searchProviders()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" onclick="addHealthcareProvider()">
                     <i class="fas fa-plus"></i> Add Healthcare Provider
@@ -376,6 +392,14 @@
         <!-- Receptionists Section -->
         <section id="receptionists" class="content-section">
             <h3 class="mb-4">Receptionists Master List</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="receptionistsSearch" class="form-control" placeholder="Search for a Receptionist's name...">
+                        <button class="btn btn-primary" onclick="searchReceptionists()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" onclick="addReceptionist()">
                     <i class="fas fa-plus"></i> Add Receptionist
@@ -402,6 +426,14 @@
         <!-- Patients Section -->
         <section id="patients" class="content-section">
             <h3 class="mb-4">Patients Master List</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="patientsSearch" class="form-control" placeholder="Search for a Patient's name...">
+                        <button class="btn btn-primary" onclick="searchPatients()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
             <div class="mb-3">
                 <button class="btn btn-primary" onclick="addPatient()">
                     <i class="fas fa-plus"></i> Add Patient
