@@ -348,37 +348,60 @@
     <script src="/scripts/bootstrap-tooltip.js"></script>
 
     <!-- Internal Scripts -->
-    <script>
+    <script> // Collapse/Expand Sidebar
         document.addEventListener('DOMContentLoaded', () => {
             const sidebar = document.querySelector('.sidebar');
             const content = document.querySelector('.content');
             const sidebarToggle = document.querySelector('.sidebar-toggle');
             const icon = sidebarToggle.querySelector('i');
 
-            // Check localStorage for saved state
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (isCollapsed) {
+            function collapseSidebar() {
                 sidebar.classList.add('collapsed');
                 content.classList.add('sidebar-collapsed');
                 sidebarToggle.classList.add('collapsed');
                 icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                localStorage.setItem('sidebarCollapsed', 'true');
             }
+
+            function expandSidebar() {
+                sidebar.classList.remove('collapsed');
+                content.classList.remove('sidebar-collapsed');
+                sidebarToggle.classList.remove('collapsed');
+                icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+
+            // Check window width and localStorage for initial state
+            function initializeSidebar() {
+                if (window.innerWidth <= 675) {
+                    collapseSidebar();
+                } else {
+                    // Check localStorage only for larger screens
+                    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                    if (isCollapsed) {
+                        collapseSidebar();
+                    }
+                }
+            }
+
+            // Initialize on load
+            initializeSidebar();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 675) {
+                    collapseSidebar();
+                }
+            });
 
             // Toggle handler
             sidebarToggle.addEventListener('click', () => {
                 const willCollapse = !sidebar.classList.contains('collapsed');
-                
-                sidebar.classList.toggle('collapsed');
-                content.classList.toggle('sidebar-collapsed');
-                sidebarToggle.classList.toggle('collapsed');
-                
                 if (willCollapse) {
-                    icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+                    collapseSidebar();
                 } else {
-                    icon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                    expandSidebar();
                 }
-                
-                localStorage.setItem('sidebarCollapsed', willCollapse);
             });
         });
     </script>
