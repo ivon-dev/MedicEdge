@@ -68,7 +68,7 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <i class="fas fa-file-pdf me-2 text-danger"></i>
-                                    <a href="/docs/admin_guide.pdf" target="_blank">Administrator Manual</a>
+                                    <a href="/pages/util/view_doc.php?file=qhnA00ECdx7g2ue1jqUrecLU3k4hC01yfy3vn6m4VmrTQG4SaywaFCGMpxyHvd6R" target="_blank">Administrator Manual</a>
                                 </li>
                                 <li class="list-group-item">
                                     <i class="fas fa-file-pdf me-2 text-danger"></i>
