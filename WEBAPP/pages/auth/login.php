@@ -29,7 +29,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?php echo htmlspecialchars($orgName); ?> — Login</title>
+    <title>Login — <?php echo htmlspecialchars($orgName); ?></title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">

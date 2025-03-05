@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Admin Dashboard">
-    <title>Admin Dashboard - <?php echo htmlspecialchars($orgName); ?></title>
+    <title>Administrator Dashboard — <?php echo htmlspecialchars($orgName); ?></title>
 
     <link href="/styles/external/bootstrap.min.css" rel="stylesheet">
     <link href="/styles/external/aos.css" rel="stylesheet">
