@@ -40,18 +40,38 @@ function loadUsers(action, tableId, searchTerm) {
         .catch(error => console.error('Error:', error));
 }
 
-function populateTable(users, tableId) {
+function populateTable(users, tableId, userType) {
     const tableBody = document.getElementById(tableId);
     tableBody.innerHTML = ''; // Clear existing data
+
+    // Get the user_id from the session token (cookie)
+    const sessionToken = document.cookie.replace(/(?:(?:^|.*;\s*)session_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    let loggedInUserId = null;
+    if (sessionToken) {
+        try {
+            const decodedToken = JSON.parse(atob(sessionToken.split('.')[1]));
+            loggedInUserId = decodedToken.user_id;
+        } catch (e) {
+            console.error("Error decoding session token:", e);
+        }
+    }
 
     users.forEach(user => {
         let row = tableBody.insertRow();
         row.insertCell(0).innerHTML = `<img src="/${user.picture}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">`;
-        row.insertCell(1).textContent = user.user_id;
-        row.insertCell(2).textContent = user.fullname || user.username;
-        row.insertCell(3).textContent = user.email;
-        row.insertCell(4).innerHTML = `
-            <button class="btn btn-sm btn-info" onclick="viewMedicalRecord('${user.user_id}')">Medical Record</button>
+        row.insertCell(1).textContent = user.fullname || user.username;
+        row.insertCell(2).textContent = user.email;
+
+        let actionsCell = row.insertCell(3);
+        let removeButton = `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.user_id}', '${userType}')">Remove</button>`;
+        
+        if (user.user_id === loggedInUserId) {
+            removeButton = `<button class="btn btn-sm btn-secondary" disabled>Remove</button>`;
+        }
+
+        actionsCell.innerHTML = `
+            <button class="btn btn-sm btn-info" onclick="editUser('${user.user_id}', '${userType}')">Edit</button>
+            ${removeButton}
             <a class="btn btn-sm btn-info" href="mailto:${user.email}" target="_blank">Message</a>
         `;
     });

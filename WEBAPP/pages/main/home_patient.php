@@ -142,6 +142,48 @@
                 <li class="list-group-item text-muted">Amoxicillin - 500mg (Completed) - Expired: Jan 2025</li>
             </ul>
         </section>
+
+        <!-- Patient Medical Records Section -->
+        <section id="medical-records" class="content-section">
+            <h3 class="mb-4">Patient Medical Records</h3>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="medicalRecordsSearch" class="form-control" placeholder="Search for medical records...">
+                        <button class="btn btn-primary" onclick="searchMedicalRecords()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Doctor</th>
+                        <th>Condition</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="medicalRecordsTableBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Patients Section -->
+        <section id="patients" class="content-section">
+            <h3 class="mb-4">Your Profile</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="patientsSearch" class="form-control" placeholder="Search for your records...">
+                        <button class="btn btn-primary" onclick="searchPatients()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- Rest of patient profile content -->
+        </section>
     </main>
     
     <!-- External Scripts -->
