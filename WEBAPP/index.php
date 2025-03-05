@@ -167,13 +167,13 @@
         </div>
     </footer>
 
-    <!-- Minor Scripts -->
-    <script src="/scripts/copyright-year.js"></script>
-
     <!-- Major Scripts -->
     <script src="/scripts/external/bootstrap.bundle.min.js"></script>
     <script src="/scripts/external/aos.js"></script>
-    <script src="/scripts/index/index_onload_check.js"></script>
+
+    <!-- Minor Scripts -->
+    <script src="/scripts/copyright-year.js"></script>
+    <script src="/scripts/dynamic-buttons_sessiontoken.js"></script>
 
     <!-- Internal Scripts -->
     <script>
