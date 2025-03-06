@@ -197,6 +197,7 @@
 
     <!-- Minor Scripts -->
     <script src="/scripts/bootstrap-tooltip.js"></script>
+    <script src="/scripts/credentials/auth-clearcookies.js"></script>
 
     <!-- Internal Scripts -->
     <script> // Collapse/Expand Sidebar

@@ -270,6 +270,15 @@ switch ($action) {
             ]));
         }
 
+        // Get request_id from POST data
+        $request_id = AuthUtils::sanitizeInput($_POST['request_id'] ?? '');
+        if (empty($request_id)) {
+            exit(json_encode([
+                'success' => false,
+                'message' => 'Invalid request'
+            ]));
+        }
+
         // STEP 1: Check if IP is currently blocked using UTC_TIMESTAMP()
         $stmt = $conn->prepare("
             SELECT block_end 
@@ -315,48 +324,78 @@ switch ($action) {
                 throw new Exception('Database error during user lookup');
             }
             $result = $stmt->get_result();
-                
-            // Get user data once and store it
             $user = $result->fetch_assoc();
-                
-            // Check if user exists and verify password
-            if (!$user || !password_verify($password, $user['password_hash'])) {
-                throw new Exception('Invalid username or password');
-            }
-                
-            // Generate unique session ID with UTC timestamp
-            $session_id = "session_" . gmdate("mdY_His");
-            $session_token = AuthUtils::generateSessionToken();
+
+            // Check if a session entry with this request_id already exists
+            $stmt = $conn->prepare("SELECT id FROM users_sessionlists WHERE id = ?");
+            $stmt->bind_param("s", $request_id);
+            $stmt->execute();
+            $existing_session = $stmt->get_result()->fetch_assoc();
+
             $login_time = gmdate('Y-m-d H:i:s');
             $expire_time = gmdate('Y-m-d H:i:s', strtotime('UTC') + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $status = 'failed';
+
+            if (!$user || !password_verify($password, $user['password_hash'])) {
+                // Handle failed login
+                if (!$existing_session) {
+                    // Store empty session token as variable
+                    $empty_token = '';
+                    $failed_user_id = $user['user_id'] ?? ''; // Get user_id if exists, otherwise empty string
+                    $status = 'failed'; // Explicitly set status to failed
+                    
+                    // Insert new failed attempt only if no existing session
+                    $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, status, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssssssss", 
+                        $request_id,
+                        $failed_user_id,
+                        $empty_token,
+                        $login_time,
+                        $expire_time,
+                        $status,
+                        $ip_address,
+                        $user_agent
+                    );
+                    if (!$stmt->execute()) {
+                        throw new Exception('Failed to record login attempt');
+                    }
+                }
                 
-            // Insert session record with error checking
-            $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            if (!$stmt) {
-                throw new Exception('Failed to prepare session insert statement: ' . $conn->error);
-            }
-            
-            $stmt->bind_param("sssssss", 
-                $session_id, 
-                $user['user_id'], 
-                $session_token, 
-                $login_time, 
-                $expire_time, 
-                $ip_address, 
-                $user_agent
-            );
-            
-            if (!$stmt->execute()) {
-                throw new Exception('Failed to save session: ' . $stmt->error);
+                // Commit the transaction before throwing the exception
+                $conn->commit();
+                throw new Exception('Invalid username or password');
             }
 
-            if ($stmt->affected_rows !== 1) {
-                throw new Exception('Session was not saved properly');
+            // Login successful
+            $session_token = AuthUtils::generateSessionToken();
+            $status = 'success';
+
+            // Always look for existing session with request_id and update it
+            $stmt = $conn->prepare("UPDATE users_sessionlists SET status = 'success', session_token = ? WHERE id = ?");
+            $stmt->bind_param("ss", $session_token, $request_id);
+            $result = $stmt->execute();
+
+            // If no rows were updated, create new session record
+            if ($stmt->affected_rows === 0) {
+                $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, status, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssssss", 
+                    $request_id,
+                    $user['user_id'],
+                    $session_token,
+                    $login_time,
+                    $expire_time,
+                    $status,
+                    $ip_address,
+                    $user_agent
+                );
+                if (!$stmt->execute()) {
+                    throw new Exception('Failed to save session: ' . $stmt->error);
+                }
             }
-                
-            // Set session cookie with UTC expiry
+
+            // Set session cookie
             setcookie('session_token', $session_token, [
                 'expires' => strtotime($expire_time),
                 'path' => '/',
@@ -364,19 +403,19 @@ switch ($action) {
                 'httponly' => false,
                 'samesite' => 'Lax'
             ]);
-                
+
             // Clear login attempts on successful login
             AuthUtils::clearLoginAttempts($ip_address);
                 
             // Commit transaction
             $conn->commit();
-                
+
             exit(json_encode([
                 'success' => true,
                 'message' => 'Login successful',
                 'redirect' => '/pages/main/redirect.php',
             ]));
-                
+
         } catch (Exception $e) {
             // Rollback transaction on error
             $conn->rollback();

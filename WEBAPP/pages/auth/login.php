@@ -144,6 +144,7 @@
     <script src="/scripts/copyright-year.js"></script>
     <script src="/scripts/dynamic-buttons_sessiontoken.js"></script>
     <script src="/scripts/bootstrap-tooltip.js"></script>
+    <script src="/scripts/credentials/auth-clearcookies.js"></script>
 
     <!-- Internal Scripts -->
     <script>
@@ -156,10 +157,20 @@
                 this.classList.add('was-validated');
                 return;
             }
+
+            // Check for existing request_id cookie
+            let requestId = document.cookie.split('; ').find(row => row.startsWith('request_id='))?.split('=')[1];
+
+            // Only generate new request_id if one doesn't exist
+            if (!requestId) {
+                const now = new Date();
+                requestId = `session_${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}${now.getFullYear()}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+                document.cookie = `request_id=${requestId}; path=/; ${location.protocol === 'https:' ? 'secure;' : ''} SameSite=Lax`;
+            }
             
             const formData = new FormData(this);
+            formData.append('request_id', requestId);
             
-            // Disable form while submitting
             const submitButton = this.querySelector('button[type="submit"]');
             const inputs = this.querySelectorAll('input');
             submitButton.disabled = true;
