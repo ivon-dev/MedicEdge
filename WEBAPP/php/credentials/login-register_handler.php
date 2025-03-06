@@ -311,7 +311,9 @@ switch ($action) {
             // Query user data
             $stmt = $conn->prepare("SELECT * FROM users_table WHERE username = ?");
             $stmt->bind_param("s", $username);
-            $stmt->execute();
+            if (!$stmt->execute()) {
+                throw new Exception('Database error during user lookup');
+            }
             $result = $stmt->get_result();
                 
             // Get user data once and store it
@@ -322,42 +324,20 @@ switch ($action) {
                 throw new Exception('Invalid username or password');
             }
                 
-            // Generate unique session ID
-            $session_id = '';
-            $max_attempts = 5;
-            $attempt = 0;
-                
-            do {
-                $base_id = "session_" . date("mdY_His");
-                $session_id = $attempt === 0 ? $base_id : $base_id . "_" . $attempt;
-                    
-                $check_stmt = $conn->prepare("SELECT id FROM users_sessionlists WHERE id = ?");
-                $check_stmt->bind_param("s", $session_id);
-                $check_stmt->execute();
-                $check_result = $check_stmt->get_result();
-                    
-                if ($check_result->num_rows === 0) {
-                    break;
-                }
-                    
-                $attempt++;
-                if ($attempt >= $max_attempts) {
-                    throw new Exception('Failed to generate unique session ID');
-                }
-                    
-                usleep(100000); // Wait 0.1 seconds before next attempt
-                    
-            } while (true);
-                
-            // Generate session data using UTC
+            // Generate unique session ID with UTC timestamp
+            $session_id = "session_" . gmdate("mdY_His");
             $session_token = AuthUtils::generateSessionToken();
             $login_time = gmdate('Y-m-d H:i:s');
             $expire_time = gmdate('Y-m-d H:i:s', strtotime('UTC') + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME));
             $ip_address = $_SERVER['REMOTE_ADDR'];
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
                 
-            // Insert session record
+            // Insert session record with error checking
             $stmt = $conn->prepare("INSERT INTO users_sessionlists (id, user_id, session_token, login_time, expire_time, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            if (!$stmt) {
+                throw new Exception('Failed to prepare session insert statement: ' . $conn->error);
+            }
+            
             $stmt->bind_param("sssssss", 
                 $session_id, 
                 $user['user_id'], 
@@ -367,15 +347,22 @@ switch ($action) {
                 $ip_address, 
                 $user_agent
             );
-            $stmt->execute();
+            
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to save session: ' . $stmt->error);
+            }
+
+            if ($stmt->affected_rows !== 1) {
+                throw new Exception('Session was not saved properly');
+            }
                 
             // Set session cookie with UTC expiry
             setcookie('session_token', $session_token, [
-                'expires' => strtotime('UTC') + ($remember_me ? SESSION_LIFETIME * 7 : SESSION_LIFETIME),
+                'expires' => strtotime($expire_time),
                 'path' => '/',
-                'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on', // Conditionally set secure
-                'httponly' => false, // Recommending to set it to true, but instead set to false for index_onload_check cookie checker
-                'samesite' => 'Lax' // Adjust based on your needs, consider 'None' if necessary but ensure 'Secure' is true
+                'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+                'httponly' => false,
+                'samesite' => 'Lax'
             ]);
                 
             // Clear login attempts on successful login
