@@ -41,10 +41,10 @@
 
         <!-- Navigation Links -->
         <div class="mt-4 nav-links">
-            <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
-            <a href="#" data-section="appointments"><i class="fas fa-calendar-alt me-2"></i> Appointments</a>
-            <a href="#" data-section="records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
-            <a href="#" data-section="prescriptions"><i class="fas fa-pills me-2"></i> Prescriptions</a>
+            <a href="#account" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
+            <a href="#appointments" data-section="appointments"><i class="fas fa-calendar-alt me-2"></i> Appointments</a>
+            <a href="#records" data-section="records"><i class="fas fa-file-medical me-2"></i> Medical Records</a>
+            <a href="#prescriptions" data-section="prescriptions"><i class="fas fa-pills me-2"></i> Prescriptions</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>

@@ -92,12 +92,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // PAGE SECTIONS IN SIDEBAR NAVBAR
-document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Handle initial load based on URL hash
+    const hash = window.location.hash || '#account';
+    const sectionId = hash.substring(1);
+    activateSection(sectionId);
+
+    // Update navigation when hash changes
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash || '#account';
+        const sectionId = hash.substring(1);
+        activateSection(sectionId);
+    });
+});
+
+function activateSection(sectionId) {
+    // Remove active class from all links and sections
+    document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    
+    // Add active class to current link and section
+    const currentLink = document.querySelector(`.sidebar a[href="#${sectionId}"]`);
+    const currentSection = document.getElementById(sectionId);
+    
+    if (currentLink && currentSection) {
+        currentLink.classList.add('active');
+        currentSection.classList.add('active');
+        
+        // Scroll section into view smoothly
+        currentSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        // Fallback to account section if the requested section doesn't exist
+        const accountLink = document.querySelector('.sidebar a[href="#account"]');
+        const accountSection = document.getElementById('account');
+        if (accountLink && accountSection) {
+            accountLink.classList.add('active');
+            accountSection.classList.add('active');
+        }
+    }
+}
+
+// Remove the duplicate event listeners
+document.querySelectorAll('.sidebar a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        link.classList.add('active');
-        document.getElementById(link.dataset.section).classList.add('active');
+        // Let the default behavior handle the navigation
+        const sectionId = link.getAttribute('href').substring(1);
+        activateSection(sectionId);
     });
 });

@@ -39,14 +39,14 @@
         </div>
 
         <div class="mt-4 nav-links">
-            <a href="#" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
-            <a href="#" data-section="webapp_settings"><i class="fas fa-cogs me-2"></i> Webapp Settings</a>
-            <a href="#" data-section="webapp_customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
-            <a href="#" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
-            <a href="#" data-section="healthcare_providers"><i class="fas fa-user-md me-2"></i> Healthcare Providers</a>
-            <a href="#" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
-            <a href="#" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
-            <a href="#" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
+            <a href="#account" data-section="account" class="active"><i class="fas fa-key me-2"></i> Your Account</a>
+            <a href="#webapp_settings" data-section="webapp_settings"><i class="fas fa-cogs me-2"></i> Webapp Settings</a>
+            <a href="#webapp_customization" data-section="webapp_customization"><i class="fas fa-paint-brush me-2"></i> Webapp Customization</a>
+            <a href="#administrators" data-section="administrators"><i class="fas fa-users-cog me-2"></i> Administrators</a>
+            <a href="#healthcare_providers" data-section="healthcare_providers"><i class="fas fa-user-md me-2"></i> Healthcare Providers</a>
+            <a href="#receptionists" data-section="receptionists"><i class="fas fa-concierge-bell me-2"></i> Receptionists</a>
+            <a href="#patients" data-section="patients"><i class="fas fa-user-injured me-2"></i> Patients</a>
+            <a href="#appointments" data-section="appointments"><i class="fas fa-calendar-check me-2"></i> Appointments</a>
             <a href="/"><i class="fas fa-sign-out-alt me-2"></i> Back to Homepage</a>
             <a href="/php/credentials/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
         </div>
