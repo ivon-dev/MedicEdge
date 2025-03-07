@@ -395,10 +395,11 @@ switch ($action) {
                 }
             }
 
-            // Set session cookie
+            // Set session cookie with more permissive domain for LAN compatibility
             setcookie('session_token', $session_token, [
                 'expires' => strtotime($expire_time),
                 'path' => '/',
+                'domain' => '',  // Empty domain makes it work across LAN
                 'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
                 'httponly' => false,
                 'samesite' => 'Lax'

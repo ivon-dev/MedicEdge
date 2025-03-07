@@ -317,7 +317,7 @@ async function deleteSession(sessionId) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                type: 'session',  // Add this line
+                type: 'session',
                 action: 'delete_session',
                 session_id: sessionId
             })
@@ -329,11 +329,13 @@ async function deleteSession(sessionId) {
             throw new Error(data.error);
         }
 
+        // Show success message
         Swal.fire({
             icon: 'success',
             title: 'Session Deleted',
             text: 'The session has been deleted successfully'
         }).then(() => {
+            // Refresh session history
             showSessionHistory();
         });
 

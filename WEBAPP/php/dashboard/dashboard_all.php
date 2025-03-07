@@ -78,7 +78,8 @@ function getSessionHistory($session_token) {
 function revokeSession($session_id) {
     global $conn;
     
-    $current_time = date('Y-m-d H:i:s');
+    // Set expire_time to current UTC time
+    $current_time = gmdate('Y-m-d H:i:s');
     $stmt = $conn->prepare("UPDATE users_sessionlists SET expire_time = ? WHERE id = ?");
     $stmt->bind_param("ss", $current_time, $session_id);
     

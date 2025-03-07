@@ -227,8 +227,9 @@
     <script src="/scripts/dashboard/fetch-update_userinfo.js"></script>
 
     <!-- Minor Scripts -->
-    <script src="/scripts/bootstrap-tooltip.js"></script>
     <script src="/scripts/credentials/auth-clearcookies.js"></script>
+    <script src="/scripts/credentials/loop-sessioncheck.js"></script>
+    <script src="/scripts/bootstrap-tooltip.js"></script>
 
     <!-- Internal Scripts -->
     <script> // Collapse/Expand Sidebar
