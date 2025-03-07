@@ -6,52 +6,41 @@ if (!isset($_COOKIE['session_token'])) {
     exit(json_encode(['loggedIn' => false]));
 }
 
-// Validate session token
-$session_token = htmlspecialchars($_COOKIE['session_token'], ENT_QUOTES, 'UTF-8');
+// Make API call to userinfo.php
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'http://' . $_SERVER['HTTP_HOST'] . '/php/api/userinfo.php');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_COOKIE, 'session_token=' . ($_COOKIE['session_token'] ?? ''));
 
-try {
-    // Get session and user information
-    $stmt = $conn->prepare("
-        SELECT s.user_id, u.user_type 
-        FROM users_sessionlists s
-        JOIN users_table u ON s.user_id = u.user_id
-        WHERE s.session_token = ? AND s.expire_time > UTC_TIMESTAMP()
-    ");
-    
-    $stmt->bind_param("s", $session_token);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$response = curl_exec($ch);
+$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
-    if ($result->num_rows === 0) {
-        // Session expired or invalid
-        setcookie('session_token', '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => 'Strict'
-        ]);
+if ($httpcode === 200) {
+    if ($response === '"empty"') {
         exit(json_encode(['loggedIn' => false]));
     }
 
-    $user = $result->fetch_assoc();
+    $data = json_decode($response, true);
     
-    // Determine redirect URL based on user type
-    $redirect_url = match($user['user_type']) {
-        'administrator' => '/pages/main/home_admin.php',
-        'receptionist' => '/pages/main/home_receptionist.php',
-        'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
-        default => '/pages/main/redirect.php'
-    };
+    if (isset($data['user_type'])) {
+        // Determine redirect URL based on user type
+        $redirect_url = match($data['user_type']) {
+            'administrator' => '/pages/main/home_admin.php',
+            'receptionist' => '/pages/main/home_receptionist.php',
+            'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
+            'patient' => '/pages/main/home_patient.php',
+            default => '/pages/main/redirect.php'
+        };
 
-    exit(json_encode([
-        'loggedIn' => true,
-        'redirect' => $redirect_url
-    ]));
-
-} catch (Exception $e) {
-    exit(json_encode([
-        'loggedIn' => false,
-        'error' => 'Database error occurred'
-    ]));
+        exit(json_encode([
+            'loggedIn' => true,
+            'redirect' => $redirect_url
+        ]));
+    }
 }
+
+exit(json_encode([
+    'loggedIn' => false,
+    'error' => 'Invalid session'
+]));
