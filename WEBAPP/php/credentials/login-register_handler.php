@@ -5,7 +5,7 @@ date_default_timezone_set('UTC');
 // Add session start at the beginning
 session_start();
 
-include('../connection.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/php/connection.php');
 
 // Constants
 define('SESSION_LIFETIME', 86400); // 24 hours
