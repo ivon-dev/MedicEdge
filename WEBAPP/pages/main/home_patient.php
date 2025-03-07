@@ -92,6 +92,10 @@
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
+            <h5 class="card-title mt-4">Security</h5>
+            <div class="btn-group-vertical w-100 mt-2">
+                <button class="btn btn-primary mb-2 w-100" onclick="showSessionHistory()">Session History</button>
+            </div>
         </section>
 
         <!-- Appointments -->

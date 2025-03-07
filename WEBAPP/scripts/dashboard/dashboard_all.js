@@ -140,3 +140,225 @@ document.querySelectorAll('.sidebar a[href^="#"]').forEach(link => {
         activateSection(sectionId);
     });
 });
+
+// Function to get user-friendly browser/OS info
+function parseUserAgent(userAgent) {
+    let browserName = "Unknown";
+    let osName = "Unknown";
+
+    // Detect OS
+    if (userAgent.includes("Windows")) osName = "Windows";
+    else if (userAgent.includes("Mac")) osName = "MacOS";
+    else if (userAgent.includes("Linux")) osName = "Linux";
+    else if (userAgent.includes("Android")) osName = "Android";
+    else if (userAgent.includes("iOS")) osName = "iOS";
+
+    // Detect Browser
+    if (userAgent.includes("Firefox/")) browserName = "Firefox";
+    else if (userAgent.includes("Chrome/")) browserName = "Chrome";
+    else if (userAgent.includes("Safari/")) browserName = "Safari";
+    else if (userAgent.includes("Edge/")) browserName = "Edge";
+    else if (userAgent.includes("Opera/")) browserName = "Opera";
+
+    return `${browserName} on ${osName}`;
+}
+
+function formatDate(dateString) {
+    // Convert UTC date string to local timezone and format
+    const date = new Date(dateString + 'Z'); // Append 'Z' to treat the input as UTC
+    return new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZoneName: 'short'
+    }).format(date);
+}
+
+// Handle session history button click
+document.addEventListener('DOMContentLoaded', () => {
+    const sessionHistoryBtn = document.querySelector('button:contains("Session History")');
+    if (sessionHistoryBtn) {
+        sessionHistoryBtn.addEventListener('click', showSessionHistory);
+    }
+});
+
+async function showSessionHistory() {
+    const sessionToken = document.cookie.split('; ')
+        .find(row => row.startsWith('session_token='))
+        ?.split('=')[1];
+
+    if (!sessionToken) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No active session found'
+        });
+        return;
+    }
+
+    try {
+        const response = await fetch('/php/dashboard/dashboard_all.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'session',  // Add this line
+                action: 'get_history',
+                session_token: sessionToken
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        let tableHtml = `
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>IP Address</th>
+                            <th>Client Info</th>
+                            <th>Raw User Agent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        data.sessions.forEach(session => {
+            const now = new Date();
+            const expireTime = new Date(session.expire_time + 'Z'); // Add Z to treat as UTC
+            const status = now > expireTime ? 'Expired' : 'Active';
+            const statusClass = status === 'Active' ? 'text-success' : 'text-danger';
+            const isCurrentSession = session.is_current;
+
+            tableHtml += `
+                <tr ${isCurrentSession ? 'class="table-primary"' : ''}>
+                    <td>${formatDate(session.login_time)}</td>
+                    <td class="${statusClass}">${status}${isCurrentSession ? ' (Current)' : ''}</td>
+                    <td>${session.ip_address}</td>
+                    <td>${parseUserAgent(session.user_agent)}</td>
+                    <td><small>${session.user_agent}</small></td>
+                    <td>
+                        ${isCurrentSession ? 
+                            `<button class="btn btn-danger btn-sm" onclick="window.location.href='/php/credentials/logout.php'">Logout</button>` 
+                            : 
+                            `${status === 'Active' ? 
+                                `<button class="btn btn-warning btn-sm" onclick="revokeSession('${session.id}')">Revoke</button> ` 
+                                : ''
+                            }
+                            <button class="btn btn-danger btn-sm" onclick="deleteSession('${session.id}')">Delete</button>`
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableHtml += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        Swal.fire({
+            title: 'Session History',
+            html: tableHtml,
+            width: '80%',
+            customClass: {
+                popup: 'swal2-wide',
+                content: 'p-0'
+            }
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Failed to fetch session history'
+        });
+    }
+}
+
+async function revokeSession(sessionId) {
+    try {
+        const response = await fetch('/php/dashboard/dashboard_all.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'session',  // Add this line
+                action: 'revoke_session',
+                session_id: sessionId
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Session Revoked',
+            text: 'The session has been revoked successfully'
+        }).then(() => {
+            showSessionHistory();
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Failed to revoke session'
+        });
+    }
+}
+
+async function deleteSession(sessionId) {
+    try {
+        const response = await fetch('/php/dashboard/dashboard_all.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'session',  // Add this line
+                action: 'delete_session',
+                session_id: sessionId
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Session Deleted',
+            text: 'The session has been deleted successfully'
+        }).then(() => {
+            showSessionHistory();
+        });
+
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Failed to delete session'
+        });
+    }
+}

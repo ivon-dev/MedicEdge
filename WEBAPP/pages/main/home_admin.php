@@ -63,6 +63,7 @@
         <!-- Profile Section -->
         <section id="account" class="content-section active">
             <h3 class="mb-4">Your Profile</h3>
+            <h5 class="card-title mb-2">Your User Info</h5>
             <form>
                 <div class="mb-3">
                     <label class="form-label">Profile Picture</label>
@@ -101,6 +102,10 @@
                 </div>
                 <button type="submit" class="btn btn-success">Save Changes</button>
             </form>
+            <h5 class="card-title mt-4">Security</h5>
+            <div class="btn-group-vertical w-100 mt-2">
+                <button class="btn btn-primary mb-2 w-100" onclick="showSessionHistory()">Session History</button>
+            </div>
             <div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-50 d-none items-center justify-center z-50">
                 <div class="bg-white p-6 rounded-lg max-w-3xl w-full mx-4">
                     <div class="flex justify-between items-center mb-4">
