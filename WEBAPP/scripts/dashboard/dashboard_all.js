@@ -107,22 +107,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function activateSection(sectionId) {
-    // Remove active class from all links and sections
-    document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
-    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    // Show all sections first to allow for proper display
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.style.display = '';  // Remove any inline display style
+        section.classList.remove('active');
+    });
     
-    // Add active class to current link and section
+    document.querySelectorAll('.sidebar a').forEach(link => {
+        link.classList.remove('active');
+    });
+    
     const currentLink = document.querySelector(`.sidebar a[href="#${sectionId}"]`);
     const currentSection = document.getElementById(sectionId);
     
-    if (currentLink && currentSection) {
+    // Special handling for session_history
+    if (sectionId === 'session_history') {
+        document.getElementById('session_history').style.display = 'block';
+        // Don't activate any sidebar link for session history
+    } else if (currentLink && currentSection) {
         currentLink.classList.add('active');
         currentSection.classList.add('active');
-        
-        // Scroll section into view smoothly
         currentSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-        // Fallback to account section if the requested section doesn't exist
+        // Fallback to account section
         const accountLink = document.querySelector('.sidebar a[href="#account"]');
         const accountSection = document.getElementById('account');
         if (accountLink && accountSection) {
@@ -186,17 +193,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function hideSessionHistory() {
+    // Change URL hash to #account
+    window.location.hash = '#account';
+}
+
 async function showSessionHistory() {
     const sessionToken = document.cookie.split('; ')
         .find(row => row.startsWith('session_token='))
         ?.split('=')[1];
 
     if (!sessionToken) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No active session found'
-        });
+        alert('No active session found');
         return;
     }
 
@@ -207,7 +215,7 @@ async function showSessionHistory() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                type: 'session',  // Add this line
+                type: 'session',
                 action: 'get_history',
                 session_token: sessionToken
             })
@@ -219,73 +227,48 @@ async function showSessionHistory() {
             throw new Error(data.error);
         }
 
-        let tableHtml = `
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Status</th>
-                            <th>IP Address</th>
-                            <th>Client Info</th>
-                            <th>Raw User Agent</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
+        const tableBody = document.getElementById('sessionHistoryTableBody');
+        tableBody.innerHTML = '';
 
         data.sessions.forEach(session => {
             const now = new Date();
-            const expireTime = new Date(session.expire_time + 'Z'); // Add Z to treat as UTC
+            const expireTime = new Date(session.expire_time + 'Z');
             const status = now > expireTime ? 'Expired' : 'Active';
             const statusClass = status === 'Active' ? 'text-success' : 'text-danger';
             const isCurrentSession = session.is_current;
 
-            tableHtml += `
-                <tr ${isCurrentSession ? 'class="table-primary"' : ''}>
-                    <td>${formatDate(session.login_time)}</td>
-                    <td class="${statusClass}">${status}${isCurrentSession ? ' (Current)' : ''}</td>
-                    <td>${session.ip_address}</td>
-                    <td>${parseUserAgent(session.user_agent)}</td>
-                    <td><small>${session.user_agent}</small></td>
-                    <td>
-                        ${isCurrentSession ? 
-                            `<button class="btn btn-danger btn-sm" onclick="window.location.href='/php/credentials/logout.php'">Logout</button>` 
-                            : 
-                            `${status === 'Active' ? 
-                                `<button class="btn btn-warning btn-sm" onclick="revokeSession('${session.id}')">Revoke</button> ` 
-                                : ''
-                            }
-                            <button class="btn btn-danger btn-sm" onclick="deleteSession('${session.id}')">Delete</button>`
+            const row = document.createElement('tr');
+            if (isCurrentSession) row.classList.add('table-primary');
+
+            row.innerHTML = `
+                <td>${formatDate(session.login_time)}</td>
+                <td class="${statusClass}">${status}${isCurrentSession ? ' (Current)' : ''}</td>
+                <td>${session.ip_address}</td>
+                <td>${parseUserAgent(session.user_agent)}</td>
+                <td><small>${session.user_agent}</small></td>
+                <td>
+                    ${isCurrentSession ? 
+                        `<a href="/php/credentials/logout.php" class="btn btn-danger btn-sm">Logout</a>` 
+                        : 
+                        `${status === 'Active' ? 
+                            `<button class="btn btn-warning btn-sm" onclick="revokeSession('${session.id}')">Revoke</button> ` 
+                            : ''
                         }
-                    </td>
-                </tr>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSession('${session.id}')">Delete</button>`
+                    }
+                </td>
             `;
+
+            tableBody.appendChild(row);
         });
 
-        tableHtml += `
-                    </tbody>
-                </table>
-            </div>
-        `;
+        // Change URL hash to #session_history
+        window.location.hash = '#session_history';
 
-        Swal.fire({
-            title: 'Session History',
-            html: tableHtml,
-            width: '80%',
-            customClass: {
-                popup: 'swal2-wide',
-                content: 'p-0'
-            }
-        });
+        // The section display will be handled by the hashchange event
 
     } catch (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error.message || 'Failed to fetch session history'
-        });
+        alert(error.message || 'Failed to fetch session history');
     }
 }
 

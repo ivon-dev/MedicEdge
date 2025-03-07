@@ -119,6 +119,33 @@
             </div>
         </section>
 
+        <!-- Session Histroy Subsection -->
+        <section id="session_history" class="content-section" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Session History</h3>
+                <button class="btn btn-secondary" onclick="hideSessionHistory()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>IP Address</th>
+                            <th>Client Info</th>
+                            <th>Raw User Agent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sessionHistoryTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- Assigned Appointments Section -->
         <section id="appointments" class="content-section">
             <h3 class="mb-4">Assigned Appointments</h3>
