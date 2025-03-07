@@ -37,48 +37,42 @@ if (!isset($_COOKIE['session_token'])) {
     exit();
 }
 
-$session_token = $_COOKIE['session_token'];
+// Make API call to userinfo.php
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'http://' . $_SERVER['HTTP_HOST'] . '/php/api/userinfo.php');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_COOKIE, 'session_token=' . $_COOKIE['session_token']);
 
-// Validate session token in database
-$stmt = $conn->prepare("
-    SELECT u.user_type 
-    FROM users_sessionlists us 
-    JOIN users_table u ON us.user_id = u.user_id 
-    WHERE us.session_token = ?
-");
+$response = curl_exec($ch);
+$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
-if (!$stmt) {
-    deleteSessionCookie();
-    header("Location: /pages/auth/login.php");
-    exit();
+if ($httpcode === 200) {
+    $data = json_decode($response, true);
+    
+    if ($response === '"empty"') {
+        deleteSessionCookie();
+        header("Location: /pages/auth/login.php");
+        exit();
+    }
+
+    if (isset($data['user_type'])) {
+        // Direct to appropriate dashboard based on user type
+        $redirect_url = match($data['user_type']) {
+            'administrator' => '/pages/main/home_admin.php',
+            'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
+            'receptionist' => '/pages/main/home_receptionist.php',
+            'patient' => '/pages/main/home_patient.php',
+            default => '/pages/auth/login.php'
+        };
+
+        header("Location: " . $redirect_url);
+        exit();
+    }
 }
 
-$stmt->bind_param("s", $session_token);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    deleteSessionCookie();
-    header("Location: /pages/auth/login.php");
-    exit();
-}
-
-$user_data = $result->fetch_assoc();
-$user_type = $user_data['user_type'];
-
-// Close database connection
-$stmt->close();
-$conn->close();
-
-// Direct to appropriate dashboard based on user type
-$redirect_url = match($user_type) {
-    'administrator' => '/pages/main/home_admin.php',
-    'healthcare_provider' => '/pages/main/home_healthcare_provider.php',
-    'receptionist' => '/pages/main/home_receptionist.php',
-    'patient' => '/pages/main/home_patient.php',
-    default => '/pages/auth/login.php'
-};
-
-header("Location: " . $redirect_url);
+// Fallback: If API call fails or returns invalid data
+deleteSessionCookie();
+header("Location: /pages/auth/login.php");
 exit();
 ?>
